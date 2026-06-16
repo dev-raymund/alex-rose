@@ -1,0 +1,528 @@
+/**
+ * Schedule a Call page (template/schedule-a-call.php).
+ */
+
+.page-schedule-a-call {
+	--ar-gold: rgb(200, 169, 106);
+	--ar-ink: rgb(17, 17, 17);
+	--ar-foreground: rgb(17, 17, 17);
+	--ar-muted-foreground: #6b6b6b;
+	--ar-border: #ececea;
+	--ar-muted-bg: #f6f6f3;
+	--ar-bg: #ffffff;
+	background: var(--ar-bg);
+	color: var(--ar-foreground);
+}
+
+/* ----- Hero ----- */
+.page-schedule-a-call .sac-hero {
+	position: relative;
+	overflow: hidden;
+	background: var(--ar-ink);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding: 128px 0 64px;
+}
+
+.page-schedule-a-call .sac-hero__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 30%;
+	opacity: 0.28;
+	pointer-events: none;
+}
+
+.page-schedule-a-call .sac-hero__shade {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		105deg,
+		rgba(17, 17, 17, 0.97) 0%,
+		rgba(17, 17, 17, 0.72) 55%,
+		rgba(17, 17, 17, 0.4) 100%
+	);
+	pointer-events: none;
+}
+
+.page-schedule-a-call .sac-hero__inner {
+	position: relative;
+	padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+	.page-schedule-a-call .sac-hero__inner {
+		padding: 0 80px;
+	}
+}
+
+.page-schedule-a-call .sac-hero__rule {
+	width: 28px;
+	height: 1px;
+	background: var(--ar-gold);
+	margin-bottom: 28px;
+}
+
+.page-schedule-a-call .sac-hero__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: rgba(200, 169, 106, 0.6);
+}
+
+.page-schedule-a-call .sac-hero__title {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.page-schedule-a-call .sac-hero__lead {
+	margin: 20px 0 0;
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ----- Form section ----- */
+.page-schedule-a-call .sac-form-section {
+	padding: 48px 0 72px;
+}
+
+@media (min-width: 768px) {
+	.page-schedule-a-call .sac-form-section {
+		padding: 64px 0 96px;
+	}
+}
+
+.page-schedule-a-call .sac-form-section__inner {
+	padding: 0 32px;
+}
+
+@media (min-width: 768px) {
+	.page-schedule-a-call .sac-form-section__inner {
+		padding: 0 64px;
+	}
+}
+
+/* ----- Progress ----- */
+.page-schedule-a-call .sac-progress {
+	display: flex;
+	align-items: center;
+	row-gap: 10px;
+	margin-bottom: 40px;
+}
+
+.page-schedule-a-call .sac-progress__group {
+	display: flex;
+	align-items: center;
+	flex: 0 0 auto;
+}
+
+.page-schedule-a-call .sac-progress__group--last {
+	flex: 0 0 auto;
+}
+
+.page-schedule-a-call .sac-progress__step {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	position: relative;
+}
+
+.page-schedule-a-call .sac-progress__dot {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border: 1px solid var(--ar-border);
+	background: transparent;
+	font-size: 10px;
+	color: var(--ar-muted-foreground);
+	transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.page-schedule-a-call .sac-progress__label {
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-muted-foreground);
+	transition: color 0.3s ease;
+}
+
+@media (max-width: 639px) {
+	.page-schedule-a-call .sac-progress__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+}
+
+.page-schedule-a-call .sac-progress__line {
+	width: 32px;
+	height: 1px;
+	margin: 0 12px;
+	background: var(--ar-border);
+	flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+	.page-schedule-a-call .sac-progress__line {
+		width: 48px;
+		margin: 0 16px;
+	}
+}
+
+.page-schedule-a-call .sac-progress__step.is-active .sac-progress__dot,
+.page-schedule-a-call .sac-progress__step.is-complete .sac-progress__dot {
+	background: var(--ar-gold);
+	border-color: var(--ar-gold);
+	color: #fff;
+}
+
+.page-schedule-a-call .sac-progress__step.is-active .sac-progress__label {
+	color: var(--ar-gold);
+}
+
+/* ----- Form ----- */
+.page-schedule-a-call .sac-form__panel[hidden] {
+	display: none;
+}
+
+.page-schedule-a-call .sac-form__panel[data-sac-panel="2"]:not([hidden]) {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.page-schedule-a-call .sac-form__heading {
+	margin: 0 0 24px;
+	font-size: 13px;
+	font-weight: 300;
+	letter-spacing: -0.01em;
+	line-height: 1.3;
+	color: var(--ar-foreground);
+}
+
+.page-schedule-a-call .sac-form__lead {
+	margin: -12px 0 24px;
+	font-size: 13px;
+	line-height: 1.75;
+	color: var(--ar-muted-foreground);
+}
+
+.page-schedule-a-call .sac-form__fields {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.page-schedule-a-call .sac-form__field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
+.page-schedule-a-call .sac-form__field--occasion {
+	margin-top: 20px;
+}
+
+.page-schedule-a-call .sac-form__label {
+	display: block;
+	margin: 0;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-muted-foreground);
+}
+
+.page-schedule-a-call .sac-form__legend {
+	margin-bottom: 5px;
+	padding: 0;
+}
+
+.page-schedule-a-call .sac-form__required {
+	margin-left: 4px;
+	color: var(--ar-gold);
+}
+
+.page-schedule-a-call .sac-form__input {
+	width: 100%;
+	padding: 12px 16px;
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+	font-size: 13px;
+	color: var(--ar-foreground);
+	background: #fff;
+	border: 1px solid var(--ar-border);
+	border-radius: 0;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	appearance: none;
+}
+
+.page-schedule-a-call .sac-form__input:focus {
+	outline: 0;
+	border-color: var(--ar-gold);
+	box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
+}
+
+.page-schedule-a-call .sac-form__select {
+	cursor: pointer;
+	background-image: linear-gradient(45deg, transparent 50%, var(--ar-foreground) 50%),
+		linear-gradient(135deg, var(--ar-foreground) 50%, transparent 50%);
+	background-position: calc(100% - 18px) center, calc(100% - 12px) center;
+	background-size: 6px 6px, 6px 6px;
+	background-repeat: no-repeat;
+	padding-right: 36px;
+}
+
+.page-schedule-a-call .sac-form__textarea {
+	min-height: 6.5rem;
+	resize: vertical;
+}
+
+.page-schedule-a-call .sac-form__chip-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.page-schedule-a-call .sac-chip {
+	padding: 11px 16px;
+	border: 1px solid var(--ar-border);
+	background: #fff;
+	color: var(--ar-muted-foreground);
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	line-height: 1;
+	cursor: pointer;
+	transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.page-schedule-a-call .sac-chip:hover,
+.page-schedule-a-call .sac-chip:focus-visible {
+	outline: 0;
+	border-color: #d9d6cd;
+	color: var(--ar-foreground);
+}
+
+.page-schedule-a-call .sac-chip.is-active {
+	border-color: var(--ar-gold);
+	color: var(--ar-foreground);
+	background: #fffdfa;
+}
+
+.page-schedule-a-call .sac-form__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 16px 28px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	border: 0;
+	cursor: pointer;
+	text-decoration: none;
+	transition: opacity 0.25s ease;
+}
+
+.page-schedule-a-call .sac-form__btn--next,
+.page-schedule-a-call .sac-form__btn--submit {
+	margin-top: 32px;
+	color: #fff;
+	background: var(--ar-gold);
+}
+
+.page-schedule-a-call .sac-form__btn--back {
+	color: var(--ar-muted-foreground);
+	background: transparent;
+	border: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.page-schedule-a-call .sac-form__btn--inline {
+	margin-top: 0;
+}
+
+.page-schedule-a-call .sac-form__btn:hover:not(:disabled),
+.page-schedule-a-call .sac-form__btn:focus-visible:not(:disabled) {
+	opacity: 0.88;
+	outline: 0;
+}
+
+.page-schedule-a-call .sac-form__btn:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.page-schedule-a-call .sac-form__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin-top: 32px;
+}
+
+.page-schedule-a-call .sac-form__actions .sac-form__btn--next,
+.page-schedule-a-call .sac-form__actions .sac-form__btn--submit {
+	margin-top: 0;
+	flex: 0 0 auto;
+}
+
+.page-schedule-a-call .sac-form__error {
+	margin: 16px 0 0;
+	font-size: 12px;
+	line-height: 1.6;
+	color: #b22d2d;
+}
+
+.page-schedule-a-call .sac-calendly__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin-bottom: 24px;
+}
+
+.page-schedule-a-call .sac-confirm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	gap: 20px;
+	padding: 40px 0;
+	min-height: 260px;
+}
+
+.page-schedule-a-call .sac-confirm__heading {
+	margin-bottom: 0;
+}
+
+.page-schedule-a-call .sac-confirm__icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--ar-gold);
+	color: #fff;
+}
+
+.page-schedule-a-call .sac-confirm__title {
+	margin: 0;
+	font-size: 1.25rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: var(--ar-foreground);
+}
+
+.page-schedule-a-call .sac-confirm__body {
+	margin: 0;
+	max-width: 420px;
+	font-size: 13px;
+	line-height: 1.75;
+	color: var(--ar-muted-foreground);
+}
+
+.page-schedule-a-call .sac-form__actions--confirm {
+	margin-top: 0;
+	justify-content: center;
+}
+
+.page-schedule-a-call .sac-calendly__head .sac-form__heading {
+	margin: 0;
+}
+
+.page-schedule-a-call .sac-calendly__frame-wrap {
+	border: 1px solid var(--ar-border);
+	overflow: hidden;
+	height: 680px;
+}
+
+.page-schedule-a-call .sac-calendly__frame {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.page-schedule-a-call .sac-calendly__footnote {
+	margin: 16px 0 0;
+	font-size: 11px;
+	line-height: 1.7;
+	color: var(--ar-muted-foreground);
+}
+
+.page-schedule-a-call .sac-calendly__footnote a {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.page-schedule-a-call .sac-form__confirmation {
+	margin-top: 24px;
+	padding: 32px 0;
+}
+
+.page-schedule-a-call .sac-form__confirmation-kicker {
+	margin: 0 0 12px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-schedule-a-call .sac-form__confirmation-title {
+	margin: 0 0 12px;
+	font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: var(--ar-foreground);
+}
+
+.page-schedule-a-call .sac-form__confirmation-body {
+	margin: 0 0 32px;
+	font-size: 13px;
+	line-height: 1.85;
+	color: var(--ar-muted-foreground);
+}
+
+.page-schedule-a-call .sac-form__confirmation-link {
+	color: var(--ar-gold);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.page-schedule-a-call .sac-form__confirmation-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-schedule-a-call .sac-progress__dot,
+	.page-schedule-a-call .sac-progress__label,
+	.page-schedule-a-call .sac-form__input,
+	.page-schedule-a-call .sac-purpose__card,
+	.page-schedule-a-call .sac-form__btn {
+		transition: none;
+	}
+}

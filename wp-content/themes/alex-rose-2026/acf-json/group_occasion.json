@@ -1,0 +1,292 @@
+{
+	"key": "group_aroc_main",
+	"title": "Occasion",
+	"fields": [
+		{
+			"key": "field_aroc_eyebrow",
+			"label": "Eyebrow",
+			"name": "eyebrow",
+			"type": "text",
+			"instructions": "Small uppercase line above the hero title, e.g. \"Made-to-Measure Jackets · Alex Rose\".",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"default_value": "",
+			"placeholder": "Made-to-Measure Jackets · Alex Rose"
+		},
+		{
+			"key": "field_aroc_related_kicker",
+			"label": "Related-card kicker",
+			"name": "related_kicker",
+			"type": "text",
+			"instructions": "Short tag shown above the card title when this occasion appears in another occasion's \"You might also like\" strip.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"placeholder": "Boardroom · Office · Travel"
+		},
+		{
+			"key": "field_aroc_hero_image",
+			"label": "Hero image",
+			"name": "hero_image",
+			"type": "image",
+			"instructions": "Full-bleed image at the top of the page. Reused at low opacity in the dark CTA section.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"return_format": "url",
+			"library": "all",
+			"preview_size": "medium"
+		},
+		{
+			"key": "field_aroc_hero_lead",
+			"label": "Hero lead",
+			"name": "hero_lead",
+			"type": "textarea",
+			"instructions": "One-line subtitle directly under the hero title.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"rows": 2,
+			"new_lines": "br"
+		},
+		{
+			"key": "field_aroc_when_kicker",
+			"label": "When · kicker",
+			"name": "when_kicker",
+			"type": "text",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"default_value": "The Occasion"
+		},
+		{
+			"key": "field_aroc_when_title",
+			"label": "When · title",
+			"name": "when_title",
+			"type": "text",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"default_value": "When to wear it."
+		},
+		{
+			"key": "field_aroc_when_paragraph",
+			"label": "When · paragraph",
+			"name": "when_paragraph",
+			"type": "textarea",
+			"instructions": "Single paragraph on the left side of the \"When to wear it\" grid.",
+			"required": 0,
+			"conditional_logic": 0,
+			"rows": 6,
+			"new_lines": "br"
+		},
+		{
+			"key": "field_aroc_when_bullets",
+			"label": "When · bullet list",
+			"name": "when_bullets",
+			"type": "repeater",
+			"instructions": "Right-hand list of times / places to wear this jacket.",
+			"required": 0,
+			"conditional_logic": 0,
+			"layout": "table",
+			"min": 0,
+			"max": 0,
+			"button_label": "Add bullet",
+			"sub_fields": [
+				{
+					"key": "field_aroc_when_bullets_text",
+					"label": "Text",
+					"name": "text",
+					"type": "text",
+					"required": 1,
+					"wrapper": {"width": "100", "class": "", "id": ""}
+				}
+			]
+		},
+		{
+			"key": "field_aroc_samples_title",
+			"label": "Samples · title",
+			"name": "samples_title",
+			"type": "text",
+			"required": 0,
+			"conditional_logic": 0,
+			"default_value": "Made in this cloth and occasion."
+		},
+		{
+			"key": "field_aroc_samples",
+			"label": "Sample jacket images",
+			"name": "samples",
+			"type": "repeater",
+			"instructions": "Three images shown in a 3-column row beneath the samples header.",
+			"required": 0,
+			"conditional_logic": 0,
+			"layout": "block",
+			"min": 0,
+			"max": 6,
+			"button_label": "Add image",
+			"sub_fields": [
+				{
+					"key": "field_aroc_samples_image",
+					"label": "Image",
+					"name": "image",
+					"type": "image",
+					"required": 1,
+					"return_format": "url",
+					"library": "all",
+					"preview_size": "medium"
+				}
+			]
+		},
+		{
+			"key": "field_aroc_cloths_title",
+			"label": "Cloths · title",
+			"name": "cloths_title",
+			"type": "text",
+			"required": 0,
+			"conditional_logic": 0,
+			"default_value": "Cloths we recommend."
+		},
+		{
+			"key": "field_aroc_cloths",
+			"label": "Recommended cloths",
+			"name": "cloths",
+			"type": "repeater",
+			"instructions": "Each row becomes a card linking to /cloths/<slug>/.",
+			"required": 0,
+			"conditional_logic": 0,
+			"layout": "block",
+			"min": 0,
+			"max": 0,
+			"button_label": "Add cloth",
+			"sub_fields": [
+				{
+					"key": "field_aroc_cloths_slug",
+					"label": "Slug",
+					"name": "slug",
+					"type": "text",
+					"instructions": "WordPress page slug of the cloth collection (e.g. cotswold).",
+					"required": 0,
+					"wrapper": {"width": "25", "class": "", "id": ""}
+				},
+				{
+					"key": "field_aroc_cloths_name",
+					"label": "Display name",
+					"name": "name",
+					"type": "text",
+					"required": 0,
+					"wrapper": {"width": "35", "class": "", "id": ""}
+				},
+				{
+					"key": "field_aroc_cloths_kicker",
+					"label": "Kicker",
+					"name": "kicker",
+					"type": "text",
+					"required": 0,
+					"wrapper": {"width": "20", "class": "", "id": ""}
+				},
+				{
+					"key": "field_aroc_cloths_price",
+					"label": "Price",
+					"name": "price",
+					"type": "text",
+					"required": 0,
+					"wrapper": {"width": "20", "class": "", "id": ""},
+					"placeholder": "From £595"
+				},
+				{
+					"key": "field_aroc_cloths_image",
+					"label": "Swatch image",
+					"name": "image",
+					"type": "image",
+					"required": 0,
+					"return_format": "url",
+					"library": "all",
+					"preview_size": "thumbnail"
+				}
+			]
+		},
+		{
+			"key": "field_aroc_thinking_title",
+			"label": "Thinking · title",
+			"name": "thinking_title",
+			"type": "text",
+			"required": 0,
+			"conditional_logic": 0,
+			"default_value": "How we think about this jacket."
+		},
+		{
+			"key": "field_aroc_thinking_paragraphs",
+			"label": "Thinking · paragraphs",
+			"name": "thinking_paragraphs",
+			"type": "repeater",
+			"instructions": "First two paragraphs go into the left column, third paragraph into the right.",
+			"required": 0,
+			"conditional_logic": 0,
+			"layout": "row",
+			"min": 0,
+			"max": 0,
+			"button_label": "Add paragraph",
+			"sub_fields": [
+				{
+					"key": "field_aroc_thinking_paragraphs_text",
+					"label": "Paragraph",
+					"name": "text",
+					"type": "textarea",
+					"required": 1,
+					"rows": 4,
+					"new_lines": "br"
+				}
+			]
+		},
+		{
+			"key": "field_aroc_pull_quote",
+			"label": "Pull quote",
+			"name": "pull_quote",
+			"type": "text",
+			"instructions": "Italic quote shown between the thinking grid and the dark CTA. Quote marks added automatically.",
+			"required": 0,
+			"conditional_logic": 0
+		},
+		{
+			"key": "field_aroc_cta_title",
+			"label": "CTA · title",
+			"name": "cta_title",
+			"type": "text",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"placeholder": "Design your business jacket."
+		},
+		{
+			"key": "field_aroc_cta_lead",
+			"label": "CTA · lead",
+			"name": "cta_lead",
+			"type": "textarea",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {"width": "50", "class": "", "id": ""},
+			"rows": 3,
+			"new_lines": "br"
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "template/occasion.php"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "Editor-friendly fields for the Occasion page template. The PHP registry in inc/occasions.php provides defaults per page slug; any field filled in here overrides the registry.",
+	"show_in_rest": 0,
+	"modified": 1747641600
+}

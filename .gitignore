@@ -1,0 +1,15 @@
+# ─── Credentials (never commit DB passwords) ───────────────────────────────
+wp-config.php
+
+# ─── Large / generated assets ──────────────────────────────────────────────
+wp-content/uploads/
+wp-content/wpvividbackups/
+wp-admin.zip
+
+# ─── Demo prototype (vanilla HTML only, not part of the WP theme) ──────────
+wp-content/themes/alex-rose-2026/alexrose_demo/
+
+# ─── OS / editor noise ─────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log

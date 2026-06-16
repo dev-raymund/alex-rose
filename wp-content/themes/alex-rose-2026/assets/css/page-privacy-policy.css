@@ -1,0 +1,146 @@
+/**
+ * Privacy Policy page (template/privacy-policy.php).
+ */
+
+.page-privacy-policy {
+	--ar-gold: rgb(200, 169, 106);
+	--ar-ink: rgb(17, 17, 17);
+	--ar-foreground: rgb(17, 17, 17);
+	--ar-muted-foreground: #6b6b6b;
+	--ar-bg: #ffffff;
+	background: var(--ar-bg);
+	color: var(--ar-foreground);
+}
+
+/* ----- Hero ----- */
+.page-privacy-policy .pp-hero {
+	background: var(--ar-ink);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding: 128px 0 64px;
+}
+
+.page-privacy-policy .pp-hero__inner {
+	padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+	.page-privacy-policy .pp-hero__inner {
+		padding: 0 80px;
+	}
+}
+
+.page-privacy-policy .pp-hero__rule {
+	width: 28px;
+	height: 1px;
+	background: var(--ar-gold);
+	margin-bottom: 28px;
+}
+
+.page-privacy-policy .pp-hero__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: rgba(200, 169, 106, 0.6);
+}
+
+.page-privacy-policy .pp-hero__title {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.page-privacy-policy .pp-hero__lead {
+	margin: 20px 0 0;
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ----- Body ----- */
+.page-privacy-policy .pp-body {
+	padding: 64px 0;
+}
+
+@media (min-width: 768px) {
+	.page-privacy-policy .pp-body {
+		padding: 96px 0;
+	}
+}
+
+.page-privacy-policy .pp-body__inner {
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+@media (min-width: 768px) {
+	.page-privacy-policy .pp-body__inner {
+		padding-left: 80px;
+		padding-right: 80px;
+	}
+}
+
+.page-privacy-policy .pp-body__col {
+	max-width: 42rem;
+}
+
+.page-privacy-policy .pp-section {
+	margin-bottom: 48px;
+}
+
+.page-privacy-policy .pp-section:last-child {
+	margin-bottom: 0;
+}
+
+.page-privacy-policy .pp-section__head {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.page-privacy-policy .pp-section__rule {
+	width: 20px;
+	height: 1px;
+	flex-shrink: 0;
+	background: var(--ar-gold);
+}
+
+.page-privacy-policy .pp-section__title {
+	margin: 0;
+	font-size: 1.1rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	color: var(--ar-foreground);
+}
+
+.page-privacy-policy .pp-section__body {
+	padding-left: 36px;
+}
+
+.page-privacy-policy .pp-section__body p {
+	margin: 0 0 12px;
+	font-size: 13px;
+	line-height: 1.8;
+	color: var(--ar-muted-foreground);
+}
+
+.page-privacy-policy .pp-section__body p:last-child {
+	margin-bottom: 0;
+}
+
+.page-privacy-policy .pp-section__body a {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	transition: color 0.2s ease;
+}
+
+.page-privacy-policy .pp-section__body a:hover {
+	color: var(--ar-gold);
+}

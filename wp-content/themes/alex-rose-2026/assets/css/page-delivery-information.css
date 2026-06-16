@@ -1,0 +1,210 @@
+/**
+ * Delivery Information page (template/delivery-information.php).
+ */
+
+.page-delivery-information {
+	--ar-gold: rgb(200, 169, 106);
+	--ar-ink: rgb(17, 17, 17);
+	--ar-foreground: rgb(17, 17, 17);
+	--ar-muted-foreground: #6b6b6b;
+	--ar-border: rgb(232, 232, 232);
+	--ar-bg: #ffffff;
+	background: var(--ar-bg);
+	color: var(--ar-foreground);
+}
+
+/* ----- Hero ----- */
+.page-delivery-information .di-hero {
+	position: relative;
+	overflow: hidden;
+	background: var(--ar-ink);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding: 128px 0 64px;
+}
+
+.page-delivery-information .di-hero__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center top;
+	opacity: 0.28;
+	pointer-events: none;
+}
+
+.page-delivery-information .di-hero__shade {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		105deg,
+		rgba(17, 17, 17, 0.97) 0%,
+		rgba(17, 17, 17, 0.72) 55%,
+		rgba(17, 17, 17, 0.4) 100%
+	);
+	pointer-events: none;
+}
+
+.page-delivery-information .di-hero__inner {
+	position: relative;
+	padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+	.page-delivery-information .di-hero__inner {
+		padding: 0 80px;
+	}
+}
+
+.page-delivery-information .di-hero__rule {
+	width: 28px;
+	height: 1px;
+	background: var(--ar-gold);
+	margin-bottom: 28px;
+}
+
+.page-delivery-information .di-hero__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: rgba(200, 169, 106, 0.6);
+}
+
+.page-delivery-information .di-hero__title {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.page-delivery-information .di-hero__lead {
+	margin: 20px 0 0;
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ----- Body ----- */
+.page-delivery-information .di-body {
+	padding: 64px 0;
+}
+
+@media (min-width: 768px) {
+	.page-delivery-information .di-body {
+		padding: 96px 0;
+	}
+}
+
+.page-delivery-information .di-body__inner {
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+@media (min-width: 768px) {
+	.page-delivery-information .di-body__inner {
+		padding-left: 80px;
+		padding-right: 80px;
+	}
+}
+
+.page-delivery-information .di-body__col {
+	max-width: 42rem;
+}
+
+.page-delivery-information .di-section {
+	margin-bottom: 48px;
+}
+
+.page-delivery-information .di-section:last-child {
+	margin-bottom: 0;
+}
+
+.page-delivery-information .di-section__head {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.page-delivery-information .di-section__rule {
+	width: 20px;
+	height: 1px;
+	flex-shrink: 0;
+	background: var(--ar-gold);
+}
+
+.page-delivery-information .di-section__title {
+	margin: 0;
+	font-size: 1.1rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	color: var(--ar-foreground);
+}
+
+.page-delivery-information .di-section__body {
+	padding-left: 36px;
+}
+
+.page-delivery-information .di-section__body p {
+	margin: 0 0 12px;
+	font-size: 13px;
+	line-height: 1.8;
+	color: var(--ar-muted-foreground);
+}
+
+.page-delivery-information .di-section__body p:last-child {
+	margin-bottom: 0;
+}
+
+.page-delivery-information .di-section__body a {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+	transition: color 0.2s ease;
+}
+
+.page-delivery-information .di-section__body a:hover {
+	color: var(--ar-gold);
+}
+
+/* ----- Costs table ----- */
+.page-delivery-information .di-costs-table {
+	border: 1px solid var(--ar-border);
+}
+
+.page-delivery-information .di-costs-table__row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 14px 20px;
+	border-bottom: 1px solid var(--ar-border);
+}
+
+.page-delivery-information .di-costs-table__row:last-child {
+	border-bottom: none;
+}
+
+.page-delivery-information .di-costs-table__region {
+	font-size: 13px;
+	color: var(--ar-muted-foreground);
+}
+
+.page-delivery-information .di-costs-table__price {
+	font-size: 13px;
+	font-weight: 500;
+	color: rgb(13, 13, 13);
+	text-align: right;
+}
+
+.page-delivery-information .di-section__note {
+	margin: 16px 0 0;
+	font-size: 11px;
+	line-height: 1.7;
+	color: var(--ar-muted-foreground);
+}

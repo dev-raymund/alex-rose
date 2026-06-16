@@ -1,0 +1,350 @@
+/**
+ * Request Tape Measure page (template/request-tape-measure.php).
+ */
+
+.page-request-tape-measure {
+	--ar-gold: rgb(200, 169, 106);
+	--ar-ink: rgb(17, 17, 17);
+	--ar-foreground: rgb(17, 17, 17);
+	--ar-muted-foreground: #6b6b6b;
+	--ar-border: #ececea;
+	--ar-muted-bg: #f6f6f3;
+	--ar-bg: #ffffff;
+	background: var(--ar-bg);
+	color: var(--ar-foreground);
+}
+
+/* ----- Hero ----- */
+.page-request-tape-measure .rtm-hero {
+	position: relative;
+	overflow: hidden;
+	background: var(--ar-ink);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding: 128px 0 64px;
+}
+
+.page-request-tape-measure .rtm-hero__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center top;
+	opacity: 0.28;
+	pointer-events: none;
+}
+
+.page-request-tape-measure .rtm-hero__shade {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		105deg,
+		rgba(17, 17, 17, 0.97) 0%,
+		rgba(17, 17, 17, 0.72) 55%,
+		rgba(17, 17, 17, 0.4) 100%
+	);
+	pointer-events: none;
+}
+
+.page-request-tape-measure .rtm-hero__inner {
+	position: relative;
+	padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+	.page-request-tape-measure .rtm-hero__inner {
+		padding: 0 80px;
+	}
+}
+
+.page-request-tape-measure .rtm-hero__rule {
+	width: 28px;
+	height: 1px;
+	background: var(--ar-gold);
+	margin-bottom: 28px;
+}
+
+.page-request-tape-measure .rtm-hero__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: rgba(200, 169, 106, 0.6);
+}
+
+.page-request-tape-measure .rtm-hero__title {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.page-request-tape-measure .rtm-hero__lead {
+	margin: 20px 0 0;
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ----- Main layout ----- */
+.page-request-tape-measure .rtm-main {
+	padding: 48px 0 72px;
+}
+
+@media (min-width: 768px) {
+	.page-request-tape-measure .rtm-main {
+		padding: 64px 0 96px;
+	}
+}
+
+.page-request-tape-measure .rtm-main__inner {
+	padding: 0 32px;
+}
+
+@media (min-width: 768px) {
+	.page-request-tape-measure .rtm-main__inner {
+		padding: 0 64px;
+	}
+}
+
+.page-request-tape-measure .rtm-main__grid {
+	display: flex;
+	flex-direction: column;
+	gap: 56px;
+}
+
+@media (min-width: 1024px) {
+	.page-request-tape-measure .rtm-main__grid {
+		flex-direction: row;
+		gap: 80px;
+		align-items: flex-start;
+	}
+}
+
+.page-request-tape-measure .rtm-main__form-col {
+	width: 100%;
+}
+
+@media (min-width: 1024px) {
+	.page-request-tape-measure .rtm-main__form-col {
+		width: 55%;
+		flex-shrink: 0;
+	}
+}
+
+.page-request-tape-measure .rtm-main__tips-col {
+	width: 100%;
+}
+
+@media (min-width: 1024px) {
+	.page-request-tape-measure .rtm-main__tips-col {
+		width: 45%;
+		flex-shrink: 0;
+	}
+}
+
+/* ----- Form ----- */
+.page-request-tape-measure .rtm-form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.page-request-tape-measure .rtm-form__block {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding-top: 8px;
+}
+
+.page-request-tape-measure .rtm-form__kicker {
+	margin: 0;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-tape-measure .rtm-form__fields {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.page-request-tape-measure .rtm-form__grid {
+	display: grid;
+	gap: 16px;
+}
+
+@media (min-width: 640px) {
+	.page-request-tape-measure .rtm-form__grid--2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.page-request-tape-measure .rtm-form__field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
+.page-request-tape-measure .rtm-form__label {
+	display: block;
+	margin: 0;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-tape-measure .rtm-form__required {
+	margin-left: 4px;
+	color: var(--ar-gold);
+}
+
+.page-request-tape-measure .rtm-form__input {
+	width: 100%;
+	padding: 12px 16px;
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+	font-size: 13px;
+	color: var(--ar-foreground);
+	background: #fff;
+	border: 1px solid var(--ar-border);
+	border-radius: 0;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	appearance: none;
+}
+
+.page-request-tape-measure .rtm-form__input:focus {
+	outline: 0;
+	border-color: var(--ar-gold);
+	box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
+}
+
+.page-request-tape-measure .rtm-form__btn {
+	align-self: flex-start;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px 32px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: #fff;
+	background: var(--ar-gold);
+	border: 0;
+	cursor: pointer;
+	transition: opacity 0.25s ease;
+}
+
+.page-request-tape-measure .rtm-form__btn:hover:not(:disabled),
+.page-request-tape-measure .rtm-form__btn:focus-visible:not(:disabled) {
+	opacity: 0.88;
+	outline: 0;
+}
+
+.page-request-tape-measure .rtm-form__btn:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.page-request-tape-measure .rtm-form__confirmation {
+	margin-top: 24px;
+	padding: 0;
+}
+
+.page-request-tape-measure .rtm-form__confirmation-kicker {
+	margin: 0 0 12px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-request-tape-measure .rtm-form__confirmation-title {
+	margin: 0 0 12px;
+	font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: var(--ar-foreground);
+}
+
+.page-request-tape-measure .rtm-form__confirmation-body {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.85;
+	color: var(--ar-muted-foreground);
+}
+
+/* ----- Tips sidebar ----- */
+.page-request-tape-measure .rtm-tips__kicker {
+	margin: 0 0 24px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-request-tape-measure .rtm-tips__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.page-request-tape-measure .rtm-tips__item {
+	display: flex;
+	gap: 20px;
+	padding: 20px 0;
+	border-bottom: 1px solid var(--ar-border);
+}
+
+.page-request-tape-measure .rtm-tips__item:last-child {
+	border-bottom: 0;
+}
+
+.page-request-tape-measure .rtm-tips__num {
+	flex-shrink: 0;
+	padding-top: 2px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-request-tape-measure .rtm-tips__text {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.8;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-tape-measure .rtm-tips__callout {
+	margin-top: 32px;
+	padding: 20px;
+	background: var(--ar-muted-bg);
+	border: 1px solid var(--ar-border);
+}
+
+.page-request-tape-measure .rtm-tips__callout-text {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.75;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-tape-measure .rtm-tips__callout-link {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-request-tape-measure .rtm-form__input,
+	.page-request-tape-measure .rtm-form__btn {
+		transition: none;
+	}
+}

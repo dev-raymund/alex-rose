@@ -1,0 +1,40 @@
+/**
+ * Scroll entrance animations (Framer Motion–style fade / blur / rise).
+ * Elements stay visible without JS; hidden state applies only when ar-reveal.js runs.
+ */
+
+html.ar-reveal-js [data-ar-reveal]:not(.is-visible) {
+	opacity: 0;
+	transform: translate3d(0, 20px, 0);
+	filter: blur(6px);
+}
+
+html.ar-reveal-js [data-ar-reveal="subtle"]:not(.is-visible) {
+	opacity: 1;
+	filter: none;
+	transform: translate3d(0, 16px, 0);
+}
+
+html.ar-reveal-js [data-ar-reveal] {
+	transition:
+		opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+		transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+		filter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+	transition-delay: var(--ar-reveal-delay, 0ms);
+	will-change: opacity, transform, filter;
+}
+
+html.ar-reveal-js [data-ar-reveal].is-visible {
+	opacity: 1;
+	transform: none;
+	filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html.ar-reveal-js [data-ar-reveal] {
+		opacity: 1 !important;
+		transform: none !important;
+		filter: none !important;
+		transition: none !important;
+	}
+}

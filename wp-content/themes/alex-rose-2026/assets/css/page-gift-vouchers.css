@@ -1,0 +1,538 @@
+/**
+ * Gift Vouchers page (template/gift-vouchers.php).
+ */
+
+.page-gift-vouchers {
+	--ar-gold: rgb(200, 169, 106);
+	--ar-ink: rgb(17, 17, 17);
+	--ar-foreground: rgb(17, 17, 17);
+	--ar-muted-foreground: #6b6b6b;
+	--ar-border: #ececea;
+	--ar-border-soft: #f4f4fd;
+	--ar-bg: #ffffff;
+	--ar-muted-bg: #f6f6f3;
+	background: var(--ar-bg);
+	color: var(--ar-foreground);
+}
+
+/* ----- Hero ----- */
+.page-gift-vouchers .gv-hero {
+	position: relative;
+	overflow: hidden;
+	background: var(--ar-ink);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding: 128px 0 64px;
+}
+
+.page-gift-vouchers .gv-hero__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center top;
+	opacity: 0.28;
+	pointer-events: none;
+}
+
+.page-gift-vouchers .gv-hero__shade {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(
+		105deg,
+		rgba(17, 17, 17, 0.97) 0%,
+		rgba(17, 17, 17, 0.72) 55%,
+		rgba(17, 17, 17, 0.4) 100%
+	);
+	pointer-events: none;
+}
+
+.page-gift-vouchers .gv-hero__inner {
+	position: relative;
+	padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+	.page-gift-vouchers .gv-hero__inner {
+		padding: 0 80px;
+	}
+}
+
+.page-gift-vouchers .gv-hero__rule {
+	width: 28px;
+	height: 1px;
+	background: var(--ar-gold);
+	margin-bottom: 28px;
+}
+
+.page-gift-vouchers .gv-hero__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: rgba(200, 169, 106, 0.6);
+}
+
+.page-gift-vouchers .gv-hero__title {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.page-gift-vouchers .gv-hero__lead {
+	margin: 20px 0 0;
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ----- "What's included" ----- */
+.page-gift-vouchers .gv-included {
+	background: #fff;
+	border-bottom: 1px solid var(--ar-border);
+}
+
+.page-gift-vouchers .gv-included__inner {
+	padding: 64px 32px;
+}
+
+@media (min-width: 768px) {
+	.page-gift-vouchers .gv-included__inner {
+		padding: 80px 64px;
+	}
+}
+
+.page-gift-vouchers .gv-included__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 48px;
+	align-items: center;
+}
+
+@media (min-width: 1024px) {
+	.page-gift-vouchers .gv-included__grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 64px;
+	}
+}
+
+.page-gift-vouchers .gv-included__media {
+	width: 100%;
+}
+
+.page-gift-vouchers .gv-included__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	box-shadow: 0 10px 40px rgba(17, 17, 17, 0.12);
+}
+
+.page-gift-vouchers .gv-included__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-gift-vouchers .gv-included__title {
+	margin: 0 0 32px;
+	font-size: clamp(1.4rem, 2.5vw, 2rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	color: var(--ar-foreground);
+}
+
+.page-gift-vouchers .gv-included__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.page-gift-vouchers .gv-included__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+}
+
+.page-gift-vouchers .gv-included__icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background: var(--ar-gold);
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.page-gift-vouchers .gv-included__text {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.7;
+	color: var(--ar-muted-foreground);
+}
+
+/* ----- Pricing ----- */
+.page-gift-vouchers .gv-pricing {
+	background: var(--ar-muted-bg);
+	border-bottom: 1px solid var(--ar-border);
+}
+
+.page-gift-vouchers .gv-pricing__inner {
+	padding: 64px 32px;
+}
+
+@media (min-width: 768px) {
+	.page-gift-vouchers .gv-pricing__inner {
+		padding: 80px 64px;
+	}
+}
+
+.page-gift-vouchers .gv-pricing__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-gift-vouchers .gv-pricing__title {
+	margin: 0 0 32px;
+	font-size: clamp(1.4rem, 2.5vw, 2rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	color: var(--ar-foreground);
+}
+
+.page-gift-vouchers .gv-pricing__list {
+	margin: 0;
+	padding: 0;
+}
+
+.page-gift-vouchers .gv-pricing__row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 14px 0;
+	border-bottom: 1px solid var(--ar-border-soft);
+}
+
+.page-gift-vouchers .gv-pricing__row:last-child {
+	border-bottom: 0;
+}
+
+.page-gift-vouchers .gv-pricing__label {
+	margin: 0;
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 13px;
+	font-weight: 400;
+	color: var(--ar-muted-foreground);
+}
+
+.page-gift-vouchers .gv-pricing__dot {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--ar-gold);
+	flex-shrink: 0;
+}
+
+.page-gift-vouchers .gv-pricing__price {
+	margin: 0;
+	font-size: 13px;
+	font-weight: 300;
+	color: var(--ar-foreground);
+}
+
+.page-gift-vouchers .gv-pricing__note {
+	margin: 20px 0 0;
+	font-size: 11px;
+	color: var(--ar-muted-foreground);
+}
+
+/* ----- Form ----- */
+.page-gift-vouchers .gv-form {
+	background: #fff;
+	padding: 56px 0 72px;
+}
+
+@media (min-width: 768px) {
+	.page-gift-vouchers .gv-form {
+		padding: 72px 0 96px;
+	}
+}
+
+.page-gift-vouchers .gv-form__inner {
+	padding: 0 32px;
+}
+
+@media (min-width: 768px) {
+	.page-gift-vouchers .gv-form__inner {
+		padding: 0 64px;
+	}
+}
+
+.page-gift-vouchers .gv-form__head {
+	margin-bottom: 40px;
+}
+
+.page-gift-vouchers .gv-form__kicker {
+	margin: 0 0 12px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-gift-vouchers .gv-form__title {
+	margin: 0 0 8px;
+	font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+	color: var(--ar-foreground);
+}
+
+.page-gift-vouchers .gv-form__lead {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.85;
+	color: var(--ar-muted-foreground);
+}
+
+.page-gift-vouchers .gv-form__form {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.page-gift-vouchers .gv-form__grid {
+	display: grid;
+	gap: 20px;
+}
+
+@media (min-width: 640px) {
+	.page-gift-vouchers .gv-form__grid--2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.page-gift-vouchers .gv-form__field {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	min-width: 0;
+}
+
+.page-gift-vouchers .gv-form__label {
+	display: block;
+	margin: 0;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-muted-foreground);
+}
+
+.page-gift-vouchers .gv-form__legend {
+	margin-bottom: 12px;
+	padding: 0;
+}
+
+.page-gift-vouchers .gv-form__required {
+	margin-left: 4px;
+	color: var(--ar-gold);
+}
+
+.page-gift-vouchers .gv-form__input {
+	width: 100%;
+	padding: 12px 16px;
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+	font-size: 13px;
+	color: var(--ar-foreground);
+	background: #fff;
+	border: 1px solid var(--ar-border);
+	border-radius: 0;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+	appearance: none;
+}
+
+.page-gift-vouchers .gv-form__input:focus {
+	outline: 0;
+	border-color: var(--ar-gold);
+	box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
+}
+
+.page-gift-vouchers .gv-form__select {
+	cursor: pointer;
+	background-image: linear-gradient(45deg, transparent 50%, var(--ar-foreground) 50%),
+		linear-gradient(135deg, var(--ar-foreground) 50%, transparent 50%);
+	background-position: calc(100% - 18px) center, calc(100% - 12px) center;
+	background-size: 6px 6px, 6px 6px;
+	background-repeat: no-repeat;
+	padding-right: 36px;
+}
+
+.page-gift-vouchers .gv-form__textarea {
+	min-height: 6.5rem;
+	resize: vertical;
+}
+
+.page-gift-vouchers .gv-form__radio-set {
+	border: 0;
+	padding: 0;
+	margin: 0;
+}
+
+.page-gift-vouchers .gv-form__radios {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 28px;
+}
+
+.page-gift-vouchers .gv-radio {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+}
+
+.page-gift-vouchers .gv-radio__input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.page-gift-vouchers .gv-radio__dot {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: 1px solid rgba(0, 0, 0, 0.25);
+	background: transparent;
+	transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.page-gift-vouchers .gv-radio__dot::after {
+	content: '';
+	display: block;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #fff;
+	opacity: 0;
+	transition: opacity 0.2s ease;
+}
+
+.page-gift-vouchers .gv-radio__input:checked + .gv-radio__dot {
+	border-color: var(--ar-gold);
+	background: var(--ar-gold);
+}
+
+.page-gift-vouchers .gv-radio__input:checked + .gv-radio__dot::after {
+	opacity: 1;
+}
+
+.page-gift-vouchers .gv-radio__input:focus-visible + .gv-radio__dot {
+	box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.18);
+}
+
+.page-gift-vouchers .gv-radio__text {
+	font-size: 13px;
+	color: var(--ar-foreground);
+}
+
+.page-gift-vouchers .gv-form__submit {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 4px;
+}
+
+.page-gift-vouchers .gv-form__btn {
+	align-self: flex-start;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 16px 32px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: #fff;
+	background: var(--ar-gold);
+	border: 0;
+	cursor: pointer;
+	transition: opacity 0.25s ease;
+}
+
+.page-gift-vouchers .gv-form__btn:hover,
+.page-gift-vouchers .gv-form__btn:focus-visible {
+	opacity: 0.88;
+	outline: 0;
+}
+
+.page-gift-vouchers .gv-form__hint {
+	margin: 4px 0 0;
+	font-size: 12px;
+	color: var(--ar-muted-foreground);
+}
+
+.page-gift-vouchers .gv-form__hint-link {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.page-gift-vouchers .gv-form__confirmation {
+	margin-top: 32px;
+	padding: 32px;
+	background: var(--ar-muted-bg);
+	border: 1px solid var(--ar-border);
+}
+
+.page-gift-vouchers .gv-form__confirmation-kicker {
+	margin: 0 0 12px;
+	font-size: 11px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-gift-vouchers .gv-form__confirmation-title {
+	margin: 0 0 12px;
+	font-size: 1.25rem;
+	font-weight: 300;
+	letter-spacing: -0.01em;
+	color: var(--ar-foreground);
+}
+
+.page-gift-vouchers .gv-form__confirmation-body {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.85;
+	color: var(--ar-muted-foreground);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-gift-vouchers .gv-form__input,
+	.page-gift-vouchers .gv-form__btn,
+	.page-gift-vouchers .gv-radio__dot,
+	.page-gift-vouchers .gv-radio__dot::after {
+		transition: none;
+	}
+}
