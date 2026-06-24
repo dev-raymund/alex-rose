@@ -16,7 +16,7 @@ $sections = array(
 		'title' => __('1. Who We Are', 'alex-rose-2026'),
 		'paragraphs' => array(
 			__('We are Master Tailor Ltd, a company registered in England and Wales, registered company number 02587407.', 'alex-rose-2026'),
-			__('Our registered address is 53 The Fairway, Leeds LS17 7PE, United Kingdom. Our correspondence address is Master Tailor Ltd, Prospect House, 32 Sovereign Street, Leeds LS1 4BJ, United Kingdom.', 'alex-rose-2026'),
+			__('Our registered address is 1 Sandmoor Chase, Leeds, LS17 7TB, England. Our correspondence address is Master Tailor Ltd, 2a Rodley Lane, Leeds LS13 1HU, England.', 'alex-rose-2026'),
 			sprintf(
 				/* translators: %s: email link */
 				wp_kses(__('You may also contact us via email with any questions related to this privacy notice: %s', 'alex-rose-2026'), array('a' => array('href' => array()))),

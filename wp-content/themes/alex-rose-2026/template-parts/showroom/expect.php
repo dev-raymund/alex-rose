@@ -23,17 +23,12 @@ $items = array(
 	array(
 		'num'   => '03',
 		'title' => __('Your measurements taken', 'alex-rose-2026'),
-		'body'  => __('We take a full set of body measurements in-house. These are recorded and held on file so future orders require no further visits.', 'alex-rose-2026'),
+		'body'  => __('We take a full set of measurements, which are held on file. Any future orders can be accurately replicated or tweaked if required.', 'alex-rose-2026'),
 	),
 	array(
 		'num'   => '04',
 		'title' => __('Design your jacket together', 'alex-rose-2026'),
 		'body'  => __('Style details, lapels, buttons, vents, lining, monogram, are agreed during the appointment. Every step is taken at your pace.', 'alex-rose-2026'),
-	),
-	array(
-		'num'   => '05',
-		'title' => __('Fitting, if required', 'alex-rose-2026'),
-		'body'  => __('For Full Bespoke orders a toile fitting is arranged at a subsequent appointment before the final cloth is cut.', 'alex-rose-2026'),
 	),
 );
 ?>

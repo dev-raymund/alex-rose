@@ -23,8 +23,8 @@ $year = (string) gmdate('Y');
 			</a>
 			<p class="site-footer--marketing__tag"><?php esc_html_e('Traditional tailoring meets a modern ordering experience.', 'alex-rose-2026'); ?></p>
 			<div class="site-footer--marketing__contact">
-				<a class="site-footer--marketing__contact-phone" href="tel:+441132570022">0113 257 0022</a>
-				<a class="site-footer--marketing__contact-phone site-footer--marketing__contact-phone--alt" href="tel:+441134688588">0113 468 8588</a>
+				<a class="site-footer--marketing__contact-phone" href="tel:+01134688588">0113 468 8588</a>
+				<a class="site-footer--marketing__contact-phone site-footer--marketing__contact-phone--alt" href="tel:+01132571145">0113 257 1145</a>
 				<a class="site-footer--marketing__contact-email" href="mailto:tailor@alexrose.uk">tailor@alexrose.uk</a>
 				<p class="site-footer--marketing__address"><?php esc_html_e('2A Rodley Lane, Rodley, Leeds LS13 1HU', 'alex-rose-2026'); ?></p>
 			</div>

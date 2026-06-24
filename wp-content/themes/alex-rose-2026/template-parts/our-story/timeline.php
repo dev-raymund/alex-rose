@@ -45,7 +45,7 @@ $milestones = array(
 		'year'  => 1965,
 		'tag'   => __('Expansion', 'alex-rose-2026'),
 		'title' => __('400 cloths. One standard.', 'alex-rose-2026'),
-		'body'  => __('In 1965 the company opened the third factory in Featherstone, production now approaching 40,000 made to measure suits per year. At this point we were supplying around 350 menswear retailers in the UK. There was also a cutting room in Sunderland based in the Boiler Makers Hall.', 'alex-rose-2026'),
+		'body'  => __("In 1965 the company opened the third factory in Featherstone, production now approaching 40,000 made to measure suits per year. At this point we were supplying around 350 menswear retailers in the UK. There was also a cutting room in Sunderland based in the Boiler Makers Hall, which had a historical connection with Sunderland's shipbuilding industry.", 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/05/history-1965.jpg'),
 	),
 	array(
@@ -59,7 +59,7 @@ $milestones = array(
 		'year'  => 1975,
 		'tag'   => __('Peak Production', 'alex-rose-2026'),
 		'title' => __('A factory at full stretch.', 'alex-rose-2026'),
-		'body'  => __('In 1975 number two factory is extended (and all production is now on one site). The factory was now producing around 1000 jackets & 2000 trousers per week all high fashion ready to wear.', 'alex-rose-2026'),
+		'body'  => __("In 1975 number two factory is extended (and all production is now on one site). The factory was now producing around 1000 jackets and 2000 trousers per week, all in men's high-fashion ready-to-wear.", 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/05/history-1975.jpg'),
 	),
 	array(
@@ -115,7 +115,7 @@ $milestones = array(
 		'year'  => 2004,
 		'tag'   => __('New Chapter', 'alex-rose-2026'),
 		'title' => __('The Master Tailor.', 'alex-rose-2026'),
-		'body'  => __('Sale of Executive Image to Corporate CMT. We saw that made to measure tailoring was becoming more of an engineered concept. Master Tailor was established to offer a visiting tailoring service offering garments made to a very high specification.', 'alex-rose-2026'),
+		'body'  => __('Sale of Executive Image to Corporate CMT. We saw that made to measure tailoring was becoming more of an engineered concept. Master Tailor was established as a visiting tailoring service, offering garments made to a very high specification.', 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/05/history-2004.png'),
 	),
 	array(

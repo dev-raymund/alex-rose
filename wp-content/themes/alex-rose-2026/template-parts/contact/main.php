@@ -88,8 +88,8 @@ $map_src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2356.3!2d-1.64
 
 					<div class="ct-details__block">
 						<p class="ct-details__label"><?php esc_html_e('Telephone', 'alex-rose-2026'); ?></p>
-						<a class="ct-details__link" href="tel:+441132570022">0113 257 0022</a>
-						<a class="ct-details__link ct-details__link--spaced" href="tel:+441134688588">0113 468 8588</a>
+						<a class="ct-details__link" href="tel:+01134688588">0113 468 8588</a>
+						<a class="ct-details__link ct-details__link--spaced" href="tel:+01132571145">0113 257 1145</a>
 						<p class="ct-details__note"><?php esc_html_e('By prior appointment', 'alex-rose-2026'); ?></p>
 					</div>
 
@@ -102,7 +102,7 @@ $map_src = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2356.3!2d-1.64
 					<div class="ct-details__block">
 						<p class="ct-details__label"><?php esc_html_e('Opening Hours', 'alex-rose-2026'); ?></p>
 						<p class="ct-details__text"><?php esc_html_e('By prior appointment', 'alex-rose-2026'); ?></p>
-						<p class="ct-details__text"><?php esc_html_e('Wednesday – Saturday: 10.00 am – 5.30 pm', 'alex-rose-2026'); ?></p>
+						<p class="ct-details__text"><?php esc_html_e('Wednesday – Saturday: 10.00 am – 4.30 pm', 'alex-rose-2026'); ?></p>
 					</div>
 
 					<div class="ct-details__block">

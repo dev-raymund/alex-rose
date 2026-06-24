@@ -58,19 +58,20 @@
 				return;
 			}
 
-			var videoId = player.getAttribute('data-video-id');
-			if (!videoId) {
+			var videoSrc = player.getAttribute('data-video-src');
+			if (!videoSrc) {
 				return;
 			}
 
-			var iframe = document.createElement('iframe');
-			iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?autoplay=1';
-			iframe.title = player.getAttribute('aria-label') || 'Measurement video guide';
-			iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-			iframe.allowFullscreen = true;
+			var video = document.createElement('video');
+			video.src = videoSrc;
+			video.controls = true;
+			video.autoplay = true;
+			video.playsInline = true;
+			video.setAttribute('title', player.getAttribute('aria-label') || 'Measurement video guide');
 
 			player.innerHTML = '';
-			player.appendChild(iframe);
+			player.appendChild(video);
 			player.classList.add('is-playing');
 		});
 	}

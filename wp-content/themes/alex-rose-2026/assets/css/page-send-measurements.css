@@ -323,7 +323,8 @@
 	height: 32px;
 }
 
-.page-send-measurements .sm-panel__player iframe {
+.page-send-measurements .sm-panel__player iframe,
+.page-send-measurements .sm-panel__player video {
 	display: block;
 	width: 100%;
 	height: 100%;

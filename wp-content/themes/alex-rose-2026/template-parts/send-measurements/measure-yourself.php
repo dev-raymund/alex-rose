@@ -26,7 +26,7 @@ $measurements = array(
 			type="button"
 			class="sm-panel__player"
 			data-sm-video
-			data-video-id="dQw4w9WgXcQ"
+			data-video-src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/06/measurements.mp4')); ?>"
 			aria-label="<?php esc_attr_e('Play measurement video guide', 'alex-rose-2026'); ?>"
 		>
 			<span class="sm-panel__player-grid" aria-hidden="true"></span>

@@ -301,16 +301,18 @@ add_action(
 				$design_ver
 			);
 
-			$design_js = ALEX_ROSE_2026_DIR . '/assets/js/page-design.js';
-			if (is_readable($design_js)) {
-				wp_enqueue_script(
-					'alex-rose-2026-design',
-					ALEX_ROSE_2026_URI . '/assets/js/page-design.js',
-					array(),
-					(string) filemtime($design_js),
-					true
-				);
-			}
+			// Loaded as type="module" via a direct wp_footer tag.
+			// wp_enqueue_script strips the type attribute; a global script_loader_tag
+			// filter caused 120 s timeouts (see commit history). This hook is scoped
+			// to the design template only so it cannot affect other pages.
+			add_action('wp_footer', function () {
+				$js = ALEX_ROSE_2026_DIR . '/assets/js/page-design.js';
+				if (! is_readable($js)) {
+					return;
+				}
+				$url = add_query_arg('v', filemtime($js), ALEX_ROSE_2026_URI . '/assets/js/page-design.js');
+				echo '<script type="module" src="' . esc_url($url) . '"></script>' . "\n";
+			}, 20);
 		}
 
 		if (is_page_template('template/cloths.php')) {
