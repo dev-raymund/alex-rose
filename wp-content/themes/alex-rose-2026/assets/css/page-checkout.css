@@ -1,0 +1,648 @@
+/**
+ * Branded WooCommerce checkout — "Complete Your Order".
+ *
+ * Styles the checkout template override (woocommerce/checkout/form-checkout.php)
+ * to match the bespoke design. Scoped to .site-main--checkout so it never
+ * affects other pages.
+ */
+
+.site-main--checkout {
+	--arco-gold: #c8a96a;
+	--arco-ink: #1a1a1a;
+	--arco-muted: #8a8a8a;
+	--arco-line: #e4e4ea;
+	--arco-bg: #f4f4f8;
+	--arco-dark: #111111;
+	background: var(--arco-bg);
+	color: var(--arco-ink);
+}
+
+.site-main--checkout *,
+.site-main--checkout *::before,
+.site-main--checkout *::after {
+	box-sizing: border-box;
+}
+
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+
+.arco-hero {
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	background: var(--arco-dark);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	padding-top: 128px;
+	padding-bottom: 64px;
+}
+
+.arco-hero__media {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 15%;
+	opacity: 0.28;
+}
+
+.arco-hero__overlay {
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(105deg, rgba(17, 17, 17, 0.97) 0%, rgba(17, 17, 17, 0.72) 55%, rgba(17, 17, 17, 0.4) 100%);
+}
+
+.arco-hero__inner {
+	position: relative;
+	padding: 0 40px;
+}
+
+@media (min-width: 768px) {
+	.arco-hero__inner {
+		padding: 0 80px;
+	}
+}
+
+.arco-hero__rule {
+	display: block;
+	width: 28px;
+	height: 1px;
+	margin-bottom: 28px;
+	background: var(--arco-gold);
+}
+
+.arco-hero__eyebrow {
+	margin: 0 0 20px;
+	font-size: 10px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: rgba(200, 169, 106, 0.6);
+}
+
+.arco-hero__title {
+	margin: 0;
+	color: #fff;
+	font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.05;
+}
+
+.arco-hero__sub {
+	margin: 20px 0 0;
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ─── Layout ─────────────────────────────────────────────────────────────── */
+
+.arco-wrap {
+	max-width: 1000px;
+	margin: 0 auto;
+	padding: 56px 40px 80px;
+}
+
+.arco-grid {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 320px;
+	gap: 44px;
+	align-items: start;
+}
+
+.arco-col--review {
+	position: sticky;
+	top: 92px;
+}
+
+/* ─── Form fields (left) ─────────────────────────────────────────────────── */
+
+.site-main--checkout .woocommerce form .form-row,
+.site-main--checkout .form-row {
+	padding: 0;
+	margin: 0 0 18px;
+}
+
+.site-main--checkout .woocommerce-billing-fields h3,
+.site-main--checkout .woocommerce-additional-fields h3,
+.site-main--checkout #ship-to-different-address {
+	font-size: 11px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	font-weight: 400;
+	color: var(--arco-muted);
+	margin: 0 0 16px;
+}
+
+.site-main--checkout .form-row label {
+	display: block;
+	margin-bottom: 6px;
+	font-size: 10px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--arco-muted);
+	font-weight: 400;
+}
+
+/* Clean labels — the design shows no asterisks/(optional) markers
+   (Address Line 2 carries "(optional)" in its label text instead). */
+.site-main--checkout .form-row label .required,
+.site-main--checkout .form-row label .optional {
+	display: none;
+}
+
+.site-main--checkout .woocommerce form .form-row input.input-text,
+.site-main--checkout .woocommerce form .form-row textarea,
+.site-main--checkout .form-row input.input-text,
+.site-main--checkout .form-row textarea,
+.site-main--checkout .select2-container .select2-selection,
+.site-main--checkout .form-row select {
+	width: 100%;
+	min-height: 48px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid var(--arco-line);
+	border-radius: 0;
+	font-size: 13px;
+	color: var(--arco-ink);
+	line-height: 1.5;
+	box-shadow: none;
+	transition: border-color 0.15s ease;
+}
+
+.site-main--checkout .form-row textarea {
+	min-height: 96px;
+	resize: vertical;
+}
+
+/* Native country/state select with a custom chevron (select2 is dequeued) */
+.site-main--checkout .form-row select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	padding-right: 38px;
+	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 14px center;
+	cursor: pointer;
+}
+
+.site-main--checkout .woocommerce form .form-row input.input-text:focus,
+.site-main--checkout .woocommerce form .form-row textarea:focus,
+.site-main--checkout .form-row select:focus {
+	outline: none;
+	border-color: var(--arco-gold);
+}
+
+/* Two-up rows (first/last name, town/postcode) */
+.site-main--checkout #billing_first_name_field,
+.site-main--checkout #billing_last_name_field,
+.site-main--checkout #billing_city_field,
+.site-main--checkout #billing_postcode_field {
+	display: inline-block;
+	width: calc(50% - 8px);
+	vertical-align: top;
+}
+
+.site-main--checkout #billing_first_name_field,
+.site-main--checkout #billing_city_field {
+	margin-right: 14px;
+}
+
+/* select2 alignment */
+.site-main--checkout .select2-container .select2-selection--single {
+	display: flex;
+	align-items: center;
+}
+
+.site-main--checkout .select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 46px;
+}
+
+/* "Ship to different address" checkbox row */
+.site-main--checkout #ship-to-different-address label {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 11px;
+	letter-spacing: 0;
+	text-transform: none;
+	color: var(--arco-muted);
+	cursor: pointer;
+}
+
+/* ─── Our Promise block ──────────────────────────────────────────────────── */
+
+.arco-promise {
+	display: flex;
+	gap: 16px;
+	margin-top: 28px;
+	padding-top: 24px;
+	border-top: 1px solid var(--arco-line);
+}
+
+.arco-promise__icon {
+	flex-shrink: 0;
+	width: 36px;
+	height: 36px;
+	margin-top: 2px;
+	border-radius: 50%;
+	background: rgba(200, 169, 106, 0.07);
+	border: 1.5px solid rgba(200, 169, 106, 0.33);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.arco-promise__eyebrow {
+	margin: 0 0 6px;
+	font-size: 9px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--arco-gold);
+}
+
+.arco-promise__title {
+	margin: 0 0 8px;
+	font-size: 13px;
+	font-weight: 300;
+	color: var(--arco-ink);
+}
+
+.arco-promise__copy {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.7;
+	color: var(--arco-muted);
+}
+
+.arco-promise__link {
+	display: inline-block;
+	margin-top: 12px;
+	font-size: 9px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--arco-ink);
+	border-bottom: 1px solid var(--arco-gold);
+	padding-bottom: 1px;
+	text-decoration: none;
+}
+
+/* ─── Order review card (right) ──────────────────────────────────────────── */
+
+.arco-review__heading {
+	margin: 0;
+	padding: 16px 20px;
+	background: #fff;
+	border: 1px solid var(--arco-line);
+	border-bottom: 0;
+	font-size: 10px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	font-weight: 400;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout #order_review {
+	background: #fff;
+	border: 1px solid var(--arco-line);
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table th,
+.site-main--checkout .woocommerce-checkout-review-order-table td {
+	padding: 12px 20px;
+	text-align: left;
+	font-weight: 400;
+	border-bottom: 1px solid var(--arco-line);
+	vertical-align: top;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table td {
+	text-align: right;
+	color: var(--arco-ink);
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table td.product-name {
+	position: relative;
+	text-align: left;
+	color: var(--arco-ink);
+	font-weight: 400;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .product-name .product-quantity {
+	color: var(--arco-muted);
+	font-weight: 400;
+}
+
+/* Fabric thumbnail prepended to the line-item name (reserve space only when present) */
+.site-main--checkout .woocommerce-checkout-review-order-table td.product-name:has(.arco-thumb) {
+	padding-left: 70px;
+	min-height: 62px;
+}
+
+.site-main--checkout .arco-thumb {
+	position: absolute;
+	left: 20px;
+	top: 14px;
+	width: 38px;
+	height: 50px;
+	object-fit: cover;
+	border: 1px solid var(--arco-line);
+}
+
+/* Jacket spec under the line item — compact, left-aligned label : value */
+.site-main--checkout .woocommerce-checkout-review-order-table .product-name .wc-item-meta {
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	font-size: 11px;
+	line-height: 1.7;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .product-name .wc-item-meta li {
+	display: flex;
+	gap: 6px;
+	margin: 0;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .product-name .wc-item-meta li strong.wc-item-meta-label {
+	flex-shrink: 0;
+	min-width: 78px;
+	font-weight: 400;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .product-name .wc-item-meta li p {
+	margin: 0;
+	color: var(--arco-ink);
+}
+
+.site-main--checkout .arco-included th {
+	color: var(--arco-muted);
+	font-size: 10px;
+	letter-spacing: 0.04em;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.site-main--checkout .arco-included td {
+	font-size: 10px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .order-total th,
+.site-main--checkout .woocommerce-checkout-review-order-table .order-total td {
+	border-bottom: 0;
+	padding-top: 16px;
+	padding-bottom: 16px;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .order-total th {
+	font-size: 11px;
+	color: var(--arco-ink);
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .order-total .amount {
+	font-size: 15px;
+	font-weight: 400;
+	letter-spacing: -0.02em;
+}
+
+.site-main--checkout .woocommerce-checkout-review-order-table .includes_tax,
+.site-main--checkout .woocommerce-checkout-review-order-table small {
+	display: block;
+	font-size: 9px;
+	color: var(--arco-muted);
+	font-weight: 400;
+}
+
+/* ─── Coupon / promo box ─────────────────────────────────────────────────── */
+
+/* Hide the "Have a coupon?" toggle — the promo box is always shown. */
+.site-main--checkout .woocommerce-form-coupon-toggle {
+	display: none;
+}
+
+.site-main--checkout .checkout_coupon {
+	display: flex !important;
+	flex-wrap: wrap;
+	align-items: flex-end;
+	gap: 8px;
+	margin: 0;
+	padding: 16px 20px;
+	border: 0;
+	border-bottom: 1px solid var(--arco-line);
+	border-radius: 0;
+	background: #fff;
+}
+
+.site-main--checkout .checkout_coupon::before {
+	content: "Promo or gift voucher code";
+	flex-basis: 100%;
+	font-size: 10px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--arco-muted);
+}
+
+/* Hide the default helper text + float clear */
+.site-main--checkout .checkout_coupon > p:first-of-type,
+.site-main--checkout .checkout_coupon .clear {
+	display: none;
+}
+
+.site-main--checkout .checkout_coupon .form-row {
+	float: none;
+	width: auto;
+	margin: 0;
+	padding: 0;
+}
+
+.site-main--checkout .checkout_coupon .form-row-first {
+	flex: 1;
+}
+
+.site-main--checkout .checkout_coupon #coupon_code {
+	width: 100%;
+	min-height: 42px;
+	padding: 10px 12px;
+}
+
+.site-main--checkout .checkout_coupon button {
+	min-height: 42px;
+	padding: 0 18px;
+	border: 0;
+	background: var(--arco-gold);
+	color: #fff;
+	font-size: 10px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+/* ─── Payment methods ────────────────────────────────────────────────────── */
+
+.site-main--checkout #payment {
+	background: #fff;
+	border: 1px solid var(--arco-line);
+	border-top: 0;
+	padding: 4px 0 0;
+}
+
+.site-main--checkout #payment::before {
+	content: "Payment Method";
+	display: block;
+	padding: 16px 20px;
+	border-bottom: 1px solid var(--arco-line);
+	font-size: 10px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout #payment ul.wc_payment_methods {
+	list-style: none;
+	margin: 0;
+	padding: 16px 20px;
+	border: 0;
+}
+
+.site-main--checkout #payment ul.wc_payment_methods li {
+	margin: 0 0 8px;
+	padding: 0;
+	background: transparent;
+}
+
+.site-main--checkout #payment ul.wc_payment_methods li > label {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 11px 14px;
+	border: 1px solid var(--arco-line);
+	font-size: 11px;
+	color: var(--arco-ink);
+	cursor: pointer;
+	transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.site-main--checkout #payment ul.wc_payment_methods li input[type="radio"]:checked + label {
+	border-color: var(--arco-gold);
+	background: rgba(200, 169, 106, 0.04);
+}
+
+.site-main--checkout #payment ul.wc_payment_methods li img {
+	max-height: 22px;
+	margin-left: auto;
+}
+
+.site-main--checkout #payment .payment_box {
+	margin: 0 20px 14px;
+	padding: 14px;
+	background: #fafafa;
+	border: 1px solid var(--arco-line);
+	font-size: 12px;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout #payment .payment_box::before {
+	display: none;
+}
+
+/* ─── Terms + Place order ────────────────────────────────────────────────── */
+
+.site-main--checkout .woocommerce-terms-and-conditions-wrapper {
+	margin: 16px 0;
+	font-size: 10px;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout .woocommerce-privacy-policy-text {
+	font-size: 10px;
+	line-height: 1.7;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout #payment .place-order {
+	padding: 0 0 4px;
+}
+
+.site-main--checkout #place_order {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	width: 100%;
+	border: 0;
+	border-radius: 0;
+	padding: 16px;
+	background: var(--arco-gold);
+	color: #fff;
+	font-size: 10px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	font-weight: 400;
+	cursor: pointer;
+	transition: opacity 0.2s ease;
+}
+
+.site-main--checkout #place_order::after {
+	content: "";
+	width: 6px;
+	height: 6px;
+	border-right: 1.5px solid currentColor;
+	border-top: 1.5px solid currentColor;
+	transform: rotate(45deg);
+}
+
+.site-main--checkout #place_order:hover {
+	opacity: 0.9;
+}
+
+/* ─── WooCommerce notices ────────────────────────────────────────────────── */
+
+.site-main--checkout .woocommerce-NoticeGroup,
+.site-main--checkout .woocommerce-error,
+.site-main--checkout .woocommerce-info,
+.site-main--checkout .woocommerce-message {
+	font-size: 12px;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+	.arco-grid {
+		grid-template-columns: 1fr;
+		gap: 32px;
+	}
+
+	.arco-col--review {
+		position: static;
+	}
+
+	.arco-wrap {
+		padding: 36px 20px 60px;
+	}
+
+	.arco-hero__inner {
+		padding: 0 20px;
+	}
+}
+
+@media (max-width: 480px) {
+	.site-main--checkout #billing_first_name_field,
+	.site-main--checkout #billing_last_name_field,
+	.site-main--checkout #billing_city_field,
+	.site-main--checkout #billing_postcode_field {
+		display: block;
+		width: 100%;
+		margin-right: 0;
+	}
+}

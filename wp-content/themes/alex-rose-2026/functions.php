@@ -19,6 +19,7 @@ require_once ALEX_ROSE_2026_DIR . '/inc/cloth-collections.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/occasions.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/off-the-cuff.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/forms.php';
+require_once ALEX_ROSE_2026_DIR . '/inc/woocommerce.php';
 
 /**
  * Absolute URL for a file under wp-content/uploads (correct when WordPress lives in a subdirectory).
@@ -346,17 +347,8 @@ add_action(
 				array('alex-rose-2026'),
 				$cart_ver
 			);
-
-			$cart_js = ALEX_ROSE_2026_DIR . '/assets/js/page-cart.js';
-			if (is_readable($cart_js)) {
-				wp_enqueue_script(
-					'alex-rose-2026-cart',
-					ALEX_ROSE_2026_URI . '/assets/js/page-cart.js',
-					array(),
-					(string) filemtime($cart_js),
-					true
-				);
-			}
+			// page-cart.js (localStorage cart) is retired — the cart is now the
+			// live WooCommerce cart, rendered server-side in template-parts/cart/main.php.
 		}
 
 		if (is_page_template('template/off-the-cuff.php')) {

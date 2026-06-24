@@ -715,3 +715,292 @@ function alex_rose_2026_handle_otc_newsletter_signup(): void {
 }
 add_action('admin_post_otc_newsletter_signup', 'alex_rose_2026_handle_otc_newsletter_signup');
 add_action('admin_post_nopriv_otc_newsletter_signup', 'alex_rose_2026_handle_otc_newsletter_signup');
+
+/* --- Design Your Jacket: create made-to-order WooCommerce order ---------- */
+
+/**
+ * Build (and cache) a [referenceId => price] map from the Tailormate design
+ * catalogue, server-side. The API authorises by an Origin allow-list; the
+ * `http://localhost` origin is whitelisted, so we send it from PHP regardless
+ * of the live domain (swap via the `alex_rose_2026_tailormate_origin` filter
+ * once the production domain is whitelisted).
+ *
+ * @return array<string, float>
+ */
+function alex_rose_2026_tailormate_fabric_prices(): array {
+	$cached = get_transient('ar_tailormate_fabric_prices');
+	if (is_array($cached)) {
+		return $cached;
+	}
+
+	$key    = (string) apply_filters('alex_rose_2026_tailormate_key', '2817c949-40f8-412a-bce0-1a62ea20ffab');
+	$base   = (string) apply_filters('alex_rose_2026_tailormate_base', 'https://tailormate.xiontechnologies.in/api');
+	$origin = (string) apply_filters('alex_rose_2026_tailormate_origin', 'http://localhost');
+
+	$prices      = array();
+	$page        = 1;
+	$total_pages = 1;
+
+	do {
+		$url = add_query_arg(
+			array('limit' => 100, 'page' => $page, 'depth' => 2, 'tag' => 'website'),
+			$base . '/designs'
+		);
+		$response = wp_remote_get($url, array(
+			'timeout' => 12,
+			'headers' => array(
+				'Authorization' => 'Bearer ' . $key,
+				'Origin'        => $origin,
+			),
+		));
+
+		if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
+			break;
+		}
+
+		$payload = json_decode(wp_remote_retrieve_body($response), true);
+		$data    = isset($payload['data']) && is_array($payload['data']) ? $payload['data'] : array();
+		foreach ($data as $design) {
+			$ref = isset($design['ReferenceId']) ? strtolower((string) $design['ReferenceId']) : '';
+			if ($ref === '' && isset($design['FileName'])) {
+				$ref = strtolower((string) preg_replace('/\.[^.]+$/', '', (string) $design['FileName']));
+			}
+			if ($ref !== '' && isset($design['Price'])) {
+				$prices[ $ref ] = (float) $design['Price'];
+			}
+		}
+
+		$total_pages = isset($payload['totalPages']) ? (int) $payload['totalPages'] : 1;
+		$page++;
+	} while ($page <= $total_pages);
+
+	if ($prices !== array()) {
+		set_transient('ar_tailormate_fabric_prices', $prices, 12 * HOUR_IN_SECONDS);
+	}
+
+	return $prices;
+}
+
+/**
+ * Authoritative price for a fabric, looked up server-side by reference id.
+ * Falls back to the supplied value when the catalogue can't be reached.
+ */
+function alex_rose_2026_fabric_price(string $reference_id, float $fallback = 0.0): float {
+	$reference_id = strtolower(trim($reference_id));
+	if ($reference_id === '') {
+		return $fallback;
+	}
+	$prices = alex_rose_2026_tailormate_fabric_prices();
+	return isset($prices[ $reference_id ]) ? (float) $prices[ $reference_id ] : $fallback;
+}
+
+/**
+ * Find (or create) the single hidden "Bespoke Jacket" product that every
+ * configurator order is booked against. Per-order pricing and the full spec
+ * live on the order line item, so one product covers every combination.
+ *
+ * Only ever called from inside a `function_exists('wc_create_order')` guard.
+ *
+ * @return WC_Product
+ */
+function alex_rose_2026_get_bespoke_product() {
+	$sku        = 'ar-bespoke-jacket';
+	$product_id = function_exists('wc_get_product_id_by_sku') ? wc_get_product_id_by_sku($sku) : 0;
+
+	if ($product_id) {
+		$product = wc_get_product($product_id);
+		// A product must be 'publish' to be purchasable (add to cart / checkout).
+		// An older build created it 'private'; heal that here.
+		if ($product && $product->get_status() !== 'publish') {
+			$product->set_status('publish');
+			$product->set_catalog_visibility('hidden');
+			$product->set_sold_individually(false);
+			$product->save();
+		}
+		return $product;
+	}
+
+	$product = new WC_Product_Simple();
+	$product->set_name(__('Bespoke Jacket', 'alex-rose-2026'));
+	$product->set_sku($sku);
+	$product->set_status('publish');          // purchasable…
+	$product->set_catalog_visibility('hidden'); // …but hidden from shop/search
+	$product->set_regular_price('0');
+	$product->set_price('0');
+	$product->set_virtual(true);              // made-to-order; no stock/shipping weight
+	$product->save();
+
+	return $product;
+}
+
+/**
+ * Flatten the posted jacket configuration into ordered "Label => value"
+ * pairs used for both the order line-item meta and the notification email.
+ *
+ * @param array<string, mixed> $options
+ * @return array<string, string>
+ */
+function alex_rose_2026_jacket_spec_lines(array $options): array {
+	$label_of = static function ($node): string {
+		if (is_array($node)) {
+			if (isset($node['label'])) {
+				return (string) $node['label'];
+			}
+			return isset($node['name']) ? (string) $node['name'] : '';
+		}
+		return (string) $node;
+	};
+
+	$fabric = isset($options['fabric']) && is_array($options['fabric']) ? $options['fabric'] : array();
+
+	return array(
+		__('Fabric', 'alex-rose-2026')     => isset($fabric['name']) ? (string) $fabric['name'] : '',
+		__('Collection', 'alex-rose-2026') => isset($fabric['collection']) ? (string) $fabric['collection'] : '',
+		__('Lining', 'alex-rose-2026')     => $label_of($options['lining'] ?? ''),
+		__('Buttons', 'alex-rose-2026')    => $label_of($options['buttons'] ?? ''),
+		__('Buttoning', 'alex-rose-2026')  => $label_of($options['buttoning'] ?? ''),
+		__('Pockets', 'alex-rose-2026')    => $label_of($options['pockets'] ?? ''),
+		__('Vents', 'alex-rose-2026')      => $label_of($options['vents'] ?? ''),
+		__('Monogram', 'alex-rose-2026')   => isset($options['monogram']) ? (string) $options['monogram'] : '',
+	);
+}
+
+function alex_rose_2026_handle_ar_create_jacket_order(): void {
+	$action = 'ar_create_jacket_order';
+	alex_rose_2026_form_guard($action, 'ar_create_jacket_order', 'ar_order_nonce');
+
+	$name     = alex_rose_2026_form_field('ar_name');
+	$email    = alex_rose_2026_form_field('ar_email');
+	$phone    = alex_rose_2026_form_field('ar_phone');
+	$date     = alex_rose_2026_form_field('ar_date');
+	$message  = alex_rose_2026_form_field('ar_message');
+	$currency = alex_rose_2026_form_field('ar_currency');
+
+	if ($name === '' || ! is_email($email)) {
+		alex_rose_2026_form_respond(false, $action, __('Please enter your name and a valid email address.', 'alex-rose-2026'));
+	}
+
+	$options      = json_decode(alex_rose_2026_form_field('ar_options'), true);
+	$options      = is_array($options) ? $options : array();
+	$measurements = json_decode(alex_rose_2026_form_field('ar_measurements'), true);
+	$measurements = is_array($measurements) ? $measurements : array();
+
+	$spec = alex_rose_2026_jacket_spec_lines($options);
+
+	// Price is derived server-side from the fabric's reference id (never trusted
+	// from the client). The posted price is only a last-ditch fallback.
+	$fabric_ref   = isset($options['fabric']['referenceId']) ? (string) $options['fabric']['referenceId'] : '';
+	$client_price = (float) alex_rose_2026_form_field('ar_price');
+	$price        = alex_rose_2026_fabric_price($fabric_ref, $client_price > 0 ? $client_price : 595.0);
+	if ($price < 0) {
+		$price = 0.0;
+	}
+
+	/* --- Create the WooCommerce order (only when WooCommerce is active) --- */
+	$order_id = 0;
+	if (function_exists('wc_create_order') && class_exists('WC_Product_Simple')) {
+		try {
+			$product = alex_rose_2026_get_bespoke_product();
+			$order   = wc_create_order();
+
+			// Build the line item directly. We can't use add_product() + get_item()
+			// here: the order isn't saved yet, so the item id is 0 and get_item(0)
+			// returns false — which would leave the price unset and the order at £0.
+			$item = new WC_Order_Item_Product();
+			$item->set_name($product->get_name());
+			$item->set_product_id($product->get_id());
+			$item->set_quantity(1);
+			$item->set_subtotal($price);
+			$item->set_total($price);
+			foreach ($spec as $label => $value) {
+				if ($value !== '') {
+					$item->add_meta_data($label, $value, true);
+				}
+			}
+			$order->add_item($item);
+
+			$order->set_address(
+				array(
+					'first_name' => $name,
+					'email'      => $email,
+					'phone'      => $phone,
+				),
+				'billing'
+			);
+
+			if ($measurements !== array()) {
+				$order->update_meta_data('_ar_measurements', wp_json_encode($measurements));
+			}
+			if ($date !== '') {
+				$order->update_meta_data('_ar_preferred_contact', $date);
+			}
+			if ($currency !== '') {
+				$order->update_meta_data('_ar_display_currency', $currency);
+			}
+			if (! empty($options['tryOnResult'])) {
+				$order->update_meta_data('_ar_tryon_generated', 'yes');
+			}
+			if ($message !== '') {
+				$order->add_order_note(
+					sprintf(/* translators: %s: customer message */ __('Customer note: %s', 'alex-rose-2026'), $message)
+				);
+			}
+
+			if (method_exists($order, 'set_created_via')) {
+				$order->set_created_via('alex-rose-configurator');
+			}
+
+			// Made-to-order: the jacket is reserved and settled once it's made.
+			$order->set_status('on-hold', __('Bespoke jacket reserved via the configurator.', 'alex-rose-2026'));
+			$order->calculate_totals();
+			$order->save();
+			$order_id = (int) $order->get_id();
+		} catch (\Throwable $e) {
+			// Never block the customer if WooCommerce errors — fall through to email.
+			$order_id = 0;
+		}
+	}
+
+	/* --- Always notify the tailor by email (as every other form does) ---- */
+	$rows = array(
+		array('label' => __('Name', 'alex-rose-2026'),              'value' => $name),
+		array('label' => __('Email', 'alex-rose-2026'),             'value' => $email),
+		array('label' => __('Phone', 'alex-rose-2026'),             'value' => $phone),
+		array('label' => __('Preferred contact', 'alex-rose-2026'), 'value' => $date),
+		array('label' => __('Price', 'alex-rose-2026'),             'value' => $price > 0 ? '£' . number_format($price, 2) : ''),
+	);
+	foreach ($spec as $label => $value) {
+		$rows[] = array('label' => $label, 'value' => $value);
+	}
+	foreach ($measurements as $key => $value) {
+		if (is_scalar($value) && (string) $value !== '') {
+			$rows[] = array('label' => 'Measurement: ' . ucfirst(str_replace('_', ' ', (string) $key)), 'value' => (string) $value);
+		}
+	}
+	if ($message !== '') {
+		$rows[] = array('label' => __('Message', 'alex-rose-2026'), 'value' => $message);
+	}
+	if ($order_id > 0) {
+		$rows[] = array('label' => __('WooCommerce order', 'alex-rose-2026'), 'value' => '#' . $order_id);
+	}
+
+	$intro = $order_id > 0
+		? __('A new bespoke jacket has been reserved (WooCommerce order created):', 'alex-rose-2026')
+		: __('A new bespoke jacket has been reserved via the configurator:', 'alex-rose-2026');
+
+	alex_rose_2026_form_send_mail(
+		sprintf(/* translators: %s: customer name */ __('Bespoke jacket reserved by %s', 'alex-rose-2026'), $name),
+		alex_rose_2026_form_build_body($rows, $intro),
+		$email,
+		$name
+	);
+
+	alex_rose_2026_form_respond(
+		true,
+		$action,
+		__('Thank you. Your order has been received.', 'alex-rose-2026'),
+		array('order_id' => $order_id)
+	);
+}
+add_action('admin_post_ar_create_jacket_order', 'alex_rose_2026_handle_ar_create_jacket_order');
+add_action('admin_post_nopriv_ar_create_jacket_order', 'alex_rose_2026_handle_ar_create_jacket_order');

@@ -22,6 +22,9 @@ if (!container) throw new Error("ar-design-app container not found");
 
 const scheduleUrl = container.dataset.scheduleUrl || "/schedule-a-call/";
 const samplesUrl = container.dataset.samplesUrl || "/request-cloth-samples/";
+const orderActionUrl = container.dataset.ajaxUrl || "";
+const orderNonce = container.dataset.orderNonce || "";
+const cartUrl = container.dataset.cartUrl || "";
 
 // Fallback lifestyle images (replit CDN used by the original demo).
 const asset = (path) => "https://alex-rose-web.replit.app" + path;
@@ -92,6 +95,9 @@ const state = {
   bodyUnits: "inches",
   weightUnits: "kg",
   checkoutDone: false,
+  orderSubmitting: false,
+  orderError: "",
+  orderId: 0,
   show3dLoaderOnNextSync: false,
   measurements: {
     chest: "",
@@ -656,10 +662,127 @@ function updateContactField(field, value) {
   state.contact[field] = value;
 }
 
+// The full jacket configuration sent to WooCommerce on order. tryOnResult is
+// reduced to a flag — the base64 image is too large to store as order meta.
+function getSelectedOptions() {
+  const collection = getSelectedCollection();
+  const lining = getLining();
+  const button = getSelectedButton();
+  return {
+    fabric: {
+      name: state.selectedSwatch,
+      image: state.selectedSwatchImg,
+      referenceId: state.selectedSwatchRef,
+      collection: (collection && collection.name) || "",
+    },
+    lining: { id: lining.id, label: lining.label },
+    buttons: { id: button.id, label: button.label },
+    buttoning: { id: getButtoning().id, label: getButtoning().label },
+    pockets: { id: getPocket().id, label: getPocket().label },
+    vents: { id: getVent().id, label: getVent().label },
+    monogram: state.monogram,
+    summary: buildSummaryLine(),
+    tryOnResult: state.tryOnResult ? "yes" : "",
+  };
+}
+
+// Hand the configured jacket to WooCommerce: a full-page POST to the wc-ajax
+// endpoint adds it to the cart, then redirects to either the cart ("reserve")
+// or the checkout ("checkout"). Falls back to the in-page flow if WooCommerce
+// isn't wired up.
+function submitJacketToCart(redirectTarget) {
+  if (!cartUrl || !orderNonce) {
+    setStep(state.step + 1);
+    return;
+  }
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = cartUrl;
+  form.style.display = "none";
+
+  const field = (name, value) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = name;
+    input.value = value;
+    form.appendChild(input);
+  };
+
+  field("ar_order_nonce", orderNonce);
+  field("ar_redirect", redirectTarget);
+  field("ar_price", String(getBasePrice()));
+  field("ar_currency", state.priceCurrency);
+  field("ar_options", JSON.stringify(getSelectedOptions()));
+  field("ar_measurements", JSON.stringify(state.measurements));
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+// "Checkout Now" → add to cart, go straight to checkout.
+function checkoutNow() {
+  submitJacketToCart("checkout");
+}
+
+// "Reserve" → add to cart, go to the cart ("Reserved Jackets") page.
+function reserveNow() {
+  submitJacketToCart("cart");
+}
+
 function submitContact() {
   if (!state.contact.name || !state.contact.email) return;
-  state.checkoutDone = true;
+  if (state.checkoutDone || state.orderSubmitting) return;
+
+  // No backend wired (e.g. opened without the WordPress data attributes) —
+  // keep the original client-only success behaviour.
+  if (!orderActionUrl || !orderNonce) {
+    state.checkoutDone = true;
+    render();
+    return;
+  }
+
+  state.orderSubmitting = true;
+  state.orderError = "";
   render();
+
+  const body = new FormData();
+  body.append("action", "ar_create_jacket_order");
+  body.append("ar_order_nonce", orderNonce);
+  body.append("_ajax", "1");
+  body.append("ar_name", state.contact.name);
+  body.append("ar_email", state.contact.email);
+  body.append("ar_phone", state.contact.phone);
+  body.append("ar_date", state.contact.date);
+  body.append("ar_message", state.contact.message);
+  body.append("ar_price", String(getBasePrice()));
+  body.append("ar_currency", state.priceCurrency);
+  body.append("ar_options", JSON.stringify(getSelectedOptions()));
+  body.append("ar_measurements", JSON.stringify(state.measurements));
+
+  fetch(orderActionUrl, {
+    method: "POST",
+    body: body,
+    credentials: "same-origin",
+    headers: { "X-Requested-With": "XMLHttpRequest" },
+  })
+    .then((response) => response.json().catch(() => ({ ok: response.ok })))
+    .then((payload) => {
+      if (payload && payload.ok) {
+        state.orderId = payload.order_id || 0;
+        state.checkoutDone = true;
+      } else {
+        state.orderError = (payload && payload.message) ||
+          "We couldn't submit your order. Please try again or call us.";
+      }
+    })
+    .catch(() => {
+      state.orderError = "We couldn't submit your order. Please try again or call us.";
+    })
+    .finally(() => {
+      state.orderSubmitting = false;
+      render();
+    });
 }
 
 function openModal() { state.modalOpen = true; render(); }
@@ -1049,8 +1172,8 @@ function renderStepTwo() {
         "</div>" +
       "</div>" +
       '<div class="button-stack">' +
-        '<button class="action-button action-button--solid" type="button" data-action="step" data-value="3">Checkout Now ' + iconArrowUpRight() + '</button>' +
-        '<button class="action-button action-button--outline" type="button" data-action="step" data-value="3">Reserve for Later</button>' +
+        '<button class="action-button action-button--solid" type="button" data-action="checkout-now">Checkout Now ' + iconArrowUpRight() + '</button>' +
+        '<button class="action-button action-button--outline" type="button" data-action="reserve-now">Reserve for Later</button>' +
         '<button class="action-button action-button--ghost" type="button" data-action="step" data-value="1">Edit Design</button>' +
         '<p class="small-note">No payment is taken yet. The next step confirms the fit and booking.</p>' +
       "</div>" +
@@ -1100,8 +1223,8 @@ function renderStepThree() {
         "</div>" +
       "</div>" +
       '<div class="button-stack" style="padding-left:0;padding-right:0;">' +
-        '<button class="action-button action-button--solid" type="button" data-action="step" data-value="4">Checkout Now ' + iconArrowUpRight() + '</button>' +
-        '<button class="action-button action-button--outline" type="button" data-action="step" data-value="4">Reserve for Later</button>' +
+        '<button class="action-button action-button--solid" type="button" data-action="checkout-now">Checkout Now ' + iconArrowUpRight() + '</button>' +
+        '<button class="action-button action-button--outline" type="button" data-action="reserve-now">Reserve for Later</button>' +
         '<button class="action-button action-button--ghost" type="button" data-action="step" data-value="1">Edit Design</button>' +
         '<div style="text-align:center;margin-top:14px;padding-top:14px;border-top:1px solid rgba(229,223,214,0.95);">' +
           '<p class="panel__copy" style="margin:0 0 6px;font-size:12px;">Not sure where to start?</p>' +
@@ -1246,7 +1369,8 @@ function renderStepFive() {
           '<textarea placeholder="Any questions or special requirements..." data-action="contact" data-key="message">' + escapeHtml(state.contact.message) + "</textarea>" +
         "</label>" +
       "</div>" +
-      '<button type="button" class="action-button action-button--solid" style="margin-top:16px;" data-action="submit-contact">Submit My Order</button>' +
+      (state.orderError ? '<p class="small-note try-modal__error" style="padding:0;margin:16px 0 0;">' + escapeHtml(state.orderError) + "</p>" : "") +
+      '<button type="button" class="action-button action-button--solid" style="margin-top:16px;" data-action="submit-contact"' + (state.orderSubmitting ? " disabled" : "") + ">" + (state.orderSubmitting ? "Submitting..." : "Submit My Order") + "</button>" +
       '<button type="button" class="action-button action-button--ghost" data-action="step" data-value="4" style="margin-top:10px;">Back</button>' +
       '<div style="margin-top:28px;padding-top:24px;border-top:1px solid rgba(229,223,214,0.95);">' +
         '<p class="panel__eyebrow" style="color:rgba(13,13,13,0.38);">Common Questions</p>' +
@@ -1362,6 +1486,8 @@ function handleClick(event) {
   if (action === "zoom-open")     { openZoom(); return; }
   if (action === "zoom-close")    { closeZoom(); return; }
   if (action === "try-continue")  { submitTryOnPreview(); return; }
+  if (action === "checkout-now") { checkoutNow(); return; }
+  if (action === "reserve-now")  { reserveNow(); return; }
   if (action === "submit-contact"){ submitContact(); return; }
 
   if (action === "swatch") {
