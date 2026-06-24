@@ -31,8 +31,8 @@ $map_link  = 'https://maps.app.goo.gl/HYRidwuVoByMUkjU7';
 
 					<div class="sr-details__block">
 						<p class="sr-details__label"><?php esc_html_e('Telephone', 'alex-rose-2026'); ?></p>
-						<a class="sr-details__link" href="tel:+441132570022">0113 257 0022</a>
-						<a class="sr-details__link" href="tel:+441134688588">0113 468 8588</a>
+						<a class="sr-details__link" href="tel:+01134688588">0113 468 8588</a>
+						<a class="sr-details__link" href="tel:+01132571145">0113 257 1145</a>
 						<p class="sr-details__note"><?php esc_html_e('By prior appointment', 'alex-rose-2026'); ?></p>
 					</div>
 
