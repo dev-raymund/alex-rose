@@ -257,6 +257,27 @@ add_filter(
 );
 
 /**
+ * Force the classic checkout. New WooCommerce installs build the Checkout page
+ * with the Checkout *block*, which ignores our template override + CSS. Rather
+ * than hand-editing the page on every environment, render the classic
+ * [woocommerce_checkout] shortcode for the main checkout content — so
+ * form-checkout.php applies everywhere (block or shortcode page).
+ */
+add_filter(
+	'the_content',
+	static function ($content) {
+		if (
+			function_exists('is_checkout') && is_checkout() && ! is_wc_endpoint_url()
+			&& in_the_loop() && is_main_query()
+		) {
+			return do_shortcode('[woocommerce_checkout]');
+		}
+		return $content;
+	},
+	9
+);
+
+/**
  * Checkout CSS — only on the checkout page.
  */
 add_action(
