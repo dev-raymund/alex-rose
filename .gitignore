@@ -4,10 +4,15 @@ wp-config.php
 # ─── Large / generated assets ──────────────────────────────────────────────
 wp-content/uploads/
 wp-content/wpvividbackups/
+wp-content/upgrade/
 wp-admin.zip
 
-# ─── Demo prototype (vanilla HTML only, not part of the WP theme) ──────────
-wp-content/themes/alex-rose-2026/alexrose_demo/
+# ─── 3D configurator modules (loaded by page-design.js as ES modules) ──────
+wp-content/themes/alex-rose-2026/configurator/
+
+# ─── Third-party plugins (installed per-environment, not version-controlled) ─
+wp-content/plugins/woocommerce/
+wp-content/plugins/klarna-checkout-for-woocommerce/
 
 # ─── OS / editor noise ─────────────────────────────────────────────────────
 .DS_Store
