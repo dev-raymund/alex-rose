@@ -46,7 +46,7 @@ $map_link  = 'https://maps.app.goo.gl/HYRidwuVoByMUkjU7';
 						<p class="sr-details__label"><?php esc_html_e('Opening Hours', 'alex-rose-2026'); ?></p>
 						<p class="sr-details__text"><?php esc_html_e('By prior appointment', 'alex-rose-2026'); ?></p>
 						<p class="sr-details__text"><?php esc_html_e('Wednesday – Saturday', 'alex-rose-2026'); ?></p>
-						<p class="sr-details__text"><?php esc_html_e('10.00 am – 5.30 pm', 'alex-rose-2026'); ?></p>
+						<p class="sr-details__text"><?php esc_html_e('10.00 am – 4.30 pm', 'alex-rose-2026'); ?></p>
 					</div>
 				</div>
 
