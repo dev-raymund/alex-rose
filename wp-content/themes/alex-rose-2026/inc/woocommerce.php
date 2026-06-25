@@ -173,29 +173,6 @@ add_filter(
 );
 
 /**
- * Show the selected fabric image as the line-item thumbnail in the checkout
- * order summary (the review table has no thumbnail column, so we prepend it to
- * the product name and position it with CSS). Checkout only — the cart page
- * already renders its own thumbnail column.
- */
-add_filter(
-	'woocommerce_cart_item_name',
-	static function ($name, $cart_item, $cart_item_key) {
-		// Skip the cart page (it has its own thumbnail column). Everywhere else —
-		// including the checkout review, which re-renders via AJAX where
-		// is_checkout() is false — prepend the fabric swatch.
-		$on_cart_page = function_exists('is_cart') && is_cart();
-		if (! $on_cart_page && ! empty($cart_item['ar_jacket']['image'])) {
-			$img = '<img class="arco-thumb" src="' . esc_url($cart_item['ar_jacket']['image']) . '" alt="" />';
-			return $img . $name;
-		}
-		return $name;
-	},
-	10,
-	3
-);
-
-/**
  * Persist the spec + measurements onto the order line item at checkout.
  */
 add_action(

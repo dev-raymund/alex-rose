@@ -65,7 +65,7 @@ if (! defined('ABSPATH')) {
 					<p class="home-how__step">02</p>
 					<div class="home-how__rule" aria-hidden="true"></div>
 					<h3 class="home-how__h3"><?php esc_html_e('Get Measured', 'alex-rose-2026'); ?></h3>
-					<p class="home-how__desc"><?php esc_html_e('Measure yourself at home with our guide, post your jacket to us, or book a free Zoom call with our master tailor.', 'alex-rose-2026'); ?></p>
+					<p class="home-how__desc"><?php esc_html_e('Measure yourself at home with our easy-to-follow guide, or book a call on Teams or Google Meet and we will talk you through it. You can also post your own jacket so we can measure it for you.', 'alex-rose-2026'); ?></p>
 				</div>
 			</div>
 			<div class="home-how__cell">
@@ -76,7 +76,7 @@ if (! defined('ABSPATH')) {
 					<p class="home-how__step">03</p>
 					<div class="home-how__rule" aria-hidden="true"></div>
 					<h3 class="home-how__h3"><?php esc_html_e('Made to Order', 'alex-rose-2026'); ?></h3>
-					<p class="home-how__desc"><?php esc_html_e('Your jacket is made to your exact specifications by skilled tailors. Every order personally reviewed before cutting begins.', 'alex-rose-2026'); ?></p>
+					<p class="home-how__desc"><?php esc_html_e('Your jacket is made to your exact specification by skilled tailors trusted by many Savile Row tailors in London.', 'alex-rose-2026'); ?></p>
 				</div>
 			</div>
 			<div class="home-how__cell">
@@ -118,7 +118,6 @@ if (! defined('ABSPATH')) {
 		<div class="home-clients__strip">
 			<?php
 			$clients = array(
-				array('file' => 'client-1.png', 'pos' => '50% 15%', 'tag' => __('Business', 'alex-rose-2026')),
 				array('file' => 'client-2.png', 'pos' => '50% 15%', 'tag' => __('Business', 'alex-rose-2026')),
 				array('file' => 'client-3.png', 'pos' => '50% 12%', 'tag' => __('Evening', 'alex-rose-2026')),
 				array('file' => 'client-9.jpg', 'pos' => '50% 12%', 'tag' => __('Statement', 'alex-rose-2026')),
