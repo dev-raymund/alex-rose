@@ -420,3 +420,98 @@
 		transition: none;
 	}
 }
+
+/* ----- Success state (replaces the form after submission) ----- */
+.page-request-cloth-samples .rcs-success__icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	margin-bottom: 24px;
+	border: 1px solid rgba(200, 169, 106, 0.31);
+	background: rgba(200, 169, 106, 0.06);
+	color: var(--ar-gold);
+}
+
+.page-request-cloth-samples .rcs-success__kicker {
+	margin: 0 0 8px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: var(--ar-gold);
+}
+
+.page-request-cloth-samples .rcs-success__kicker--step {
+	margin-top: 0;
+}
+
+.page-request-cloth-samples .rcs-success__title {
+	margin: 0 0 12px;
+	font-size: 1.5rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+}
+
+.page-request-cloth-samples .rcs-success__subtitle {
+	margin: 0 0 12px;
+	font-size: 1.25rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	line-height: 1.2;
+}
+
+.page-request-cloth-samples .rcs-success__samples {
+	margin: 0 0 8px;
+	font-size: 13px;
+	line-height: 1.85;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-cloth-samples .rcs-success__text {
+	margin: 0 0 40px;
+	font-size: 14px;
+	line-height: 1.85;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-cloth-samples .rcs-success__text--narrow {
+	margin: 0 0 24px;
+	max-width: 512px;
+}
+
+.page-request-cloth-samples .rcs-success__text strong {
+	color: var(--ar-foreground);
+	font-weight: 400;
+}
+
+.page-request-cloth-samples .rcs-success__email {
+	color: var(--ar-foreground);
+}
+
+.page-request-cloth-samples .rcs-success__calendar {
+	width: 100%;
+	height: 650px;
+	overflow: hidden;
+	border: 1px solid var(--ar-border);
+}
+
+.page-request-cloth-samples .rcs-success__calendar iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.page-request-cloth-samples .rcs-success__call {
+	margin: 16px 0 0;
+	font-size: 11px;
+	color: var(--ar-muted-foreground);
+}
+
+.page-request-cloth-samples .rcs-success__call a {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}

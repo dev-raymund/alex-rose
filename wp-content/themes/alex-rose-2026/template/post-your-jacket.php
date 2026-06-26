@@ -68,7 +68,7 @@ get_header();
 						<span><?php esc_html_e('This service is available within the UK only.', 'alex-rose-2026'); ?></span>
 					</div>
 
-					<form class="pyj-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" data-pyj-form novalidate aria-describedby="pyj-form-confirmation">
+					<form class="pyj-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" data-pyj-form data-pyj-schedule-url="<?php echo esc_url(home_url('/schedule-a-call/')); ?>" novalidate aria-describedby="pyj-form-confirmation">
 						<?php wp_nonce_field('pyj_request_box', 'pyj_nonce'); ?>
 						<input type="hidden" name="action" value="pyj_request_box">
 						<?php alex_rose_2026_form_honeypot_field(); ?>
