@@ -14,7 +14,7 @@ get_header();
 
 <main id="main" class="page-post-your-jacket" tabindex="-1">
 	<section class="pyj-hero">
-		<img class="pyj-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/process-cutting.jpg')); ?>" alt="" aria-hidden="true" loading="eager">
+		<img class="pyj-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/06/process-basting.jpg')); ?>" alt="" aria-hidden="true" loading="eager">
 		<div class="pyj-hero__shade" aria-hidden="true"></div>
 		<div class="pyj-hero__inner">
 			<div class="pyj-hero__rule" aria-hidden="true"></div>
@@ -58,6 +58,15 @@ get_header();
 					<p class="pyj-main__kicker"><?php esc_html_e('Get started', 'alex-rose-2026'); ?></p>
 					<h2 class="pyj-main__title"><?php esc_html_e('Request your free box.', 'alex-rose-2026'); ?></h2>
 					<p class="pyj-main__lead"><?php esc_html_e('Fill in your delivery address and we will send everything you need, no charge, no commitment.', 'alex-rose-2026'); ?></p>
+
+					<div class="pyj-main__notice">
+						<svg class="pyj-main__notice-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<circle cx="6" cy="6" r="5.5" stroke="#C8A96A" stroke-width="1"></circle>
+							<line x1="6" y1="5" x2="6" y2="9" stroke="#C8A96A" stroke-width="1" stroke-linecap="round"></line>
+							<circle cx="6" cy="3.5" r="0.6" fill="#C8A96A"></circle>
+						</svg>
+						<span><?php esc_html_e('This service is available within the UK only.', 'alex-rose-2026'); ?></span>
+					</div>
 
 					<form class="pyj-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" data-pyj-form novalidate aria-describedby="pyj-form-confirmation">
 						<?php wp_nonce_field('pyj_request_box', 'pyj_nonce'); ?>
