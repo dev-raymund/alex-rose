@@ -98,7 +98,7 @@ $groups = array(
 				'a' => sprintf(
 					/* translators: %s: link to schedule a call page */
 					__('Absolutely! Please get in touch to %s with our master tailor.', 'alex-rose-2026'),
-					'<a href="' . esc_url(home_url('/schedule-a-call/')) . '">' . esc_html__('book a 30-minute Zoom meeting', 'alex-rose-2026') . '</a>'
+					'<a href="' . esc_url(home_url('/schedule-a-call/')) . '">' . esc_html__('book a 30-minute call on Teams or Google Meet', 'alex-rose-2026') . '</a>'
 				),
 			),
 			array(
