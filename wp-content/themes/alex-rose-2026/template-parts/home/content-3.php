@@ -74,7 +74,7 @@ if (! defined('ABSPATH')) {
 				</div>
 				<div class="home-testimonial__stars" aria-hidden="true"><?php for ($i = 0; $i < 5; $i++) : ?><span class="home-star">★</span><?php endfor; ?></div>
 				<div class="home-testimonial__rule" aria-hidden="true"></div>
-				<blockquote class="home-testimonial__quote"><?php esc_html_e('“Harold is delightful and professional. A great eye for cut. His after-sales service is second to none and the quality of his suits is up there with the best that London has to offer.”', 'alex-rose-2026'); ?></blockquote>
+				<blockquote class="home-testimonial__quote"><?php esc_html_e('“"Harold was a referral from a friend when I needed a tailored suit for my wedding. The convenience of being tailored in your own home is what is needed in this”', 'alex-rose-2026'); ?></blockquote>
 			</div>
 			<div class="home-testimonial">
 				<div class="home-testimonial__who">
@@ -86,7 +86,7 @@ if (! defined('ABSPATH')) {
 				</div>
 				<div class="home-testimonial__stars" aria-hidden="true"><?php for ($i = 0; $i < 5; $i++) : ?><span class="home-star">★</span><?php endfor; ?></div>
 				<div class="home-testimonial__rule" aria-hidden="true"></div>
-				<blockquote class="home-testimonial__quote"><?php esc_html_e('“Harold Rose has been making suits and jackets for me for over 20 years and they are the best fitting clothes I own. Great fabrics, quality tailoring, and they last and last.”', 'alex-rose-2026'); ?></blockquote>
+				<blockquote class="home-testimonial__quote"><?php esc_html_e('“Harold Rose has been making jackets for me for over 20 years and they are the best fitting clothes I own. Great fabrics, quality tailoring, and they last and last.”', 'alex-rose-2026'); ?></blockquote>
 			</div>
 			<div class="home-testimonial">
 				<div class="home-testimonial__who">
@@ -98,7 +98,7 @@ if (! defined('ABSPATH')) {
 				</div>
 				<div class="home-testimonial__stars" aria-hidden="true"><?php for ($i = 0; $i < 5; $i++) : ?><span class="home-star">★</span><?php endfor; ?></div>
 				<div class="home-testimonial__rule" aria-hidden="true"></div>
-				<blockquote class="home-testimonial__quote"><?php esc_html_e('“Been a client for most of my adult life and will continue to be a client until I die. Can think of no better suit than to be buried in!”', 'alex-rose-2026'); ?></blockquote>
+				<blockquote class="home-testimonial__quote"><?php esc_html_e('“Been a client for most of my adult life and will continue to be a client until I die. Can think of no finer jacket to be buried in!”', 'alex-rose-2026'); ?></blockquote>
 			</div>
 		</div>
 		<div class="home-testimonials__bottom">

@@ -72,28 +72,28 @@ if (! defined('ABSPATH')) {
 <?php
 $reviews = array(
 	array(
-		'quote' => __('Harold is delightful and professional. A great eye for cut. His after-sales service is second to none and the quality of his suits is up there with the best London has to offer.', 'alex-rose-2026'),
-		'tag'   => __('Three-piece suit', 'alex-rose-2026'),
+		'quote' => __('Harold was a referral from a friend when I needed a tailored suit for my wedding. The convenience of being tailored in your own home is what is needed in this day and age.', 'alex-rose-2026'),
+		'tag'   => __('Wedding customer', 'alex-rose-2026'),
 	),
 	array(
-		'quote' => __('Harold Rose has been making suits and jackets for me for over 20 years and they are the best fitting clothes I own. Great fabrics, quality tailoring, and they last and last.', 'alex-rose-2026'),
-		'tag'   => __('Twenty-year client', 'alex-rose-2026'),
+		'quote' => __('Excellent attention to detail, everything correct, first time. Harold entertains whilst providing any information you could want about tailoring and the manufacturing process.', 'alex-rose-2026'),
+		'tag'   => __('Savile Row client', 'alex-rose-2026'),
 	),
 	array(
 		'quote' => __('Very impressed with the attention to detail and the choices I was provided with. Over the moon with how it fits, feels and looks.', 'alex-rose-2026'),
 		'tag'   => __('New job suit', 'alex-rose-2026'),
 	),
 	array(
-		'quote' => __('Exceptional service and equally exceptional tailored suits. Harold takes the time to understand your needs and ensures an incredible outcome. Over 12 suits in, I will for sure carry on.', 'alex-rose-2026'),
-		'tag'   => __('Twelve suits in', 'alex-rose-2026'),
+		'quote' => __('Highly professional, knowledgeable, reactive and a super quick service. First time experience for me and very impressed. I would highly recommend.', 'alex-rose-2026'),
+		'tag'   => __('First-time customer', 'alex-rose-2026'),
 	),
 	array(
-		'quote' => __('I sent over a jacket that fitted me well and three weeks later a perfect copy arrived, cut from the cloth I had chosen. The whole process was handled by Harold himself.', 'alex-rose-2026'),
-		'tag'   => __('Posted-jacket service', 'alex-rose-2026'),
+		'quote' => __('Outstanding. Extensive experience, really knows the business of tailoring. Excellent customer service and a pleasure to deal with.', 'alex-rose-2026'),
+		'tag'   => __('Verified customer', 'alex-rose-2026'),
 	),
 	array(
-		'quote' => __('The fit is exact and the cloth is beautiful. I would not buy a jacket from anywhere else now.', 'alex-rose-2026'),
-		'tag'   => __('Wedding jacket', 'alex-rose-2026'),
+		'quote' => __('Harold is delightful and professional. A great eye for cut. His latest incarnation of a navy blue three piece is simply superb.', 'alex-rose-2026'),
+		'tag'   => __('Three-piece suit customer', 'alex-rose-2026'),
 	),
 );
 $total_reviews = count($reviews);
