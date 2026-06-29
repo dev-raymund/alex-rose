@@ -22,7 +22,7 @@ if (! is_array($occasion) || empty($occasion['samples'])) {
 				<?php echo esc_html((string) ($occasion['samples_title'] ?? __('Made in this cloth and occasion.', 'alex-rose-2026'))); ?>
 			</h2>
 		</header>
-		<div class="occ-samples__grid">
+		<div class="occ-samples__grid" style="--occ-cols: <?php echo (int) count(array_filter((array) $occasion['samples'])); ?>;">
 			<?php foreach ($occasion['samples'] as $image_url) :
 				if (empty($image_url)) {
 					continue;
