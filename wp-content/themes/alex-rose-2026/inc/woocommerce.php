@@ -277,6 +277,17 @@ add_action(
 		wp_dequeue_style('select2');
 		wp_dequeue_script('select2');
 		wp_dequeue_script('selectWoo');
+
+		$js = ALEX_ROSE_2026_DIR . '/assets/js/page-checkout.js';
+		if (is_readable($js)) {
+			wp_enqueue_script(
+				'alex-rose-2026-checkout',
+				ALEX_ROSE_2026_URI . '/assets/js/page-checkout.js',
+				array('jquery', 'wc-checkout'),
+				(string) filemtime($js),
+				true
+			);
+		}
 	},
 	20
 );
@@ -310,9 +321,32 @@ add_filter(
 			$fields['order']['order_comments']['placeholder']  = __('Any fit preferences, style notes, or questions...', 'alex-rose-2026');
 		}
 
+		// Move county/state after the postcode so Town/City + Postcode sit
+		// adjacent and can pair at 50% width (the design has no county column).
+		foreach (array('billing', 'shipping') as $group) {
+			if (isset($fields[ $group ][ $group . '_state' ])) {
+				$fields[ $group ][ $group . '_state' ]['priority'] = 95;
+			}
+		}
+
 		return $fields;
 	}
 );
+
+/**
+ * True when the customer's country is set and is not the UK. Reflects the
+ * geolocated/selected country, and updates live as they change it on checkout.
+ */
+function alex_rose_2026_customer_is_outside_uk(): bool {
+	if (! function_exists('WC') || ! WC()->customer) {
+		return false;
+	}
+	$country = WC()->customer->get_billing_country();
+	if ($country === '') {
+		$country = WC()->customer->get_shipping_country();
+	}
+	return $country !== '' && $country !== 'GB';
+}
 
 /**
  * Add the "Included" rows to the order summary, just above the total.
@@ -323,23 +357,44 @@ add_action(
 		$rows = array(
 			__('Alterations', 'alex-rose-2026')   => __('Included', 'alex-rose-2026'),
 			__('Monogramming', 'alex-rose-2026')  => __('Included', 'alex-rose-2026'),
-			__('Delivery', 'alex-rose-2026')      => __('Free', 'alex-rose-2026'),
+			__('Delivery', 'alex-rose-2026')      => __('Included', 'alex-rose-2026'),
 		);
 		foreach ($rows as $label => $value) {
 			echo '<tr class="arco-included"><th>' . esc_html($label) . '</th><td>' . esc_html($value) . '</td></tr>';
+		}
+
+		// Shown only for customers outside the UK (re-renders with the chosen country).
+		if (alex_rose_2026_customer_is_outside_uk()) {
+			echo '<tr class="arco-included arco-included--note"><td colspan="2">'
+				. esc_html__('Delivery is included worldwide. For clients outside the UK, international shipping is covered at no extra charge.', 'alex-rose-2026')
+				. '</td></tr>';
+		}
+
+		// Custom promo box (in the summary, above the total). Not a <form> — a real
+		// coupon form here would nest inside the checkout form (invalid HTML); the
+		// Apply button applies the coupon via AJAX (see page-checkout.js).
+		if (function_exists('wc_coupons_enabled') && wc_coupons_enabled()) {
+			echo '<tr class="arco-promo-row"><td colspan="2">'
+				. '<div class="arco-promo" data-nonce="' . esc_attr(wp_create_nonce('apply-coupon')) . '">'
+				. '<span class="arco-promo__label">' . esc_html__('Promo or gift voucher code', 'alex-rose-2026') . '</span>'
+				. '<span class="arco-promo__row">'
+				. '<input type="text" class="arco-promo__input" placeholder="' . esc_attr__('Enter code', 'alex-rose-2026') . '" aria-label="' . esc_attr__('Promo or gift voucher code', 'alex-rose-2026') . '" />'
+				. '<button type="button" class="arco-promo__apply">' . esc_html__('Apply', 'alex-rose-2026') . '</button>'
+				. '</span>'
+				. '</div>'
+				. '</td></tr>';
 		}
 	}
 );
 
 /**
- * Move the coupon ("Promo or gift voucher") form into the order summary,
- * above the payment block, to match the design.
+ * Hide WooCommerce's default top-of-checkout coupon form — the custom promo box
+ * inside the order summary (see the Included-rows hook) replaces it.
  */
 add_action(
 	'init',
 	static function (): void {
 		remove_action('woocommerce_before_checkout_form', 'woocommerce_checkout_coupon_form', 10);
-		add_action('woocommerce_review_order_before_payment', 'woocommerce_checkout_coupon_form', 5);
 	}
 );
 

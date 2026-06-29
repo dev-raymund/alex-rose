@@ -194,19 +194,29 @@
 	border-color: var(--arco-gold);
 }
 
-/* Two-up rows (first/last name, town/postcode) */
-.site-main--checkout #billing_first_name_field,
-.site-main--checkout #billing_last_name_field,
-.site-main--checkout #billing_city_field,
-.site-main--checkout #billing_postcode_field {
-	display: inline-block;
-	width: calc(50% - 8px);
-	vertical-align: top;
+/* Fields lay out full-width by default; paired fields sit 50/50 with a gap.
+   Flex (not inline-block) avoids the stray whitespace gap between columns. */
+.site-main--checkout .woocommerce-billing-fields__field-wrapper,
+.site-main--checkout .woocommerce-shipping-fields__field-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 16px;
+}
+
+.site-main--checkout .woocommerce-billing-fields__field-wrapper > .form-row,
+.site-main--checkout .woocommerce-shipping-fields__field-wrapper > .form-row {
+	width: 100%;
 }
 
 .site-main--checkout #billing_first_name_field,
-.site-main--checkout #billing_city_field {
-	margin-right: 14px;
+.site-main--checkout #billing_last_name_field,
+.site-main--checkout #billing_city_field,
+.site-main--checkout #billing_postcode_field,
+.site-main--checkout #shipping_first_name_field,
+.site-main--checkout #shipping_last_name_field,
+.site-main--checkout #shipping_city_field,
+.site-main--checkout #shipping_postcode_field {
+	width: calc(50% - 8px);
 }
 
 /* select2 alignment */
@@ -414,6 +424,71 @@
 	font-size: 10px;
 	padding-top: 8px;
 	padding-bottom: 8px;
+	color: var(--arco-gold);
+}
+
+/* Worldwide-delivery note (outside-UK customers) */
+.site-main--checkout .arco-included--note td {
+	padding: 4px 20px 12px;
+	font-size: 11px;
+	line-height: 1.6;
+	color: var(--arco-gold);
+	text-align: left;
+}
+
+/* Promo / gift voucher box in the order summary */
+.site-main--checkout .arco-promo-row td {
+	padding: 16px 20px;
+	border-top: 1px solid var(--arco-line);
+	border-bottom: 1px solid var(--arco-line);
+}
+
+.site-main--checkout .arco-promo__label {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 10px;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--arco-muted);
+}
+
+.site-main--checkout .arco-promo__row {
+	display: flex;
+	gap: 8px;
+}
+
+.site-main--checkout .arco-promo__input {
+	flex: 1;
+	min-width: 0;
+	min-height: 42px;
+	padding: 10px 12px;
+	border: 1px solid var(--arco-line);
+	background: #fff;
+	font-size: 12px;
+	color: var(--arco-ink);
+}
+
+.site-main--checkout .arco-promo__input:focus {
+	outline: 0;
+	border-color: var(--arco-gold);
+}
+
+.site-main--checkout .arco-promo__apply {
+	flex: 0 0 auto;
+	min-height: 42px;
+	padding: 0 20px;
+	border: 0;
+	background: var(--arco-gold);
+	color: #fff;
+	font-size: 10px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+.site-main--checkout .arco-promo__apply:hover {
+	opacity: 0.9;
 }
 
 .site-main--checkout .woocommerce-checkout-review-order-table .order-total th,
@@ -686,4 +761,14 @@
 		width: 100%;
 		margin-right: 0;
 	}
+}
+
+/* ----- Processing overlay (jQuery blockUI) -----
+   WooCommerce blocks the form/order-review while placing an order. By default
+   it's a white wash at z-index 1000 (covers the fixed header, z-index 60).
+   Blend it with the page background and keep it under the header. */
+.site-main--checkout .blockUI.blockOverlay {
+	background-color: var(--arco-bg) !important;
+	opacity: 0.8 !important;
+	z-index: 40 !important;
 }
