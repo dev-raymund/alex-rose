@@ -86,7 +86,7 @@ $milestones = array(
 	array(
 		'year'  => 1982,
 		'tag'   => __('Production', 'alex-rose-2026'),
-		'title' => __('The showroom floor.', 'alex-rose-2026'),
+		'title' => __('The jacket room production', 'alex-rose-2026'),
 		'body'  => __('Cut jackets waiting to go into production.', 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/05/history-1982.jpg'),
 	),
