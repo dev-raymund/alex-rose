@@ -181,6 +181,72 @@ $stars_row = function () use ($star_svg): string {
 	</div>
 </aside>
 
+<section class="home-founding" aria-labelledby="home-founding-title">
+	<div class="home-founding__stripe" aria-hidden="true"></div>
+	<span class="home-founding__watermark" aria-hidden="true">20%</span>
+	<div class="home-founding__inner">
+		<div class="home-founding__grid">
+			<div class="home-founding__intro">
+				<p class="home-founding__eyebrow"><?php esc_html_e('Founding member discount', 'alex-rose-2026'); ?></p>
+				<p class="home-founding__headline" id="home-founding-title">
+					<span class="home-founding__num">20</span>
+					<span class="home-founding__pct">%</span>
+					<span class="home-founding__off"><?php esc_html_e('off your first jacket', 'alex-rose-2026'); ?></span>
+				</p>
+				<p class="home-founding__copy"><?php esc_html_e('A time-limited discount for our founding customers. Claim your personal discount, design your jacket, and your 20% is applied at checkout. No hoops, no conditions.', 'alex-rose-2026'); ?></p>
+				<div class="home-founding__actions">
+					<a class="home-founding__btn" href="<?php echo esc_url(home_url('/launch/')); ?>">
+						<?php esc_html_e('Get my discount code', 'alex-rose-2026'); ?>
+						<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+					</a>
+					<a class="home-founding__link" href="<?php echo esc_url(home_url('/schedule-a-call/')); ?>"><?php esc_html_e('Book a call with Harold', 'alex-rose-2026'); ?></a>
+				</div>
+			</div>
+
+			<div class="home-founding__aside">
+				<p class="home-founding__closes"><?php esc_html_e('Offer closes in', 'alex-rose-2026'); ?></p>
+				<div class="home-founding__countdown" data-countdown="2026-07-10T23:59:59">
+					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="days">--</span><span class="home-founding__unit-label"><?php esc_html_e('days', 'alex-rose-2026'); ?></span></div>
+					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="hours">--</span><span class="home-founding__unit-label"><?php esc_html_e('hours', 'alex-rose-2026'); ?></span></div>
+					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="mins">--</span><span class="home-founding__unit-label"><?php esc_html_e('mins', 'alex-rose-2026'); ?></span></div>
+					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="secs">--</span><span class="home-founding__unit-label"><?php esc_html_e('secs', 'alex-rose-2026'); ?></span></div>
+				</div>
+				<div class="home-founding__how">
+					<p class="home-founding__how-title"><?php esc_html_e('How to use it', 'alex-rose-2026'); ?></p>
+					<ol class="home-founding__steps">
+						<li><span class="home-founding__step-n">1.</span><span><?php esc_html_e('Claim your personal discount code', 'alex-rose-2026'); ?></span></li>
+						<li><span class="home-founding__step-n">2.</span><span><?php esc_html_e('Design your jacket online', 'alex-rose-2026'); ?></span></li>
+						<li><span class="home-founding__step-n">3.</span><span><?php esc_html_e('Your 20% is applied at checkout', 'alex-rose-2026'); ?></span></li>
+					</ol>
+				</div>
+			</div>
+		</div>
+		<p class="home-founding__fine"><?php esc_html_e('Offer valid until 10 July 2026  ·  One jacket per customer  ·  Cannot be combined with other offers', 'alex-rose-2026'); ?></p>
+	</div>
+</section>
+<script>
+(function () {
+	var el = document.querySelector('.home-founding__countdown');
+	if (!el) { return; }
+	var target = new Date(el.getAttribute('data-countdown')).getTime();
+	if (isNaN(target)) { return; }
+	function pad(n) { return (n < 10 ? '0' : '') + n; }
+	function set(key, value) {
+		var node = el.querySelector('[data-cd="' + key + '"]');
+		if (node) { node.textContent = value; }
+	}
+	function tick() {
+		var diff = Math.max(0, target - Date.now());
+		set('days', Math.floor(diff / 86400000));
+		set('hours', pad(Math.floor((diff % 86400000) / 3600000)));
+		set('mins', pad(Math.floor((diff % 3600000) / 60000)));
+		set('secs', pad(Math.floor((diff % 60000) / 1000)));
+	}
+	tick();
+	window.setInterval(tick, 1000);
+})();
+</script>
+
 <section class="home-occasions" id="occasions">
 	<div class="home-occasions__intro">
 		<p class="home-occasions__kicker"><?php esc_html_e('Occasions', 'alex-rose-2026'); ?></p>

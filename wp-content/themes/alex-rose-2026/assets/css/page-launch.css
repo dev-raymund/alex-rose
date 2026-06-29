@@ -1,0 +1,425 @@
+/**
+ * Launch — founding-member landing page.
+ *
+ * Self-contained dark landing page. Scoped under .lp so it never leaks into
+ * the rest of the theme; the body also carries .page-launch.
+ */
+
+body.page-launch {
+	margin: 0;
+	background: #0d0d0d;
+}
+
+.lp {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background: #0d0d0d;
+	color: #fff;
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+}
+
+.lp *,
+.lp *::before,
+.lp *::after {
+	box-sizing: border-box;
+}
+
+.lp__stripe {
+	height: 3px;
+	background: rgb(200, 169, 106);
+}
+
+/* ----- Header ----- */
+.lp__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px 32px;
+}
+
+.lp__logo {
+	display: inline-flex;
+	align-items: center;
+}
+
+.lp__logo-img {
+	height: 48px;
+	width: auto;
+	object-fit: contain;
+}
+
+.lp__header-email {
+	font-size: 0.55rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.4);
+	text-decoration: none;
+	transition: color 0.15s ease;
+}
+
+.lp__header-email:hover {
+	color: rgba(255, 255, 255, 0.75);
+}
+
+/* ----- Main ----- */
+.lp__main {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 48px 32px;
+	text-align: center;
+}
+
+.lp__inner {
+	width: 100%;
+	max-width: 42rem;
+	margin: 0 auto;
+}
+
+.lp__eyebrow {
+	margin: 0 0 20px;
+	font-size: 0.55rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: rgb(200, 169, 106);
+}
+
+.lp__title {
+	margin: 0 0 18px;
+	font-size: clamp(2rem, 5vw, 3.5rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+	color: #fff;
+}
+
+.lp__lede {
+	max-width: 480px;
+	margin: 0 auto 36px;
+	font-size: 0.82rem;
+	line-height: 1.8;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+/* ----- Countdown ----- */
+.lp__countdown {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 24px;
+	margin-bottom: 40px;
+}
+
+.lp__unit {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.lp__unit-num {
+	font-size: clamp(1.5rem, 4vw, 2.5rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1;
+	color: #fff;
+}
+
+.lp__unit-label {
+	margin-top: 6px;
+	font-size: 0.45rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.3);
+}
+
+/* ----- Form ----- */
+.lp__form {
+	max-width: 28rem;
+	margin: 0 auto;
+}
+
+.lp__row {
+	display: flex;
+	flex-direction: column;
+}
+
+@media (min-width: 640px) {
+	.lp__row {
+		flex-direction: row;
+	}
+}
+
+.lp__email {
+	flex: 1 1 0%;
+	padding: 15px 18px;
+	font-family: inherit;
+	font-size: 0.82rem;
+	color: #fff;
+	background: rgba(255, 255, 255, 0.07);
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	outline: none;
+}
+
+@media (min-width: 640px) {
+	.lp__email {
+		border-right: none;
+	}
+}
+
+.lp__email::placeholder {
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.lp__email:focus {
+	border-color: rgb(200, 169, 106);
+}
+
+.lp__submit {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 15px 26px;
+	font-family: inherit;
+	font-size: 0.52rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: #fff;
+	background: rgb(200, 169, 106);
+	border: 1px solid rgb(200, 169, 106);
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+.lp__submit:hover {
+	opacity: 0.88;
+}
+
+.lp__form.is-submitting .lp__submit {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.lp__field {
+	margin-top: 12px;
+	text-align: left;
+}
+
+.lp__field-label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 0.48rem;
+	letter-spacing: 0.13em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.32);
+}
+
+.lp__referral {
+	width: 100%;
+	padding: 11px 18px;
+	font-family: inherit;
+	font-size: 0.78rem;
+	color: #fff;
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	outline: none;
+}
+
+.lp__referral::placeholder {
+	color: rgba(255, 255, 255, 0.3);
+}
+
+.lp__referral:focus {
+	border-color: rgba(200, 169, 106, 0.6);
+}
+
+.lp__consent {
+	margin: 10px 0 0;
+	font-size: 0.42rem;
+	letter-spacing: 0.06em;
+	line-height: 1.8;
+	text-align: left;
+	color: rgba(255, 255, 255, 0.22);
+}
+
+.lp__error {
+	margin: 12px 0 0;
+	font-size: 0.62rem;
+	letter-spacing: 0.04em;
+	line-height: 1.6;
+	color: #e2a0a0;
+}
+
+/* ----- Confirmation (replaces the form on success) ----- */
+.lp__confirm {
+	max-width: 30rem;
+	margin: 0 auto;
+}
+
+.lp__confirm-title {
+	margin: 0 0 10px;
+	font-size: 1.1rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: rgb(200, 169, 106);
+}
+
+.lp__confirm-copy {
+	margin: 0 0 24px;
+	font-size: 0.82rem;
+	line-height: 1.8;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.lp__confirm-actions {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+@media (min-width: 640px) {
+	.lp__confirm-actions {
+		flex-direction: row;
+		justify-content: center;
+	}
+}
+
+/* ----- Fine print ----- */
+.lp__fine {
+	margin: 10px 0 0;
+	font-size: 0.42rem;
+	letter-spacing: 0.08em;
+	line-height: 1.7;
+	color: rgba(255, 255, 255, 0.18);
+}
+
+/* ----- Footer ----- */
+.lp__footer {
+	padding: 48px 32px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	text-align: center;
+}
+
+.lp__footer-eyebrow {
+	margin: 0 0 20px;
+	font-size: 0.48rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: rgba(255, 255, 255, 0.28);
+}
+
+.lp__footer-actions {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	gap: 12px;
+	max-width: 36rem;
+	margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+	.lp__footer-actions {
+		flex-direction: row;
+	}
+}
+
+.lp__footer-meta {
+	margin: 24px 0 0;
+	font-size: 0.42rem;
+	letter-spacing: 0.1em;
+	color: rgba(255, 255, 255, 0.18);
+}
+
+/* ----- Shared buttons ----- */
+.lp__btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 16px 32px;
+	font-size: 0.56rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	text-decoration: none;
+	cursor: pointer;
+	transition: opacity 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lp__btn--ghost {
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.lp__btn--ghost:hover {
+	border-color: #fff;
+}
+
+.lp__btn--gold {
+	color: #fff;
+	background: rgb(200, 169, 106);
+	border: 1px solid rgb(200, 169, 106);
+}
+
+.lp__btn--gold:hover {
+	opacity: 0.88;
+}
+
+/* ----- Currency switcher (visual) ----- */
+.lp__currency {
+	position: fixed;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+	z-index: 90;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background: #111;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-right: none;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	box-shadow: -4px 0 20px rgba(0, 0, 0, 0.35);
+}
+
+.lp__currency-btn {
+	display: block;
+	width: 100%;
+	padding: 14px 20px;
+	font-family: inherit;
+	font-size: 0.62rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	color: rgba(255, 255, 255, 0.42);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	transition: background 0.18s ease, color 0.18s ease;
+}
+
+.lp__currency-btn + .lp__currency-btn {
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lp__currency-btn:hover {
+	color: #fff;
+}
+
+.lp__currency-btn.is-active {
+	background: rgb(200, 169, 106);
+	color: #fff;
+}
+
+@media (max-width: 600px) {
+	.lp__currency {
+		display: none;
+	}
+}

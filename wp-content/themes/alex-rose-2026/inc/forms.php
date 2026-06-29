@@ -716,6 +716,57 @@ function alex_rose_2026_handle_otc_newsletter_signup(): void {
 add_action('admin_post_otc_newsletter_signup', 'alex_rose_2026_handle_otc_newsletter_signup');
 add_action('admin_post_nopriv_otc_newsletter_signup', 'alex_rose_2026_handle_otc_newsletter_signup');
 
+/* --- Launch: Founding-member discount list ------------------------------ */
+
+function alex_rose_2026_handle_lp_join_waitlist(): void {
+	$action = 'lp_join_waitlist';
+	alex_rose_2026_form_guard($action, 'lp_join_waitlist', 'lp_nonce');
+
+	$email    = alex_rose_2026_form_field('lp_email');
+	$referral = alex_rose_2026_form_field('lp_referral');
+
+	if (! is_email($email)) {
+		alex_rose_2026_form_respond(false, $action, __('Please enter a valid email address.', 'alex-rose-2026'));
+	}
+
+	$body = alex_rose_2026_form_build_body(
+		array(
+			array('label' => __('Email', 'alex-rose-2026'),       'value' => $email),
+			array('label' => __('Referred by', 'alex-rose-2026'), 'value' => $referral),
+		),
+		__('A new founding-member discount request has arrived via the Launch page:', 'alex-rose-2026')
+	);
+
+	// Founding-list signups also notify the build team, on top of the
+	// site-wide recipient. Scoped to this handler only.
+	$lp_extra_recipient = static function ($recipient) {
+		$extra     = 'harold@alexrose.uk, tailor@alexrose.uk';
+		$recipient = is_string($recipient) ? trim($recipient) : '';
+		return $recipient !== '' ? $recipient . ', ' . $extra : $extra;
+	};
+	add_filter('alex_rose_2026_form_recipient', $lp_extra_recipient, 20);
+
+	$sent = alex_rose_2026_form_send_mail(
+		sprintf(
+			/* translators: %s: subscriber email */
+			__('Founding list signup: %s', 'alex-rose-2026'),
+			$email
+		),
+		$body,
+		$email
+	);
+
+	remove_filter('alex_rose_2026_form_recipient', $lp_extra_recipient, 20);
+
+	if (! $sent) {
+		alex_rose_2026_form_respond(false, $action, __('Something went wrong. Please try again in a moment.', 'alex-rose-2026'));
+	}
+
+	alex_rose_2026_form_respond(true, $action, __('Thank you. Your discount code is on its way.', 'alex-rose-2026'));
+}
+add_action('admin_post_lp_join_waitlist', 'alex_rose_2026_handle_lp_join_waitlist');
+add_action('admin_post_nopriv_lp_join_waitlist', 'alex_rose_2026_handle_lp_join_waitlist');
+
 /* --- Design Your Jacket: create made-to-order WooCommerce order ---------- */
 
 /**
