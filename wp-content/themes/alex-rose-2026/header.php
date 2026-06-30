@@ -40,12 +40,7 @@
 			));
 			?>
 		</nav>
-		<a class="site-header__account" href="<?php echo esc_url(function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('dashboard') : home_url('/my-account/')); ?>" aria-label="<?php echo esc_attr(is_user_logged_in() ? __('My account', 'alex-rose-2026') : __('Sign in', 'alex-rose-2026')); ?>">
-			<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-				<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-				<circle cx="12" cy="7" r="4"></circle>
-			</svg>
-		</a>
+		<?php // Account icon hidden for now (re-enable once the My Account UI is finalised). ?>
 		<a class="site-header__cart" href="<?php echo esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart')); ?>" aria-label="<?php esc_attr_e('Cart', 'alex-rose-2026'); ?>">
 			<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 				<path d="M16 10a4 4 0 0 1-8 0"></path>

@@ -32,14 +32,14 @@
 }
 
 .arac-hero__inner {
-	max-width: 72rem;
-	margin: 0 auto;
-	padding: 0 40px;
+	padding-left: 40px;
+	padding-right: 40px;
 }
 
 @media (min-width: 768px) {
 	.arac-hero__inner {
-		padding: 0 64px;
+		padding-left: 80px;
+		padding-right: 80px;
 	}
 }
 
@@ -83,14 +83,14 @@
 }
 
 .arac-body__inner {
-	max-width: 72rem;
-	margin: 0 auto;
-	padding: 0 24px;
+	padding-left: 40px;
+	padding-right: 40px;
 }
 
 @media (min-width: 768px) {
 	.arac-body__inner {
-		padding: 0 64px;
+		padding-left: 80px;
+		padding-right: 80px;
 	}
 }
 
@@ -258,16 +258,31 @@
 
 /* ─── Dashboard (logged in) — nav + content ──────────────────────────────── */
 
-.site-main--account .woocommerce:has(.woocommerce-MyAccount-navigation) {
+/* When logged in, the account page renders the dashboard: a single .woocommerce
+   wrapping <nav> + .woocommerce-MyAccount-content. Lay those out as two columns.
+   Scoped to body.logged-in (not :has()) so the logged-out login/register view
+   keeps its own layout and so it works in every browser. */
+body.logged-in .site-main--account .woocommerce {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 28px;
 	align-items: start;
 }
 
+/* WooCommerce's woocommerce-layout.css floats the nav (30%) and content (68%).
+   Neutralise that so the grid alone controls the layout — otherwise the columns
+   shrink to those widths and float inside the grid cells. */
+body.logged-in .site-main--account .woocommerce-MyAccount-navigation,
+body.logged-in .site-main--account .woocommerce-MyAccount-content {
+	float: none;
+	width: auto;
+	margin: 0;
+	min-width: 0;
+}
+
 @media (min-width: 900px) {
-	.site-main--account .woocommerce:has(.woocommerce-MyAccount-navigation) {
-		grid-template-columns: 248px 1fr;
+	body.logged-in .site-main--account .woocommerce {
+		grid-template-columns: 248px minmax(0, 1fr);
 		gap: 48px;
 	}
 }
