@@ -1,0 +1,110 @@
+/**
+ * Global display-currency switcher — fixed right-edge pill.
+ *
+ * Matches the configurator/launch dist design. Behaviour: assets/js/currency.js.
+ */
+
+.ar-currency {
+	position: fixed;
+	top: 50%;
+	right: 0;
+	transform: translateY(-50%);
+	z-index: 90;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background: rgb(17, 17, 17);
+	border: 1px solid rgba(255, 255, 255, 0.14);
+	border-right: none;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+	box-shadow: -4px 0 20px rgba(0, 0, 0, 0.35);
+}
+
+.ar-currency__btn {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 14px 20px;
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+	font-size: 0.62rem;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	color: rgba(255, 255, 255, 0.42);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ar-currency__btn + .ar-currency__btn {
+	border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ar-currency__btn:hover {
+	color: #fff;
+}
+
+.ar-currency__btn.is-active {
+	background: rgb(200, 169, 106);
+	color: #fff;
+}
+
+@media (max-width: 600px) {
+	.ar-currency__btn {
+		padding: 11px 14px;
+		font-size: 0.55rem;
+	}
+}
+
+/* ----- Switching: price fade + loading overlay ----- */
+.ar-price {
+	transition: opacity 0.2s ease;
+}
+
+.ar-price.is-converting {
+	opacity: 0.3;
+}
+
+.ar-currency-loading {
+	position: fixed;
+	inset: 0;
+	z-index: 9998;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(13, 13, 13, 0.35);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.ar-currency-loading.is-active {
+	opacity: 1;
+	visibility: visible;
+}
+
+.ar-currency-loading__spinner {
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	border: 2px solid rgba(255, 255, 255, 0.25);
+	border-top-color: rgb(200, 169, 106);
+	animation: ar-currency-spin 0.7s linear infinite;
+}
+
+@keyframes ar-currency-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ar-currency-loading__spinner {
+		animation-duration: 1.4s;
+	}
+}

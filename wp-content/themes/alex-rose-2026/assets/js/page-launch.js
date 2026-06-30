@@ -55,24 +55,8 @@
 		});
 	}
 
-	function initCurrency() {
-		var btns = document.querySelectorAll('.lp__currency-btn');
-		if (!btns.length) {
-			return;
-		}
-		Array.prototype.forEach.call(btns, function (btn) {
-			btn.addEventListener('click', function () {
-				Array.prototype.forEach.call(btns, function (other) {
-					other.classList.remove('is-active');
-				});
-				btn.classList.add('is-active');
-			});
-		});
-	}
-
 	document.addEventListener('DOMContentLoaded', function () {
 		initCountdown();
 		initForm();
-		initCurrency();
 	});
 })();

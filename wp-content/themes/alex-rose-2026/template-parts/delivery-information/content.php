@@ -45,9 +45,9 @@ $sections = array(
 
 $delivery_costs = array(
 	array('region' => __('UK', 'alex-rose-2026'), 'price' => __('Free of charge', 'alex-rose-2026')),
-	array('region' => __('Europe', 'alex-rose-2026'), 'price' => '£25'),
-	array('region' => __('United States & Canada', 'alex-rose-2026'), 'price' => '£35'),
-	array('region' => __('Rest of World', 'alex-rose-2026'), 'price' => '£50'),
+	array('region' => __('Europe', 'alex-rose-2026'), 'price' => 25),
+	array('region' => __('United States & Canada', 'alex-rose-2026'), 'price' => 35),
+	array('region' => __('Rest of World', 'alex-rose-2026'), 'price' => 50),
 );
 
 $vat_note = __('UK VAT at 20% is automatically deducted from orders dispatched to countries outside of the UK and EU.', 'alex-rose-2026');
@@ -86,7 +86,13 @@ $contact_line = sprintf(
 						<?php foreach ($delivery_costs as $row) : ?>
 							<div class="di-costs-table__row" role="row">
 								<span class="di-costs-table__region" role="rowheader"><?php echo esc_html((string) $row['region']); ?></span>
-								<span class="di-costs-table__price" role="cell"><?php echo esc_html((string) $row['price']); ?></span>
+								<span class="di-costs-table__price" role="cell"><?php
+							if (is_numeric($row['price'])) {
+								echo alex_rose_2026_price_html($row['price']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							} else {
+								echo esc_html((string) $row['price']);
+							}
+							?></span>
 							</div>
 						<?php endforeach; ?>
 					</div>

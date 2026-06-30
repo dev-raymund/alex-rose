@@ -194,7 +194,13 @@ if (! defined('ABSPATH')) {
 			</div>
 			<div class="home-cta__bullets">
 				<div class="home-cta__bullet"><?php esc_html_e('Free consultation, no obligation', 'alex-rose-2026'); ?></div>
-				<div class="home-cta__bullet"><?php esc_html_e('Jackets from £595, fully made to measure', 'alex-rose-2026'); ?></div>
+				<div class="home-cta__bullet"><?php
+				printf(
+					/* translators: %s: starting price */
+					esc_html__('Jackets from %s, fully made to measure', 'alex-rose-2026'),
+					alex_rose_2026_price_html(595) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				);
+				?></div>
 				<div class="home-cta__bullet"><?php esc_html_e('Free cloth samples posted to you', 'alex-rose-2026'); ?></div>
 			</div>
 		</div>

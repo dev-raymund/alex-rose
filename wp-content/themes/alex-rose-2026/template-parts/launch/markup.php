@@ -88,9 +88,4 @@ $lp_chevron = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" vi
 		<p class="lp__footer-meta"><?php esc_html_e('Alex Rose Fine Tailoring, Leeds  ·  alexrose.uk', 'alex-rose-2026'); ?></p>
 	</footer>
 
-	<div class="lp__currency" role="group" aria-label="<?php esc_attr_e('Currency', 'alex-rose-2026'); ?>">
-		<button type="button" class="lp__currency-btn" data-currency="GBP">GBP</button>
-		<button type="button" class="lp__currency-btn" data-currency="EUR">EUR</button>
-		<button type="button" class="lp__currency-btn is-active" data-currency="USD">USD</button>
-	</div>
 </div>

@@ -44,6 +44,26 @@ function alex_rose_2026_dist_url(string $rel): string {
 }
 
 /**
+ * Render a price the global currency switcher can convert client-side.
+ *
+ * Stores the base GBP amount in data-ar-price; assets/js/currency.js rewrites
+ * the text when the visitor picks another display currency. The server output
+ * is the GBP fallback (shown when JS is unavailable). Display-only — it never
+ * changes what WooCommerce charges.
+ */
+function alex_rose_2026_price_html($gbp, ?int $decimals = null): string {
+	$gbp = (float) $gbp;
+	if ($decimals === null) {
+		$decimals = ($gbp === (float) (int) $gbp) ? 0 : 2;
+	}
+	$display = '£' . number_format($gbp, $decimals);
+	return '<span class="ar-price"'
+		. ' data-ar-price="' . esc_attr((string) $gbp) . '"'
+		. ' data-ar-decimals="' . esc_attr((string) $decimals) . '">'
+		. esc_html($display) . '</span>';
+}
+
+/**
  * The page templates that share the dist design system (CSS + JS).
  *
  * @return string[]
@@ -712,6 +732,42 @@ add_action(
 				true
 			);
 		}
+
+		// Global display-currency switcher (loaded everywhere).
+		$currency_css = ALEX_ROSE_2026_DIR . '/assets/css/currency.css';
+		if (is_readable($currency_css)) {
+			wp_enqueue_style(
+				'alex-rose-2026-currency',
+				ALEX_ROSE_2026_URI . '/assets/css/currency.css',
+				array('alex-rose-2026'),
+				(string) filemtime($currency_css)
+			);
+		}
+
+		$currency_js = ALEX_ROSE_2026_DIR . '/assets/js/currency.js';
+		if (is_readable($currency_js)) {
+			wp_enqueue_script(
+				'alex-rose-2026-currency',
+				ALEX_ROSE_2026_URI . '/assets/js/currency.js',
+				array(),
+				(string) filemtime($currency_js),
+				true
+			);
+		}
+	}
+);
+
+/**
+ * Render the global currency switcher into the footer on every front-end view.
+ * Skipped on the configurator, which has its own in-canvas currency rail.
+ */
+add_action(
+	'wp_footer',
+	static function (): void {
+		if (is_admin() || is_page_template('template/design.php')) {
+			return;
+		}
+		get_template_part('template-parts/currency-switcher');
 	}
 );
 

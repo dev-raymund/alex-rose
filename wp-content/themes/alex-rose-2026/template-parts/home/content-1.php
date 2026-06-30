@@ -51,7 +51,7 @@ if (! defined('ABSPATH')) {
 			<span class="home-stats__label"><?php esc_html_e('Made to Measure', 'alex-rose-2026'); ?></span>
 		</div>
 		<div class="home-stats__cell">
-			<span class="home-stats__num">£595</span>
+			<span class="home-stats__num ar-price" data-ar-price="595">£595</span>
 			<span class="home-stats__label"><?php esc_html_e('Jackets From', 'alex-rose-2026'); ?></span>
 		</div>
 		<div class="home-stats__cell">

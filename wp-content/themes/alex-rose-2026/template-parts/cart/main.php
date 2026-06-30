@@ -60,8 +60,8 @@ $trash_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" vie
 							? $fabric . ($collection !== '' ? ' (' . $collection . ')' : '')
 							: ($product ? $product->get_name() : __('Bespoke Jacket', 'alex-rose-2026'));
 
-						$line_price = ($cart && $product) ? $cart->get_product_subtotal($product, $item['quantity']) : '';
-						$remove_url = wc_get_cart_remove_url($key);
+						$line_amount = isset($item['line_subtotal']) ? (float) $item['line_subtotal'] : 0.0;
+						$remove_url  = wc_get_cart_remove_url($key);
 
 						// The two-column spec grid (only fields that have a value).
 						$grid = array(
@@ -104,7 +104,7 @@ $trash_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" vie
 
 							<div class="crt-card__price">
 								<span class="crt-card__price-label"><?php esc_html_e('Starting From', 'alex-rose-2026'); ?></span>
-								<span class="crt-card__price-value"><?php echo wp_kses_post($line_price); ?></span>
+								<span class="crt-card__price-value"><?php echo alex_rose_2026_price_html($line_amount, 2); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 							</div>
 						</article>
 					<?php endforeach; ?>
@@ -127,7 +127,7 @@ $trash_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" vie
 					<div class="crt-summary__rows">
 						<div class="crt-summary__row">
 							<span><?php esc_html_e('Jacket price', 'alex-rose-2026'); ?></span>
-							<span><?php echo wp_kses_post($cart->get_cart_subtotal()); ?></span>
+							<span><?php echo alex_rose_2026_price_html((float) $cart->get_subtotal(), 2); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 						</div>
 						<div class="crt-summary__row">
 							<span><?php esc_html_e('Alterations', 'alex-rose-2026'); ?></span>
@@ -145,7 +145,7 @@ $trash_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" vie
 
 					<div class="crt-summary__total">
 						<span class="crt-summary__total-label"><?php esc_html_e('Starting From', 'alex-rose-2026'); ?></span>
-						<span class="crt-summary__total-value"><?php echo wp_kses_post($cart->get_cart_subtotal()); ?></span>
+						<span class="crt-summary__total-value"><?php echo alex_rose_2026_price_html((float) $cart->get_subtotal(), 2); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
 					</div>
 
 					<div class="crt-summary__actions">
