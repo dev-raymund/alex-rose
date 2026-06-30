@@ -293,6 +293,62 @@ add_action(
 );
 
 /**
+ * Branded My Account. Mirrors the checkout treatment so WooCommerce's standard
+ * account area (login / register / dashboard / orders / addresses / account
+ * details) matches the rest of the site:
+ *   - full-width wrapper template with a hero,
+ *   - force the classic [woocommerce_my_account] shortcode (works whether the
+ *     page was built with the block or the shortcode),
+ *   - account-only CSS.
+ * Applies to the dashboard and every account endpoint.
+ */
+add_filter(
+	'template_include',
+	static function ($template) {
+		if (function_exists('is_account_page') && is_account_page()) {
+			$custom = ALEX_ROSE_2026_DIR . '/template/woocommerce-account.php';
+			if (is_readable($custom)) {
+				return $custom;
+			}
+		}
+		return $template;
+	},
+	99
+);
+
+add_filter(
+	'the_content',
+	static function ($content) {
+		if (
+			function_exists('is_account_page') && is_account_page()
+			&& in_the_loop() && is_main_query()
+		) {
+			return do_shortcode('[woocommerce_my_account]');
+		}
+		return $content;
+	},
+	9
+);
+
+add_action(
+	'wp_enqueue_scripts',
+	static function (): void {
+		if (! function_exists('is_account_page') || ! is_account_page()) {
+			return;
+		}
+		$css = ALEX_ROSE_2026_DIR . '/assets/css/page-account.css';
+		$ver = is_readable($css) ? (string) filemtime($css) : ALEX_ROSE_2026_VERSION;
+		wp_enqueue_style(
+			'alex-rose-2026-account',
+			ALEX_ROSE_2026_URI . '/assets/css/page-account.css',
+			array('alex-rose-2026'),
+			$ver
+		);
+	},
+	20
+);
+
+/**
  * Relabel the checkout fields to match the design, and drop the company field.
  */
 add_filter(

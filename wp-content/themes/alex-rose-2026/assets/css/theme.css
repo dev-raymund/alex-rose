@@ -166,7 +166,8 @@ body.site p {
 	color: #fff;
 }
 
-#site-header .site-header__cart {
+#site-header .site-header__cart,
+#site-header .site-header__account {
 	position: relative;
 	width: 36px;
 	height: 36px;
@@ -178,7 +179,8 @@ body.site p {
 	transition: color 0.2s ease;
 }
 
-#site-header .site-header__cart:hover {
+#site-header .site-header__cart:hover,
+#site-header .site-header__account:hover {
 	color: #fff;
 }
 
