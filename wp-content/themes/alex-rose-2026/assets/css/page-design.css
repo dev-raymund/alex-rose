@@ -189,6 +189,33 @@
   border-right: 1px solid rgba(229, 223, 214, 0.95);
 }
 
+#ar-design-app .panel__header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 18px 24px 14px;
+}
+
+#ar-design-app .panel__header-title {
+  margin: 0;
+  font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0d0d0d;
+}
+
+#ar-design-app .panel__header-sub {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+/* The desktop header bar replaces the in-branch title on desktop; mobile
+   (`.mobile-options`) keeps its own `.section-title`. */
+#ar-design-app .panel .section-title {
+  display: none;
+}
+
 #ar-design-app .panel__section {
   padding: 22px 20px 24px;
   background: #fff;
@@ -410,6 +437,7 @@
 
 /* ─── Currency rail ──────────────────────────────────────────────────────── */
 
+/* Matches the global .ar-currency pill (template-parts/currency-switcher.php). */
 #ar-design-app .currency-rail {
   position: absolute;
   top: 50%;
@@ -418,28 +446,44 @@
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  background: rgb(17, 17, 17);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-right: none;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.35);
 }
 
 #ar-design-app .currency-rail button {
-  width: 40px;
+  display: block;
+  width: 100%;
+  margin: 0;
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(13, 13, 13, 0.55);
-  color: rgba(255, 255, 255, 0.55);
-  padding: 8px 0;
-  font-size: 8px;
-  letter-spacing: 0.08em;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.42);
+  padding: 14px 20px;
+  font-family: inherit;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  line-height: 1;
+  text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
   cursor: pointer;
-  backdrop-filter: blur(6px);
+  transition: background 0.18s ease, color 0.18s ease;
 }
 
-#ar-design-app .currency-rail button:first-child {
-  border-top: 0;
+#ar-design-app .currency-rail button + button {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#ar-design-app .currency-rail button:hover {
+  color: #fff;
 }
 
 #ar-design-app .currency-rail button.is-selected {
-  background: var(--accent);
+  background: rgb(200, 169, 106);
   color: #fff;
 }
 
@@ -629,6 +673,124 @@
   color: rgba(13, 13, 13, 0.72);
 }
 
+#ar-design-app .collection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+#ar-design-app .collection-card {
+  display: block;
+  border: 2px solid rgba(229, 223, 214, 0.95);
+  background: #fff;
+  padding: 8px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+#ar-design-app .collection-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(200, 169, 106, 0.6);
+}
+
+#ar-design-app .collection-card.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(200, 169, 106, 0.18);
+}
+
+#ar-design-app .collection-card__media {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #fafafa;
+  margin-bottom: 8px;
+}
+
+#ar-design-app .collection-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#ar-design-app .collection-card__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.25;
+  color: rgba(13, 13, 13, 0.78);
+}
+
+#ar-design-app .collection-card__copy {
+  margin: 4px 0 0;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.5);
+  line-height: 1.3;
+}
+
+#ar-design-app .collection-back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 14px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.55);
+  transition: color 0.15s ease;
+}
+
+#ar-design-app .collection-back:hover {
+  color: var(--accent);
+}
+
+#ar-design-app .collection-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+#ar-design-app .collection-head__media {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border: 1px solid rgba(229, 223, 214, 0.95);
+  background: #fafafa;
+}
+
+#ar-design-app .collection-head__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#ar-design-app .collection-head__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+#ar-design-app .collection-head__copy {
+  margin: 4px 0 0;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.5);
+}
+
 #ar-design-app .swatches {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
@@ -636,7 +798,7 @@
 }
 
 #ar-design-app .swatch {
-  border: 1px solid rgba(229, 223, 214, 0.85);
+  border: 2px solid rgba(229, 223, 214, 0.85);
   background: #fff;
   padding: 4px;
   cursor: pointer;
@@ -651,6 +813,32 @@
 #ar-design-app .swatch.is-selected {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px rgba(200, 169, 106, 0.18);
+}
+
+#ar-design-app .swatch__media {
+  position: relative;
+}
+
+#ar-design-app .swatch.is-selected .swatch__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(200, 169, 106, 0.12);
+  pointer-events: none;
+}
+
+#ar-design-app .swatch__check {
+  position: absolute;
+  z-index: 1;
+  right: 4px;
+  bottom: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #ar-design-app .swatch img {
@@ -690,7 +878,7 @@
 }
 
 #ar-design-app .choice-card {
-  border: 1px solid rgba(229, 223, 214, 0.95);
+  border: 2px solid rgba(229, 223, 214, 0.95);
   background: #fff;
   padding: 14px;
   cursor: pointer;
@@ -1262,6 +1450,42 @@
   font-size: 10px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+#ar-design-app .try-modal__loading {
+  min-height: 260px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 22px;
+  text-align: center;
+}
+
+#ar-design-app .try-modal__spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(13, 13, 13, 0.12);
+  border-top-color: var(--accent);
+  animation: try-modal-spin 0.8s linear infinite;
+}
+
+@keyframes try-modal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#ar-design-app .try-modal__loading-text {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(13, 13, 13, 0.58);
 }
 
 #ar-design-app .try-modal__foot {
