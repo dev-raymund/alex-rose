@@ -202,6 +202,7 @@ function alex_rose_2026_form_templates(): array {
 		'template/send-measurements.php',
 		'template/off-the-cuff.php',
 		'template/launch.php',
+		'template/feedback.php',
 	);
 }
 
@@ -486,6 +487,28 @@ add_action(
 					ALEX_ROSE_2026_URI . '/assets/js/page-schedule-a-call.js',
 					array('alex-rose-2026-form-submit'),
 					(string) filemtime($sac_js),
+					true
+				);
+			}
+		}
+
+		if (is_page_template('template/feedback.php')) {
+			$fb_css = ALEX_ROSE_2026_DIR . '/assets/css/page-feedback.css';
+			$fb_ver = is_readable($fb_css) ? (string) filemtime($fb_css) : ALEX_ROSE_2026_VERSION;
+			wp_enqueue_style(
+				'alex-rose-2026-feedback',
+				ALEX_ROSE_2026_URI . '/assets/css/page-feedback.css',
+				array('alex-rose-2026'),
+				$fb_ver
+			);
+
+			$fb_js = ALEX_ROSE_2026_DIR . '/assets/js/page-feedback.js';
+			if (is_readable($fb_js)) {
+				wp_enqueue_script(
+					'alex-rose-2026-feedback',
+					ALEX_ROSE_2026_URI . '/assets/js/page-feedback.js',
+					array('alex-rose-2026-form-submit'),
+					(string) filemtime($fb_js),
 					true
 				);
 			}

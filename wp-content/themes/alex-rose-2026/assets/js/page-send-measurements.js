@@ -99,6 +99,61 @@
 		});
 	}
 
+	function fieldValue(form, selector) {
+		var el = form.querySelector(selector);
+		return el ? String(el.value || '').trim() : '';
+	}
+
+	/**
+	 * Reveal the inline success view (confirmation + Calendly + feedback offer)
+	 * instead of redirecting. Falls back to the schedule URL if the success
+	 * markup is missing.
+	 */
+	function showSuccess(form) {
+		var success = document.querySelector('[data-sm-success]');
+		if (!success) {
+			window.location.href = form.getAttribute('data-schedule-url') || '/schedule-a-call/';
+			return;
+		}
+
+		var first = fieldValue(form, '#sm-first');
+		var last = fieldValue(form, '#sm-last');
+		var email = fieldValue(form, '#sm-email');
+		var fullName = (first + ' ' + last).trim();
+
+		var nameEl = success.querySelector('[data-sm-name]');
+		if (nameEl) {
+			nameEl.textContent = first || 'there';
+		}
+		var emailEl = success.querySelector('[data-sm-email]');
+		if (emailEl) {
+			emailEl.textContent = email;
+		}
+
+		var iframe = success.querySelector('[data-sm-calendly]');
+		if (iframe) {
+			var base = iframe.getAttribute('data-cal-base') || 'https://calendly.com/alex-rose-tailor/virtual-fitting';
+			iframe.src = base +
+				'?name=' + encodeURIComponent(fullName) +
+				'&email=' + encodeURIComponent(email) +
+				'&hide_gdpr_banner=1&background_color=f7f5f0&text_color=111111&primary_color=c8a96a';
+		}
+
+		var panel = document.querySelector('[data-sm-panel]');
+		if (panel) {
+			panel.hidden = true;
+		}
+
+		success.hidden = false;
+		if (typeof success.scrollIntoView === 'function') {
+			try {
+				success.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			} catch (e) {
+				success.scrollIntoView();
+			}
+		}
+	}
+
 	function bindForm(form) {
 		form.querySelectorAll('[data-sm-required]').forEach(function (field) {
 			field.addEventListener('input', function () {
@@ -132,7 +187,7 @@
 				errorNode: form.querySelector('[data-sm-error]'),
 				submitBtn: form.querySelector('[data-sm-submit]'),
 				onSuccess: function () {
-					window.location.href = form.getAttribute('data-schedule-url') || '/schedule-a-call/';
+					showSuccess(form);
 				},
 			});
 		});

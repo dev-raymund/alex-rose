@@ -1,0 +1,568 @@
+/**
+ * Feedback survey — "Help us improve" multi-step form.
+ *
+ * Scoped to .page-feedback. Behaviour: assets/js/page-feedback.js.
+ */
+
+.page-feedback {
+	--fb-gold: #c8a96a;
+	--fb-ink: #1a1a1a;
+	--fb-muted: #8a8a8a;
+	--fb-line: #e2e0da;
+	--fb-bg: #f5f5f1;
+	--fb-dark: #0d0d0d;
+	background: var(--fb-bg);
+	color: var(--fb-ink);
+	font-family: "Verdana Pro", Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.page-feedback *,
+.page-feedback *::before,
+.page-feedback *::after {
+	box-sizing: border-box;
+}
+
+/* ─── Hero ───────────────────────────────────────────────────────────────── */
+
+.fb-hero {
+	background: var(--fb-dark);
+	padding: 128px 0 64px;
+}
+
+.fb-hero__inner,
+.fb-body__inner {
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 0 32px;
+}
+
+.fb-hero__eyebrow {
+	margin: 0 0 16px;
+	font-size: 0.48rem;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: var(--fb-gold);
+}
+
+.fb-hero__title {
+	margin: 0 0 20px;
+	font-size: clamp(2rem, 5vw, 3.2rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+	color: #fff;
+}
+
+.fb-hero__lead {
+	margin: 0;
+	max-width: 480px;
+	font-size: 0.9rem;
+	line-height: 1.85;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+/* ─── Body ───────────────────────────────────────────────────────────────── */
+
+.fb-body {
+	padding: 64px 0 96px;
+}
+
+/* ─── Exclusive-offer callout ────────────────────────────────────────────── */
+
+.fb-offer {
+	background: var(--fb-dark);
+	border-left: 3px solid var(--fb-gold);
+	padding: 20px 28px;
+	margin-bottom: 40px;
+}
+
+.fb-offer__eyebrow {
+	margin: 0 0 6px;
+	font-size: 0.46rem;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--fb-gold);
+}
+
+.fb-offer__title {
+	margin: 0 0 4px;
+	font-size: 1.05rem;
+	font-weight: 300;
+	letter-spacing: -0.01em;
+	color: #fff;
+}
+
+.fb-offer__copy {
+	margin: 0;
+	font-size: 0.7rem;
+	line-height: 1.7;
+	color: rgba(255, 255, 255, 0.4);
+}
+
+/* ─── Step indicator ─────────────────────────────────────────────────────── */
+
+.fb-steps {
+	margin-bottom: 36px;
+}
+
+.fb-steps__row {
+	display: flex;
+	align-items: flex-start;
+	margin-bottom: 16px;
+}
+
+.fb-step {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	flex: 0 0 auto;
+}
+
+.fb-step__num {
+	width: 28px;
+	height: 28px;
+	border-radius: 50%;
+	border: 1.5px solid var(--fb-line);
+	background: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.55rem;
+	color: var(--fb-muted);
+	transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.fb-step__label {
+	font-size: 0.42rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: var(--fb-muted);
+	transition: color 0.2s ease;
+}
+
+.fb-step.is-active .fb-step__num,
+.fb-step.is-done .fb-step__num {
+	border-color: var(--fb-gold);
+	color: var(--fb-gold);
+}
+
+.fb-step.is-active .fb-step__num {
+	background: rgba(200, 169, 106, 0.09);
+}
+
+.fb-step.is-done .fb-step__num {
+	background: var(--fb-gold);
+	color: #fff;
+}
+
+.fb-step.is-active .fb-step__label,
+.fb-step.is-done .fb-step__label {
+	color: var(--fb-gold);
+}
+
+.fb-step__line {
+	flex: 1 1 0%;
+	height: 1px;
+	margin: 14px 8px 0;
+	background: var(--fb-line);
+}
+
+.fb-steps__bar {
+	height: 2px;
+	border-radius: 1px;
+	background: var(--fb-line);
+	overflow: hidden;
+}
+
+.fb-steps__bar-fill {
+	height: 100%;
+	width: 0;
+	border-radius: 1px;
+	background: var(--fb-gold);
+	transition: width 0.3s ease;
+}
+
+.fb-steps__caption {
+	margin: 8px 0 0;
+	font-size: 0.6rem;
+	color: var(--fb-muted);
+}
+
+/* ─── Panels / fields ────────────────────────────────────────────────────── */
+
+.fb-panel {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+}
+
+.fb-panel[hidden] {
+	display: none;
+}
+
+.fb-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 24px;
+}
+
+@media (min-width: 640px) {
+	.fb-grid {
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+.fb-field {
+	margin-bottom: 32px;
+}
+
+.fb-label {
+	display: block;
+	margin-bottom: 14px;
+	font-size: 1rem;
+	line-height: 1.65;
+	color: var(--fb-ink);
+}
+
+.fb-req {
+	color: var(--fb-gold);
+}
+
+.fb-input {
+	width: 100%;
+	padding: 14px 18px;
+	font-family: inherit;
+	font-size: 0.88rem;
+	color: var(--fb-ink);
+	background: #fff;
+	border: 1px solid var(--fb-line);
+	outline: none;
+	transition: border-color 0.2s ease;
+}
+
+.fb-input::placeholder {
+	color: #b5b2aa;
+}
+
+.fb-input:focus {
+	border-color: var(--fb-gold);
+}
+
+/* ─── Choice button groups ───────────────────────────────────────────────── */
+
+.fb-choices {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.fb-choice {
+	padding: 10px 20px;
+	font-family: inherit;
+	font-size: 0.72rem;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	color: var(--fb-muted);
+	background: transparent;
+	border: 1px solid var(--fb-line);
+	cursor: pointer;
+	transition: border-color 0.18s ease, color 0.18s ease, background 0.18s ease;
+}
+
+.fb-choice:hover {
+	border-color: var(--fb-gold);
+	color: var(--fb-ink);
+}
+
+.fb-choice.is-selected {
+	border-color: var(--fb-gold);
+	background: rgba(200, 169, 106, 0.09);
+	color: var(--fb-gold);
+}
+
+/* Rating scale (1–5 squares). */
+.fb-choice--rating {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	padding: 0;
+	font-size: 0.85rem;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.fb-textarea {
+	width: 100%;
+	padding: 14px 18px;
+	font-family: inherit;
+	font-size: 0.88rem;
+	line-height: 1.75;
+	color: var(--fb-ink);
+	background: #fff;
+	border: 1px solid var(--fb-line);
+	resize: vertical;
+	outline: none;
+	transition: border-color 0.2s ease;
+}
+
+.fb-textarea::placeholder {
+	color: #b5b2aa;
+}
+
+.fb-textarea:focus {
+	border-color: var(--fb-gold);
+}
+
+/* ─── Consent checkbox ───────────────────────────────────────────────────── */
+
+.fb-consent {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	margin: 24px 0 8px;
+	cursor: pointer;
+}
+
+.fb-consent__input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	margin: 0;
+}
+
+.fb-consent__box {
+	flex: 0 0 auto;
+	width: 20px;
+	height: 20px;
+	margin-top: 2px;
+	border: 1px solid var(--fb-line);
+	background: #fff;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.fb-consent__box::after {
+	content: "";
+	width: 10px;
+	height: 6px;
+	margin-top: -2px;
+	border-left: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	transform: rotate(-45deg);
+	opacity: 0;
+	transition: opacity 0.15s ease;
+}
+
+.fb-consent__input:checked + .fb-consent__box {
+	background: var(--fb-gold);
+	border-color: var(--fb-gold);
+}
+
+.fb-consent__input:checked + .fb-consent__box::after {
+	opacity: 1;
+}
+
+.fb-consent__input:focus-visible + .fb-consent__box {
+	outline: 2px solid var(--fb-gold);
+	outline-offset: 2px;
+}
+
+.fb-consent__text {
+	font-size: 0.75rem;
+	line-height: 1.75;
+	color: var(--fb-muted);
+}
+
+/* ─── Scaffold placeholder (unused once all steps are filled) ─────────────── */
+
+.fb-placeholder {
+	margin: 0;
+	padding: 28px;
+	border: 1px dashed var(--fb-line);
+	font-size: 0.8rem;
+	color: var(--fb-muted);
+	text-align: center;
+}
+
+/* ─── Navigation ─────────────────────────────────────────────────────────── */
+
+.fb-nav {
+	display: flex;
+	align-items: center;
+	margin-top: 8px;
+	padding-top: 24px;
+	border-top: 1px solid var(--fb-line);
+}
+
+.fb-nav__back {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px 0;
+	font-family: inherit;
+	font-size: 0.52rem;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--fb-muted);
+	background: none;
+	border: 0;
+	cursor: pointer;
+	transition: color 0.15s ease;
+}
+
+.fb-nav__back:hover {
+	color: var(--fb-ink);
+}
+
+.fb-nav__next,
+.fb-nav__submit {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	margin-left: auto;
+	padding: 14px 32px;
+	font-family: inherit;
+	font-size: 0.52rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: #fff;
+	background: var(--fb-gold);
+	border: 0;
+	cursor: pointer;
+	transition: opacity 0.15s ease;
+}
+
+.fb-nav__next:hover,
+.fb-nav__submit:hover {
+	opacity: 0.9;
+}
+
+.fb-nav__next:disabled,
+.fb-nav__submit:disabled {
+	background: var(--fb-line);
+	opacity: 0.55;
+	cursor: not-allowed;
+}
+
+/* The nav buttons set display:inline-flex, which would otherwise defeat the
+   [hidden] attribute the step engine toggles. Restore hiding. */
+.fb-nav__back[hidden],
+.fb-nav__next[hidden],
+.fb-nav__submit[hidden] {
+	display: none;
+}
+
+.fb-form.is-submitting .fb-nav__submit {
+	opacity: 0.6;
+	cursor: default;
+}
+
+.fb-error {
+	margin: 18px 0 0;
+	font-size: 0.78rem;
+	line-height: 1.6;
+	color: #b3261e;
+}
+
+/* ─── Confirmation ───────────────────────────────────────────────────────── */
+
+.fb-confirm {
+	padding: 8px 0;
+}
+
+.fb-confirm__head {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+	margin-bottom: 40px;
+}
+
+.fb-confirm__icon {
+	flex: 0 0 auto;
+	width: 36px;
+	height: 36px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--fb-gold);
+	color: #fff;
+}
+
+.fb-confirm__icon svg {
+	width: 15px;
+	height: 15px;
+}
+
+.fb-confirm__code-check svg {
+	width: 13px;
+	height: 13px;
+}
+
+.fb-confirm__title {
+	margin: 0 0 4px;
+	font-size: 1.1rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: var(--fb-ink);
+}
+
+.fb-confirm__copy {
+	margin: 0;
+	font-size: 0.8rem;
+	line-height: 1.7;
+	color: var(--fb-muted);
+}
+
+.fb-confirm__code {
+	max-width: 440px;
+	padding: 28px 32px;
+	background: var(--fb-dark);
+}
+
+.fb-confirm__code-label {
+	margin: 0 0 12px;
+	font-size: 0.46rem;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: rgba(200, 169, 106, 0.7);
+}
+
+.fb-confirm__code-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 20px;
+}
+
+.fb-confirm__code-check {
+	display: inline-flex;
+	color: var(--fb-gold);
+}
+
+.fb-confirm__code-value {
+	font-size: 1.6rem;
+	font-weight: 300;
+	letter-spacing: 0.14em;
+	color: #fff;
+}
+
+.fb-confirm__code-note {
+	margin: 0;
+	font-size: 0.65rem;
+	line-height: 1.75;
+	color: rgba(255, 255, 255, 0.38);
+}
+
+@media (max-width: 600px) {
+	.fb-step__label {
+		display: none;
+	}
+}

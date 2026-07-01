@@ -81,6 +81,7 @@ $nav_options = array(
 			</div>
 
 			<?php get_template_part('template-parts/send-measurements/measure-yourself'); ?>
+			<?php get_template_part('template-parts/send-measurements/success'); ?>
 		</div>
 	</section>
 

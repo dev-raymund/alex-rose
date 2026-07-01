@@ -767,6 +767,107 @@ function alex_rose_2026_handle_lp_join_waitlist(): void {
 add_action('admin_post_lp_join_waitlist', 'alex_rose_2026_handle_lp_join_waitlist');
 add_action('admin_post_nopriv_lp_join_waitlist', 'alex_rose_2026_handle_lp_join_waitlist');
 
+/* --- Feedback survey ---------------------------------------------------- */
+
+/**
+ * Multi-step "Help us improve" feedback survey. Every posted field named fb_*
+ * is collected and emailed in form order, so adding questions to steps 2–5
+ * (template-parts/feedback/markup.php) needs no change here — just name the
+ * inputs fb_something.
+ */
+function alex_rose_2026_handle_fb_submit_feedback(): void {
+	$action = 'fb_submit_feedback';
+	alex_rose_2026_form_guard($action, 'fb_submit_feedback', 'fb_nonce');
+
+	$email = alex_rose_2026_form_field('fb_email');
+	if (! is_email($email)) {
+		alex_rose_2026_form_respond(false, $action, __('Please enter a valid email address.', 'alex-rose-2026'));
+	}
+	if (alex_rose_2026_form_field('fb_consent') === '') {
+		alex_rose_2026_form_respond(false, $action, __('Please agree to the use of your details before sending.', 'alex-rose-2026'));
+	}
+	$name = alex_rose_2026_form_field('fb_name');
+
+	// Friendly labels for the known step-1 fields; anything else is humanised
+	// from its field name (fb_age_band -> "Age band").
+	$labels = array(
+		'fb_email' => __('Email', 'alex-rose-2026'),
+		'fb_name'  => __('Full name', 'alex-rose-2026'),
+		'fb_phone' => __('Phone', 'alex-rose-2026'),
+		'fb_age'   => __('Age group', 'alex-rose-2026'),
+		'fb_mtm'   => __('Bought made-to-measure before', 'alex-rose-2026'),
+		// Step 2 — The website
+		'fb_access_easily'        => __('Accessed the website easily', 'alex-rose-2026'),
+		'fb_loading_speed'        => __('Loading speed rating (1–5)', 'alex-rose-2026'),
+		'fb_homepage_clear'       => __('Homepage clear & welcoming', 'alex-rose-2026'),
+		'fb_homepage_suggestions' => __('Homepage suggestions', 'alex-rose-2026'),
+		// Step 3 — The configurator
+		'fb_button_easy_find'     => __('“Design My Jacket” button easy to find', 'alex-rose-2026'),
+		'fb_customise_ease'       => __('Ease of customising (1–5)', 'alex-rose-2026'),
+		'fb_most_intuitive'       => __('Most intuitive part', 'alex-rose-2026'),
+		'fb_confusing'            => __('Confusing / to improve', 'alex-rose-2026'),
+		'fb_enough_options'       => __('Enough fabric & style options', 'alex-rose-2026'),
+		'fb_fitting_room_smooth'  => __('Fitting room worked smoothly', 'alex-rose-2026'),
+		'fb_preview_realistic'    => __('Preview realism (1–5)', 'alex-rose-2026'),
+		'fb_fitting_room_improve' => __('Fitting room improvements', 'alex-rose-2026'),
+		// Step 4 — Your journey
+		'fb_comfortable_details'      => __('Comfortable entering details', 'alex-rose-2026'),
+		'fb_confidence_help'          => __('What would build confidence', 'alex-rose-2026'),
+		'fb_form_clear'               => __('Form layout clear', 'alex-rose-2026'),
+		'fb_technical_issues'         => __('Encountered technical issues', 'alex-rose-2026'),
+		'fb_measurements_ease'        => __('Ease of entering measurements (1–5)', 'alex-rose-2026'),
+		'fb_measurement_instructions' => __('Measurement instructions clear', 'alex-rose-2026'),
+		'fb_measurement_improve'      => __('Measurement process improvements', 'alex-rose-2026'),
+		'fb_book_call_work'           => __('“Book a Call” link worked', 'alex-rose-2026'),
+		'fb_booking_straightforward'  => __('Booking process straightforward', 'alex-rose-2026'),
+		'fb_booking_improve'          => __('Booking improvements', 'alex-rose-2026'),
+		// Step 5 — Overall
+		'fb_overall_rating'       => __('Overall experience (1–5)', 'alex-rose-2026'),
+		'fb_recommend'            => __('Would recommend to a friend', 'alex-rose-2026'),
+		'fb_additional_comments'  => __('Additional comments', 'alex-rose-2026'),
+		'fb_consent'              => __('Consent to use details', 'alex-rose-2026'),
+	);
+
+	$rows = array();
+	foreach ($_POST as $key => $raw) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$key = (string) $key;
+		if (strpos($key, 'fb_') !== 0 || $key === 'fb_nonce') {
+			continue;
+		}
+		$value = alex_rose_2026_form_field_list($key);
+		if ($value === array()) {
+			$single = alex_rose_2026_form_field($key);
+			if ($single === '') {
+				continue;
+			}
+			$value = $single;
+		}
+		$label = isset($labels[ $key ])
+			? $labels[ $key ]
+			: ucfirst(trim(str_replace('_', ' ', substr($key, 3))));
+		$rows[] = array('label' => $label, 'value' => $value);
+	}
+
+	$sent = alex_rose_2026_form_send_mail(
+		sprintf(
+			/* translators: %s: respondent email */
+			__('Feedback survey response from %s', 'alex-rose-2026'),
+			$email
+		),
+		alex_rose_2026_form_build_body($rows, __('A new feedback survey response has arrived:', 'alex-rose-2026')),
+		$email,
+		$name
+	);
+
+	if (! $sent) {
+		alex_rose_2026_form_respond(false, $action, __('Something went wrong sending your feedback. Please try again.', 'alex-rose-2026'));
+	}
+
+	alex_rose_2026_form_respond(true, $action, __('Thank you. Your feedback has been sent.', 'alex-rose-2026'));
+}
+add_action('admin_post_fb_submit_feedback', 'alex_rose_2026_handle_fb_submit_feedback');
+add_action('admin_post_nopriv_fb_submit_feedback', 'alex_rose_2026_handle_fb_submit_feedback');
+
 /* --- Design Your Jacket: create made-to-order WooCommerce order ---------- */
 
 /**

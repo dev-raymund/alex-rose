@@ -603,3 +603,211 @@
 		transition: none;
 	}
 }
+
+/* ─── Success view (revealed on submit) ──────────────────────────────────── */
+.page-send-measurements .sm-success {
+	border-top: 1px solid rgba(13, 13, 13, 0.1);
+	padding-top: 40px;
+	margin-top: 32px;
+}
+
+.page-send-measurements .sm-success__icon {
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 24px;
+	border: 1px solid rgba(200, 169, 106, 0.31);
+	background: rgba(200, 169, 106, 0.06);
+	color: rgb(200, 169, 106);
+}
+
+.page-send-measurements .sm-success__kicker {
+	margin: 0 0 8px;
+	font-size: 10px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: rgb(200, 169, 106);
+}
+
+.page-send-measurements .sm-success__kicker:not(:first-of-type) {
+	margin-top: 16px;
+}
+
+.page-send-measurements .sm-success__title {
+	margin: 0 0 12px;
+	font-size: clamp(1.5rem, 3vw, 1.9rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: #1a1a1a;
+}
+
+.page-send-measurements .sm-success__copy {
+	margin: 0 0 40px;
+	max-width: 32rem;
+	font-size: 0.875rem;
+	line-height: 1.85;
+	color: #767676;
+}
+
+.page-send-measurements .sm-success__email {
+	color: #1a1a1a;
+}
+
+.page-send-measurements .sm-success__subtitle {
+	margin: 0 0 12px;
+	font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: #1a1a1a;
+}
+
+.page-send-measurements .sm-success__lead {
+	margin: 0 0 24px;
+	max-width: 32rem;
+	font-size: 0.8rem;
+	line-height: 1.7;
+	color: #767676;
+}
+
+.page-send-measurements .sm-success__cal {
+	width: 100%;
+	height: 650px;
+	border: 1px solid rgba(13, 13, 13, 0.1);
+	overflow: hidden;
+}
+
+.page-send-measurements .sm-success__cal iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.page-send-measurements .sm-success__phone {
+	margin: 16px 0 0;
+	font-size: 0.75rem;
+	color: #767676;
+}
+
+.page-send-measurements .sm-success__phone a {
+	color: #1a1a1a;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+/* ─── Exclusive offer box ────────────────────────────────────────────────── */
+.page-send-measurements .sm-offer {
+	margin-top: 48px;
+	background: rgb(13, 13, 13);
+}
+
+.page-send-measurements .sm-offer__stripe {
+	height: 3px;
+	background: linear-gradient(90deg, rgb(200, 169, 106), transparent);
+}
+
+.page-send-measurements .sm-offer__inner {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	padding: 48px 44px;
+}
+
+@media (min-width: 768px) {
+	.page-send-measurements .sm-offer__inner {
+		flex-direction: row;
+		align-items: center;
+		gap: 64px;
+	}
+}
+
+.page-send-measurements .sm-offer__main {
+	flex: 1 1 auto;
+}
+
+.page-send-measurements .sm-offer__eyebrow {
+	margin: 0 0 14px;
+	font-size: 0.48rem;
+	letter-spacing: 0.24em;
+	text-transform: uppercase;
+	color: rgb(200, 169, 106);
+}
+
+.page-send-measurements .sm-offer__headline {
+	margin: 0 0 18px;
+	font-size: clamp(1.8rem, 4vw, 2.8rem);
+	font-weight: 300;
+	letter-spacing: -0.03em;
+	line-height: 1.1;
+	color: #fff;
+}
+
+.page-send-measurements .sm-offer__accent {
+	color: rgb(200, 169, 106);
+}
+
+.page-send-measurements .sm-offer__copy {
+	margin: 0;
+	max-width: 420px;
+	font-size: 0.82rem;
+	line-height: 1.85;
+	color: rgba(255, 255, 255, 0.45);
+}
+
+.page-send-measurements .sm-offer__aside {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	min-width: 220px;
+}
+
+.page-send-measurements .sm-offer__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.page-send-measurements .sm-offer__item {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 0.72rem;
+	letter-spacing: 0.04em;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.page-send-measurements .sm-offer__star {
+	flex: 0 0 auto;
+}
+
+.page-send-measurements .sm-offer__btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	align-self: flex-start;
+	padding: 16px 32px;
+	font-size: 0.54rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	color: #fff;
+	background: rgb(200, 169, 106);
+	text-decoration: none;
+	transition: opacity 0.15s ease;
+}
+
+.page-send-measurements .sm-offer__btn:hover {
+	opacity: 0.9;
+}
+
+.page-send-measurements .sm-offer__fine {
+	margin: 0;
+	font-size: 0.55rem;
+	letter-spacing: 0.06em;
+	color: rgba(255, 255, 255, 0.2);
+}
