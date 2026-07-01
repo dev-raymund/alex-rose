@@ -162,17 +162,25 @@ function saveCurrency(currency) {
 const CUSTOMER_STORAGE_KEY = "alexrose_customer";
 
 function loadCustomer() {
+  // Defaults from the logged-in WordPress account (set on the container in
+  // template-parts/design/markup.php). A saved localStorage value wins when
+  // present, otherwise the account details prefill the forms.
+  const fromAccount = {
+    name: container.dataset.userName || "",
+    email: container.dataset.userEmail || "",
+    phone: container.dataset.userPhone || "",
+  };
   try {
     const data = JSON.parse(localStorage.getItem(CUSTOMER_STORAGE_KEY));
     if (data && typeof data === "object") {
       return {
-        name: typeof data.name === "string" ? data.name : "",
-        email: typeof data.email === "string" ? data.email : "",
-        phone: typeof data.phone === "string" ? data.phone : "",
+        name: (typeof data.name === "string" && data.name) ? data.name : fromAccount.name,
+        email: (typeof data.email === "string" && data.email) ? data.email : fromAccount.email,
+        phone: (typeof data.phone === "string" && data.phone) ? data.phone : fromAccount.phone,
       };
     }
   } catch (_) {}
-  return { name: "", email: "", phone: "" };
+  return fromAccount;
 }
 
 function saveCustomerField(field, value) {
