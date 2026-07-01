@@ -777,6 +777,18 @@ add_action(
 				true
 			);
 		}
+
+		// Cross-page customer prefill (fitting-room details → order forms).
+		$prefill_js = ALEX_ROSE_2026_DIR . '/assets/js/customer-prefill.js';
+		if (is_readable($prefill_js)) {
+			wp_enqueue_script(
+				'alex-rose-2026-customer-prefill',
+				ALEX_ROSE_2026_URI . '/assets/js/customer-prefill.js',
+				array(),
+				(string) filemtime($prefill_js),
+				true
+			);
+		}
 	}
 );
 

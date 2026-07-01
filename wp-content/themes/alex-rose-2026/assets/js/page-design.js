@@ -89,7 +89,7 @@ const state = {
   trySubmitting: false,
   tryError: "",
   tryOnResult: loadSessionValue(TRY_ON_RESULT_STORAGE_KEY),
-  tryForm: { name: "", email: "", phone: "" },
+  tryForm: loadCustomer(),
   priceCurrency: loadCurrency(),
   measurementChoice: "",
   bodyUnits: "inches",
@@ -112,7 +112,7 @@ const state = {
     jacketHalfBack: "",
     jacketHalfWaist: "",
   },
-  contact: { name: "", email: "", phone: "", date: "", message: "" },
+  contact: Object.assign(loadCustomer(), { date: "", message: "" }),
 };
 
 const catalog = {
@@ -154,6 +154,42 @@ function loadCurrency() {
 
 function saveCurrency(currency) {
   try { localStorage.setItem("alexrose_currency", currency); } catch (_) {}
+}
+
+// Shared customer profile — the name/email/phone entered in the fitting-room
+// and order forms is persisted here so it prefills the rest of the order
+// process (WooCommerce checkout, send-measurements). See assets/js/customer-prefill.js.
+const CUSTOMER_STORAGE_KEY = "alexrose_customer";
+
+function loadCustomer() {
+  try {
+    const data = JSON.parse(localStorage.getItem(CUSTOMER_STORAGE_KEY));
+    if (data && typeof data === "object") {
+      return {
+        name: typeof data.name === "string" ? data.name : "",
+        email: typeof data.email === "string" ? data.email : "",
+        phone: typeof data.phone === "string" ? data.phone : "",
+      };
+    }
+  } catch (_) {}
+  return { name: "", email: "", phone: "" };
+}
+
+function saveCustomerField(field, value) {
+  if (field !== "name" && field !== "email" && field !== "phone") return;
+  try {
+    const current = loadCustomer();
+    current[field] = value;
+    localStorage.setItem(CUSTOMER_STORAGE_KEY, JSON.stringify(current));
+  } catch (_) {}
+}
+
+// Keep the fitting-room and order forms in sync and persist to the profile.
+function syncCustomerField(field, value) {
+  if (field !== "name" && field !== "email" && field !== "phone") return;
+  state.tryForm[field] = value;
+  state.contact[field] = value;
+  saveCustomerField(field, value);
 }
 
 function formatPrice(amount, currency) {
@@ -660,6 +696,7 @@ function updateMeasurementField(field, value) {
 
 function updateContactField(field, value) {
   state.contact[field] = value;
+  syncCustomerField(field, value);
 }
 
 // The full jacket configuration sent to WooCommerce on order. tryOnResult is
@@ -793,6 +830,7 @@ function closeZoom() { state.zoomOpen = false; render(); }
 function updateTryField(field, value) {
   state.tryForm[field] = value;
   state.tryError = "";
+  syncCustomerField(field, value);
 }
 
 function validateTryOnRequest() {
