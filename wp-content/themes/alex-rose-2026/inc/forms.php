@@ -716,6 +716,89 @@ function alex_rose_2026_handle_otc_newsletter_signup(): void {
 add_action('admin_post_otc_newsletter_signup', 'alex_rose_2026_handle_otc_newsletter_signup');
 add_action('admin_post_nopriv_otc_newsletter_signup', 'alex_rose_2026_handle_otc_newsletter_signup');
 
+/* --- Brevo (email marketing) integration -------------------------------- */
+
+/**
+ * Add (or update) a contact in Brevo via its REST API. Used to push launch-page
+ * waitlist signups into a Brevo list so they can receive the discount email or
+ * enter a Brevo automation. Best-effort: failures never block the form.
+ *
+ * Configure the API key + list id (do NOT hard-code the key in the theme).
+ * In wp-config.php:
+ *
+ *     define('ALEX_ROSE_BREVO_API_KEY', 'xkeysib-xxxxxxxx');
+ *     define('ALEX_ROSE_BREVO_LAUNCH_LIST_ID', 3);
+ *
+ * Both are filterable: `alex_rose_2026_brevo_api_key`,
+ * `alex_rose_2026_brevo_list_id`, `alex_rose_2026_brevo_attributes`.
+ *
+ * @param array<string, mixed> $attributes Brevo contact attributes (must already
+ *                                          exist in the account, e.g. FIRSTNAME).
+ * @param int[]                $list_ids   Brevo list ids to add the contact to.
+ */
+function alex_rose_2026_brevo_add_contact(string $email, array $attributes = array(), array $list_ids = array()): bool {
+	$key = defined('ALEX_ROSE_BREVO_API_KEY') ? (string) ALEX_ROSE_BREVO_API_KEY : '';
+	$key = (string) apply_filters('alex_rose_2026_brevo_api_key', $key);
+	if ($key === '' || ! is_email($email)) {
+		return false;
+	}
+
+	$payload = array(
+		'email'         => $email,
+		'updateEnabled' => true, // Upsert — re-subscribing an existing email won't error.
+	);
+	if ($attributes !== array()) {
+		$payload['attributes'] = $attributes;
+	}
+	$list_ids = array_values(array_filter(array_map('intval', $list_ids)));
+	if ($list_ids !== array()) {
+		$payload['listIds'] = $list_ids;
+	}
+
+	$response = wp_remote_post(
+		'https://api.brevo.com/v3/contacts',
+		array(
+			'timeout' => 12,
+			'headers' => array(
+				'api-key'      => $key,
+				'Content-Type' => 'application/json',
+				'Accept'       => 'application/json',
+			),
+			'body'    => wp_json_encode($payload),
+		)
+	);
+
+	if (is_wp_error($response)) {
+		error_log('[Alex Rose] Brevo request error: ' . $response->get_error_message());
+		return false;
+	}
+	// 201 created, 204 updated (updateEnabled), 200 ok.
+	$code = (int) wp_remote_retrieve_response_code($response);
+	if (! in_array($code, array(200, 201, 204), true)) {
+		error_log('[Alex Rose] Brevo add_contact HTTP ' . $code . ': ' . wp_remote_retrieve_body($response));
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Push a form signup into Brevo using the theme's configured list + filters.
+ *
+ * @param array<string, mixed> $context Extra data passed to the attributes filter.
+ */
+function alex_rose_2026_brevo_capture(string $email, string $action, array $context = array()): void {
+	$list_id = defined('ALEX_ROSE_BREVO_LAUNCH_LIST_ID') ? (int) ALEX_ROSE_BREVO_LAUNCH_LIST_ID : 0;
+	$list_id = (int) apply_filters('alex_rose_2026_brevo_list_id', $list_id, $action);
+
+	// Empty by default: Brevo rejects the whole request for attributes that
+	// don't exist in the account, so only send ones added via the filter (once
+	// you've created e.g. a REFERRED_BY attribute in Brevo).
+	$attributes = apply_filters('alex_rose_2026_brevo_attributes', array(), $action, $context);
+	$attributes = is_array($attributes) ? $attributes : array();
+
+	alex_rose_2026_brevo_add_contact($email, $attributes, $list_id ? array($list_id) : array());
+}
+
 /* --- Launch: Founding-member discount list ------------------------------ */
 
 function alex_rose_2026_handle_lp_join_waitlist(): void {
@@ -728,6 +811,9 @@ function alex_rose_2026_handle_lp_join_waitlist(): void {
 	if (! is_email($email)) {
 		alex_rose_2026_form_respond(false, $action, __('Please enter a valid email address.', 'alex-rose-2026'));
 	}
+
+	// Add the subscriber to Brevo (no-op until an API key is configured).
+	alex_rose_2026_brevo_capture($email, $action, array('referral' => $referral));
 
 	$body = alex_rose_2026_form_build_body(
 		array(
