@@ -9,22 +9,23 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
-$nav_options = array(
-	array(
-		'icon'  => 'package',
-		'label' => __('Post Us a Jacket', 'alex-rose-2026'),
-		'desc'  => __('Send a jacket that fits you well. We measure it and return it within 48 hours, free of charge.', 'alex-rose-2026'),
-		'cta'   => __('Arrange a collection →', 'alex-rose-2026'),
-		'href'  => '/post-your-jacket',
-	),
-	array(
-		'icon'  => 'phone',
-		'label' => __('Book a Call with Harold', 'alex-rose-2026'),
-		'desc'  => __('Harold guides you through every measurement on a short video call, at a time that suits you.', 'alex-rose-2026'),
-		'cta'   => __('Schedule a free call →', 'alex-rose-2026'),
-		'href'  => '/schedule-a-call',
-	),
-);
+// Determine the customer's country so the UK-only "Post Us a Jacket" option can
+// be disabled for overseas addresses. Source it from the just-placed order
+// passed as ?order_id, falling back to the current WooCommerce customer session.
+// When the country can't be determined we treat it as UK so genuine UK customers
+// are never blocked.
+$ar_country  = '';
+$ar_order_id = isset($_GET['order_id']) ? absint(wp_unslash($_GET['order_id'])) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+if ($ar_order_id && function_exists('wc_get_order')) {
+	$ar_order = wc_get_order($ar_order_id);
+	if ($ar_order) {
+		$ar_country = $ar_order->get_shipping_country() ?: $ar_order->get_billing_country();
+	}
+}
+if ('' === $ar_country && function_exists('WC') && WC()->customer) {
+	$ar_country = WC()->customer->get_shipping_country() ?: WC()->customer->get_billing_country();
+}
+$ar_post_uk = ('' === $ar_country || 'GB' === $ar_country);
 ?>
 <main id="main" class="page-send-measurements" tabindex="-1">
 
@@ -59,28 +60,49 @@ $nav_options = array(
 					</div>
 					<p class="sm-option__label"><?php esc_html_e('Measure Yourself', 'alex-rose-2026'); ?></p>
 					<p class="sm-option__desc"><?php esc_html_e('Follow our step-by-step guide and video, then fill in the form below.', 'alex-rose-2026'); ?></p>
-					<span class="sm-option__cta sm-option__cta--active" data-sm-cta-active hidden><?php esc_html_e('Guide & form below ↓', 'alex-rose-2026'); ?></span>
+					<span class="sm-option__cta sm-option__cta--rest"><?php esc_html_e('View guide & form →', 'alex-rose-2026'); ?></span>
+					<span class="sm-option__cta sm-option__cta--active"><?php esc_html_e('Form below ↓', 'alex-rose-2026'); ?></span>
 				</button>
 
-				<?php foreach ($nav_options as $opt) :
-					$icon = isset($opt['icon']) ? (string) $opt['icon'] : '';
-					?>
-					<a class="sm-option" href="<?php echo esc_url(home_url($opt['href'])); ?>">
-						<div class="sm-option__icon" aria-hidden="true">
-							<?php if ($icon === 'package') : ?>
-								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
-							<?php elseif ($icon === 'phone') : ?>
-								<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
-							<?php endif; ?>
-						</div>
-						<p class="sm-option__label"><?php echo esc_html($opt['label']); ?></p>
-						<p class="sm-option__desc"><?php echo esc_html($opt['desc']); ?></p>
-						<span class="sm-option__cta"><?php echo esc_html($opt['cta']); ?></span>
-					</a>
-				<?php endforeach; ?>
+				<button
+					type="button"
+					class="sm-option<?php echo $ar_post_uk ? '' : ' sm-option--disabled'; ?>"
+					<?php if ($ar_post_uk) : ?>data-sm-toggle aria-expanded="false" aria-controls="sm-post-panel"<?php else : ?>disabled aria-disabled="true"<?php endif; ?>
+				>
+					<span class="sm-option__badge"><?php esc_html_e('UK only', 'alex-rose-2026'); ?></span>
+					<div class="sm-option__icon" aria-hidden="true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"></path><path d="M12 22V12"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><path d="m7.5 4.27 9 5.15"></path></svg>
+					</div>
+					<p class="sm-option__label"><?php esc_html_e('Post Us a Jacket', 'alex-rose-2026'); ?></p>
+					<p class="sm-option__desc"><?php esc_html_e('Send a jacket that fits you well. We measure it and return it within 48 hours, free of charge.', 'alex-rose-2026'); ?></p>
+					<?php if ($ar_post_uk) : ?>
+						<span class="sm-option__cta sm-option__cta--rest"><?php esc_html_e('Arrange a collection →', 'alex-rose-2026'); ?></span>
+						<span class="sm-option__cta sm-option__cta--active"><?php esc_html_e('Form below ↓', 'alex-rose-2026'); ?></span>
+					<?php else : ?>
+						<span class="sm-option__cta sm-option__cta--muted"><?php esc_html_e('Available in the UK only', 'alex-rose-2026'); ?></span>
+					<?php endif; ?>
+				</button>
+
+				<button
+					type="button"
+					class="sm-option"
+					data-sm-toggle
+					aria-expanded="false"
+					aria-controls="sm-call-panel"
+				>
+					<div class="sm-option__icon" aria-hidden="true">
+						<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"></path></svg>
+					</div>
+					<p class="sm-option__label"><?php esc_html_e('Book a Call with Harold', 'alex-rose-2026'); ?></p>
+					<p class="sm-option__desc"><?php esc_html_e('Harold guides you through every measurement on a short video call, at a time that suits you.', 'alex-rose-2026'); ?></p>
+					<span class="sm-option__cta sm-option__cta--rest"><?php esc_html_e('Schedule a free call →', 'alex-rose-2026'); ?></span>
+					<span class="sm-option__cta sm-option__cta--active"><?php esc_html_e('Form below ↓', 'alex-rose-2026'); ?></span>
+				</button>
 			</div>
 
 			<?php get_template_part('template-parts/send-measurements/measure-yourself'); ?>
+			<?php get_template_part('template-parts/send-measurements/post-us-a-jacket'); ?>
+			<?php get_template_part('template-parts/send-measurements/book-a-call'); ?>
 			<?php get_template_part('template-parts/send-measurements/success'); ?>
 		</div>
 	</section>

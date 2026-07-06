@@ -190,6 +190,15 @@
 				apply(e.newValue, false, false);
 			}
 		});
+
+		// WooCommerce checkout/cart re-render their totals fragment over AJAX,
+		// which re-injects [data-ar-price] nodes as raw GBP. Re-convert them to
+		// the chosen currency each time that happens so the switch sticks.
+		if (window.jQuery) {
+			window.jQuery(document.body).on('updated_checkout updated_cart_totals', function () {
+				apply(getCurrency(), false, false);
+			});
+		}
 	}
 
 	if (document.readyState === 'loading') {

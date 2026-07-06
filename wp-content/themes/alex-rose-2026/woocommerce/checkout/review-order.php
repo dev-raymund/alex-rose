@@ -41,7 +41,7 @@ defined('ABSPATH') || exit;
 									<?php echo apply_filters('woocommerce_checkout_cart_item_quantity', ' <span class="arco-item__qty">&times;&nbsp;' . esc_html($cart_item['quantity']) . '</span>', $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								</div>
 								<div class="arco-item__price">
-									<?php echo apply_filters('woocommerce_cart_item_subtotal', WC()->cart->get_product_subtotal($_product, $cart_item['quantity']), $cart_item, $cart_item_key); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+									<?php echo alex_rose_2026_price_html((float) $cart_item['line_subtotal'], 2); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 								</div>
 							</div>
 							<?php if ($arco_meta) : ?>
@@ -60,7 +60,7 @@ defined('ABSPATH') || exit;
 	<tfoot>
 		<tr class="cart-subtotal">
 			<th><?php esc_html_e('Subtotal', 'woocommerce'); ?></th>
-			<td><?php wc_cart_totals_subtotal_html(); ?></td>
+			<td><?php echo alex_rose_2026_price_html((float) WC()->cart->get_subtotal(), 2); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 
 		<?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
@@ -103,7 +103,7 @@ defined('ABSPATH') || exit;
 
 		<tr class="order-total">
 			<th><?php esc_html_e('Total', 'woocommerce'); ?></th>
-			<td><?php wc_cart_totals_order_total_html(); ?></td>
+			<td><?php echo alex_rose_2026_price_html((float) WC()->cart->get_total('edit'), 2); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></td>
 		</tr>
 
 		<?php do_action('woocommerce_review_order_after_order_total'); ?>

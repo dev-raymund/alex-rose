@@ -121,6 +121,7 @@
 }
 
 .page-send-measurements .sm-option {
+	position: relative;
 	display: block;
 	width: 100%;
 	padding: 24px;
@@ -186,9 +187,65 @@
 	padding-bottom: 2px;
 }
 
+/* Toggle cards swap their CTA label: "View …" when closed, "Form below ↓"
+   (gold) when open. Driven purely by the .is-active class. */
+.page-send-measurements .sm-option__cta--active {
+	display: none;
+}
+
+.page-send-measurements .sm-option.is-active .sm-option__cta--rest {
+	display: none;
+}
+
 .page-send-measurements .sm-option.is-active .sm-option__cta--active {
+	display: inline-block;
 	color: var(--ar-gold);
 	border-bottom-color: var(--ar-gold);
+}
+
+.page-send-measurements .sm-option__badge {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	padding: 2px 8px;
+	font-size: 9px;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--ar-gold);
+	background: rgba(200, 169, 106, 0.094);
+	border: 1px solid rgba(200, 169, 106, 0.314);
+}
+
+.page-send-measurements .sm-option--disabled {
+	cursor: not-allowed;
+	opacity: 0.55;
+}
+
+.page-send-measurements .sm-option--disabled:hover,
+.page-send-measurements .sm-option--disabled:focus-visible {
+	border-color: var(--ar-border-card);
+}
+
+.page-send-measurements .sm-option__cta--muted {
+	color: var(--ar-muted-foreground);
+	border-bottom-color: transparent;
+}
+
+.page-send-measurements .sm-panel__notice {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 0 24px;
+	padding: 8px 12px;
+	font-size: 11px;
+	color: var(--ar-muted-foreground);
+	background: #fafaf8;
+	border: 1px solid #e5e5e5;
+}
+
+.page-send-measurements .sm-panel__notice svg {
+	flex-shrink: 0;
 }
 
 /* ----- Toggled measure-yourself panel ----- */
@@ -414,6 +471,10 @@
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.page-send-measurements .sm-form__grid--2 {
+	grid-template-columns: 1fr;
+}
+
 @media (min-width: 640px) {
 	.page-send-measurements .sm-form__grid--3 {
 		grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -426,6 +487,97 @@
 	.page-send-measurements .sm-form__grid--5 {
 		grid-template-columns: repeat(5, minmax(0, 1fr));
 	}
+
+	.page-send-measurements .sm-form__grid--2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+/* ----- Book a Call panel ----- */
+.page-send-measurements .sm-panel__intro {
+	max-width: 32rem;
+	margin: 0 0 24px;
+	font-size: 13px;
+	line-height: 1.75;
+	color: var(--ar-muted-foreground);
+}
+
+.page-send-measurements .sm-form__textarea {
+	min-height: 88px;
+	font-family: inherit;
+	line-height: 1.6;
+	resize: vertical;
+}
+
+.page-send-measurements .sm-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.page-send-measurements .sm-chip {
+	padding: 8px 12px;
+	font-family: inherit;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.18em;
+	color: var(--ar-muted-foreground);
+	background: #fff;
+	border: 1px solid var(--ar-border-card);
+	cursor: pointer;
+	transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.page-send-measurements .sm-chip:hover {
+	border-color: rgba(17, 17, 17, 0.3);
+}
+
+.page-send-measurements .sm-chip.is-active {
+	color: var(--ar-gold);
+	background: rgba(200, 169, 106, 0.06);
+	border-color: var(--ar-gold);
+}
+
+.page-send-measurements .sm-call-success[hidden] {
+	display: none;
+}
+
+.page-send-measurements .sm-call-success__kicker {
+	color: var(--ar-gold);
+}
+
+.page-send-measurements .sm-call-success__title {
+	margin: 0 0 24px;
+	font-size: 1.5rem;
+	font-weight: 300;
+	letter-spacing: -0.02em;
+	color: var(--ar-foreground);
+}
+
+.page-send-measurements .sm-call-cal {
+	width: 100%;
+	height: 650px;
+	overflow: hidden;
+	border: 1px solid var(--ar-border-card);
+}
+
+.page-send-measurements .sm-call-cal iframe {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border: 0;
+}
+
+.page-send-measurements .sm-call-success__phone {
+	margin: 16px 0 0;
+	font-size: 11px;
+	color: var(--ar-muted-foreground);
+}
+
+.page-send-measurements .sm-call-success__phone a {
+	color: var(--ar-foreground);
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 
 .page-send-measurements .sm-form__field {

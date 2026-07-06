@@ -41,4 +41,6 @@ if (! defined('ABSPATH')) {
 		<?php esc_html_e('Wed–Sat, 10 am–4.30 pm.', 'alex-rose-2026'); ?>
 	</p>
 
+	<?php get_template_part('template-parts/send-measurements/offer'); ?>
+
 </div>

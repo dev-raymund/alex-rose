@@ -63,6 +63,14 @@
 			['#sm-first', name.first],
 			['#sm-last', name.last],
 			['#sm-email', c.email],
+			// Send Measurements — Book a Call panel
+			['#sm-call-name', c.name],
+			['#sm-call-email', c.email],
+			['#sm-call-phone', c.phone],
+			// Send Measurements — Post Us a Jacket panel
+			['#sm-post-name', c.name],
+			['#sm-post-email', c.email],
+			['#sm-post-phone', c.phone],
 			// Feedback survey
 			['input[name="fb_name"]', c.name],
 			['input[name="fb_email"]', c.email],

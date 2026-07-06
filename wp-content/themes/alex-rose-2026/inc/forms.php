@@ -611,6 +611,106 @@ function alex_rose_2026_handle_sm_send_measurements(): void {
 add_action('admin_post_sm_send_measurements', 'alex_rose_2026_handle_sm_send_measurements');
 add_action('admin_post_nopriv_sm_send_measurements', 'alex_rose_2026_handle_sm_send_measurements');
 
+/* --- Book a Call (Send Measurements page) ------------------------------- */
+
+function alex_rose_2026_handle_sm_book_call(): void {
+	$action = 'sm_book_call';
+	alex_rose_2026_form_guard($action, 'sm_book_call', 'sm_call_nonce');
+
+	$name   = alex_rose_2026_form_field('sm_call_name');
+	$email  = alex_rose_2026_form_field('sm_call_email');
+	$phone  = alex_rose_2026_form_field('sm_call_phone');
+	$topics = alex_rose_2026_form_field('sm_call_topics');
+	$notes  = alex_rose_2026_form_field('sm_call_notes');
+
+	if ($name === '' || ! is_email($email)) {
+		alex_rose_2026_form_respond(false, $action, __('Please enter your name and a valid email address.', 'alex-rose-2026'));
+	}
+
+	$body = alex_rose_2026_form_build_body(
+		array(
+			array('label' => __('Name', 'alex-rose-2026'),      'value' => $name),
+			array('label' => __('Email', 'alex-rose-2026'),     'value' => $email),
+			array('label' => __('Phone', 'alex-rose-2026'),     'value' => $phone),
+			array('label' => __('Call about', 'alex-rose-2026'), 'value' => $topics),
+			array('label' => __('Notes', 'alex-rose-2026'),     'value' => $notes),
+		),
+		__('A call has been requested via the Send Measurements page:', 'alex-rose-2026')
+	);
+
+	$sent = alex_rose_2026_form_send_mail(
+		sprintf(
+			/* translators: %s: visitor name */
+			__('Call request from %s', 'alex-rose-2026'),
+			$name
+		),
+		$body,
+		$email,
+		$name
+	);
+
+	if (! $sent) {
+		alex_rose_2026_form_respond(false, $action, __('Something went wrong sending your request. Please try again or call us.', 'alex-rose-2026'));
+	}
+
+	alex_rose_2026_form_respond(true, $action, __('Thank you. Your details have been sent.', 'alex-rose-2026'));
+}
+add_action('admin_post_sm_book_call', 'alex_rose_2026_handle_sm_book_call');
+add_action('admin_post_nopriv_sm_book_call', 'alex_rose_2026_handle_sm_book_call');
+
+/* --- Post Us a Jacket (Send Measurements page) -------------------------- */
+
+function alex_rose_2026_handle_sm_post_jacket(): void {
+	$action = 'sm_post_jacket';
+	alex_rose_2026_form_guard($action, 'sm_post_jacket', 'sm_post_nonce');
+
+	$name     = alex_rose_2026_form_field('sm_post_name');
+	$email    = alex_rose_2026_form_field('sm_post_email');
+	$phone    = alex_rose_2026_form_field('sm_post_phone');
+	$address1 = alex_rose_2026_form_field('sm_post_address1');
+	$address2 = alex_rose_2026_form_field('sm_post_address2');
+	$town     = alex_rose_2026_form_field('sm_post_town');
+	$postcode = alex_rose_2026_form_field('sm_post_postcode');
+	$notes    = alex_rose_2026_form_field('sm_post_notes');
+
+	if ($name === '' || ! is_email($email) || $address1 === '' || $town === '' || $postcode === '') {
+		alex_rose_2026_form_respond(false, $action, __('Please enter your name, a valid email address, and your full delivery address.', 'alex-rose-2026'));
+	}
+
+	$body = alex_rose_2026_form_build_body(
+		array(
+			array('label' => __('Name', 'alex-rose-2026'),           'value' => $name),
+			array('label' => __('Email', 'alex-rose-2026'),          'value' => $email),
+			array('label' => __('Phone', 'alex-rose-2026'),          'value' => $phone),
+			array('label' => __('Address line 1', 'alex-rose-2026'), 'value' => $address1),
+			array('label' => __('Address line 2', 'alex-rose-2026'), 'value' => $address2),
+			array('label' => __('Town / city', 'alex-rose-2026'),    'value' => $town),
+			array('label' => __('Postcode', 'alex-rose-2026'),       'value' => $postcode),
+			array('label' => __('Notes', 'alex-rose-2026'),          'value' => $notes),
+		),
+		__('A prepaid measuring box has been requested via the Send Measurements page:', 'alex-rose-2026')
+	);
+
+	$sent = alex_rose_2026_form_send_mail(
+		sprintf(
+			/* translators: %s: visitor name */
+			__('Post-a-jacket box request from %s', 'alex-rose-2026'),
+			$name
+		),
+		$body,
+		$email,
+		$name
+	);
+
+	if (! $sent) {
+		alex_rose_2026_form_respond(false, $action, __('Something went wrong sending your request. Please try again or call us.', 'alex-rose-2026'));
+	}
+
+	alex_rose_2026_form_respond(true, $action, __('Thank you. Your details have been sent.', 'alex-rose-2026'));
+}
+add_action('admin_post_sm_post_jacket', 'alex_rose_2026_handle_sm_post_jacket');
+add_action('admin_post_nopriv_sm_post_jacket', 'alex_rose_2026_handle_sm_post_jacket');
+
 /* --- Gift Vouchers ------------------------------------------------------ */
 
 function alex_rose_2026_handle_gv_order_voucher(): void {
