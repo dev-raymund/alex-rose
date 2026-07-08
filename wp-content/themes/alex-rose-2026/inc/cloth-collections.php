@@ -54,6 +54,66 @@ function alex_rose_2026_cloth_collection_order(): array {
 }
 
 /**
+ * Compact list of collections for the header mega-menu and sidebar dropdown,
+ * in the same order as /cloths/. Each row: title, kicker, thumbnail, url.
+ *
+ * @return array<int, array{title:string, kicker:string, image:string, url:string}>
+ */
+function alex_rose_2026_cloth_collection_links(): array {
+	$collections = alex_rose_2026_cloth_collections();
+	$links       = array();
+
+	foreach (alex_rose_2026_cloth_collection_pages() as $page) {
+		if (! $page instanceof WP_Post) {
+			continue;
+		}
+		$col = $collections[ $page->post_name ] ?? null;
+		if (! is_array($col)) {
+			continue;
+		}
+		$image = (string) ( $col['hero_image'] ?? '' );
+		if ($image === '') {
+			$image = (string) ( $col['cloth_image'] ?? '' );
+		}
+		$links[] = array(
+			'title'  => (string) $page->post_title,
+			'kicker' => (string) ( $col['kicker'] ?? '' ),
+			'image'  => $image,
+			'url'    => (string) get_permalink($page->ID),
+		);
+	}
+
+	return $links;
+}
+
+/**
+ * Permalink of the "Our Cloths" landing page (the page using
+ * template/cloths.php). Falls back to /cloths/ when the page is absent.
+ */
+function alex_rose_2026_cloths_page_url(): string {
+	$pages = get_pages(array(
+		'meta_key'    => '_wp_page_template',
+		'meta_value'  => 'template/cloths.php',
+		'number'      => 1,
+		'post_status' => 'publish',
+	));
+	if (! empty($pages) && $pages[0] instanceof WP_Post) {
+		return (string) get_permalink($pages[0]->ID);
+	}
+	return home_url('/cloths/');
+}
+
+/**
+ * True when a menu-item URL points at the "Our Cloths" landing page. Compared
+ * on path only, so it survives http/https and domain drift between installs.
+ */
+function alex_rose_2026_is_cloths_menu_url(string $url): bool {
+	$item_path   = untrailingslashit((string) wp_parse_url($url, PHP_URL_PATH));
+	$cloths_path = untrailingslashit((string) wp_parse_url(alex_rose_2026_cloths_page_url(), PHP_URL_PATH));
+	return $item_path !== '' && $item_path === $cloths_path;
+}
+
+/**
  * Collections + swatches for the Request Cloth Samples form, in display order.
  *
  * @return array<int, array{slug:string, label:string, swatches:array<int, array{id:string, name:string, image:string, alt:string}>}>

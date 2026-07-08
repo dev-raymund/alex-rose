@@ -37,6 +37,7 @@
 				'container'      => false,
 				'fallback_cb'    => false,
 				'depth'          => 1,
+				'walker'         => new Alex_Rose_2026_Primary_Walker(),
 			));
 			?>
 		</nav>

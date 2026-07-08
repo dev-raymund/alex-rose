@@ -107,6 +107,18 @@ if (! class_exists('Alex_Rose_2026_Sidebar_Walker')) {
 			$title    = apply_filters('the_title', $item->title, $item->ID);
 
 			if ($depth === 0) {
+				// "Our Cloths" with no admin-managed children becomes an accordion
+				// whose panel is the live cloth-collection list (see registry).
+				if (! $has_kids && alex_rose_2026_is_cloths_menu_url((string) $url)) {
+					$output .= '<li class="site-side-menu__item site-side-menu__item--has-children">';
+					$output .= '<button type="button" class="site-side-menu__accordion" aria-expanded="false" data-sidebar-accordion>';
+					$output .= '<span class="site-side-menu__label">' . esc_html($title) . '</span>';
+					$output .= '<span class="site-side-menu__chevron" aria-hidden="true">+</span>';
+					$output .= '</button>';
+					$output .= alex_rose_2026_render_cloths_sidebar_panel();
+					return;
+				}
+
 				if ($has_kids) {
 					$output .= '<li class="site-side-menu__item site-side-menu__item--has-children">';
 					$output .= '<button type="button" class="site-side-menu__accordion" aria-expanded="false" data-sidebar-accordion>';
@@ -133,6 +145,112 @@ if (! class_exists('Alex_Rose_2026_Sidebar_Walker')) {
 			$output .= '</li>';
 		}
 	}
+}
+
+/**
+ * Primary (desktop header) menu walker. Renders normal top-level links, but the
+ * "Our Cloths" item also carries a mega-menu panel of cloth collections shown
+ * on hover / focus (see alex_rose_2026_render_cloths_mega + theme.css).
+ */
+if (! class_exists('Alex_Rose_2026_Primary_Walker')) {
+	final class Alex_Rose_2026_Primary_Walker extends Walker_Nav_Menu {
+
+		public function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+			$url   = ! empty($item->url) ? $item->url : '#';
+			$title = apply_filters('the_title', $item->title, $item->ID);
+
+			if ($depth === 0 && alex_rose_2026_is_cloths_menu_url((string) $url)) {
+				$output .= '<li class="menu-item site-nav__item site-nav__item--mega">';
+				$output .= '<a href="' . esc_url($url) . '" aria-haspopup="true">' . esc_html($title) . '</a>';
+				$output .= alex_rose_2026_render_cloths_mega();
+				return;
+			}
+
+			$output .= '<li class="menu-item">';
+			$output .= '<a href="' . esc_url($url) . '">' . esc_html($title) . '</a>';
+		}
+	}
+}
+
+/**
+ * Markup for the header "Our Cloths" mega-menu: a grid of collection cards
+ * (image + kicker + title) plus a "browse all" footer. Empty string when there
+ * are no collection pages yet.
+ */
+function alex_rose_2026_render_cloths_mega(): string {
+	$links = alex_rose_2026_cloth_collection_links();
+	if ($links === array()) {
+		return '';
+	}
+
+	$cards = '';
+	foreach ($links as $link) {
+		$cards .= '<a class="site-nav__mega-card" href="' . esc_url($link['url']) . '">';
+		$cards .= '<span class="site-nav__mega-media">';
+		if ($link['image'] !== '') {
+			$cards .= '<img src="' . esc_url($link['image']) . '" alt="" loading="lazy">';
+		}
+		$cards .= '<span class="site-nav__mega-shade" aria-hidden="true"></span>';
+		$cards .= '<span class="site-nav__mega-caption">';
+		if ($link['kicker'] !== '') {
+			$cards .= '<span class="site-nav__mega-kicker">' . esc_html($link['kicker']) . '</span>';
+		}
+		$cards .= '<span class="site-nav__mega-title">' . esc_html($link['title']) . '</span>';
+		$cards .= '</span>';
+		$cards .= '</span>';
+		$cards .= '</a>';
+	}
+
+	$count_label = sprintf(
+		/* translators: %d: number of cloth collections */
+		_n('%d Exclusive Collection', '%d Exclusive Collections', count($links), 'alex-rose-2026'),
+		count($links)
+	);
+
+	return '<div class="site-nav__mega">'
+		. '<div class="site-nav__mega-grid">' . $cards . '</div>'
+		. '<div class="site-nav__mega-foot">'
+		. '<span class="site-nav__mega-count">' . esc_html($count_label) . '</span>'
+		. '<a class="site-nav__mega-all" href="' . esc_url(alex_rose_2026_cloths_page_url()) . '">'
+		. esc_html__('Browse All Cloths', 'alex-rose-2026') . ' &rarr;</a>'
+		. '</div>'
+		. '</div>';
+}
+
+/**
+ * Markup for the slide-out sidebar "Our Cloths" accordion panel: the cloth
+ * collections as a two-column grid of image cards (photo + kicker + title),
+ * matching the header mega-menu, with a "view all" link beneath.
+ */
+function alex_rose_2026_render_cloths_sidebar_panel(): string {
+	$links = alex_rose_2026_cloth_collection_links();
+	if ($links === array()) {
+		return '';
+	}
+
+	$cards = '';
+	foreach ($links as $link) {
+		$cards .= '<a class="site-side-menu__cloth-card" href="' . esc_url($link['url']) . '">';
+		$cards .= '<span class="site-side-menu__cloth-media">';
+		if ($link['image'] !== '') {
+			$cards .= '<img src="' . esc_url($link['image']) . '" alt="" loading="lazy">';
+		}
+		$cards .= '<span class="site-side-menu__cloth-shade" aria-hidden="true"></span>';
+		$cards .= '<span class="site-side-menu__cloth-caption">';
+		if ($link['kicker'] !== '') {
+			$cards .= '<span class="site-side-menu__cloth-kicker">' . esc_html($link['kicker']) . '</span>';
+		}
+		$cards .= '<span class="site-side-menu__cloth-title">' . esc_html($link['title']) . '</span>';
+		$cards .= '</span>';
+		$cards .= '</span>';
+		$cards .= '</a>';
+	}
+
+	return '<div class="site-side-menu__panel" hidden>'
+		. '<div class="site-side-menu__cloths">' . $cards . '</div>'
+		. '<a class="site-side-menu__cloth-all" href="' . esc_url(alex_rose_2026_cloths_page_url()) . '">'
+		. esc_html__('View All Collections', 'alex-rose-2026') . ' &rarr;</a>'
+		. '</div>';
 }
 
 function alex_rose_2026_is_dist_template(): bool {
