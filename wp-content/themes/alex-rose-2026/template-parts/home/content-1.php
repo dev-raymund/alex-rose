@@ -72,7 +72,7 @@ if (! defined('ABSPATH')) {
 <?php
 $reviews = array(
 	array(
-		'quote' => __('Harold was a referral from a friend when I needed a tailored suit for my wedding. The convenience of being tailored in your own home is what is needed in this day and age.', 'alex-rose-2026'),
+		'quote' => __('Harold was a referral from a friend when I needed a tailored suit and jacket for my wedding. The convenience of being tailored in your own home is what is needed in this day and age.', 'alex-rose-2026'),
 		'tag'   => __('Wedding customer', 'alex-rose-2026'),
 	),
 	array(
@@ -81,7 +81,7 @@ $reviews = array(
 	),
 	array(
 		'quote' => __('Very impressed with the attention to detail and the choices I was provided with. Over the moon with how it fits, feels and looks.', 'alex-rose-2026'),
-		'tag'   => __('New job suit', 'alex-rose-2026'),
+		'tag'   => __('New job suit and jacket', 'alex-rose-2026'),
 	),
 	array(
 		'quote' => __('Highly professional, knowledgeable, reactive and a super quick service. First time experience for me and very impressed. I would highly recommend.', 'alex-rose-2026'),
@@ -93,7 +93,7 @@ $reviews = array(
 	),
 	array(
 		'quote' => __('Harold is delightful and professional. A great eye for cut. His latest incarnation of a navy blue three piece is simply superb.', 'alex-rose-2026'),
-		'tag'   => __('Three-piece suit customer', 'alex-rose-2026'),
+		'tag'   => __('Three-piece suit and jacket customer', 'alex-rose-2026'),
 	),
 );
 $total_reviews = count($reviews);

@@ -74,7 +74,7 @@ if (! defined('ABSPATH')) {
 				</div>
 				<div class="home-testimonial__stars" aria-hidden="true"><?php for ($i = 0; $i < 5; $i++) : ?><span class="home-star">★</span><?php endfor; ?></div>
 				<div class="home-testimonial__rule" aria-hidden="true"></div>
-				<blockquote class="home-testimonial__quote"><?php esc_html_e('“"Harold was a referral from a friend when I needed a tailored suit for my wedding. The convenience of being tailored in your own home is what is needed in this”', 'alex-rose-2026'); ?></blockquote>
+				<blockquote class="home-testimonial__quote"><?php esc_html_e('“"Harold was a referral from a friend when I needed a tailored suit and jacket for my wedding. The convenience of being tailored in your own home is what is needed in this”', 'alex-rose-2026'); ?></blockquote>
 			</div>
 			<div class="home-testimonial">
 				<div class="home-testimonial__who">
