@@ -11,6 +11,13 @@
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 	}
 
+	// UK-only postal service: the delivery postcode must look like a UK postcode
+	// (mirrors alex_rose_2026_is_uk_postcode server-side). Rejects overseas codes.
+	function isUkPostcode(value) {
+		var pc = String(value == null ? '' : value).toUpperCase().trim().replace(/\s+/g, ' ');
+		return /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/.test(pc);
+	}
+
 	function escapeHtml(value) {
 		return String(value == null ? '' : value)
 			.replace(/&/g, '&amp;')
@@ -74,14 +81,28 @@
 		var city = form.querySelector('#pyj-city');
 		var postcode = form.querySelector('#pyj-postcode');
 
+		var postcodeVal = postcode ? postcode.value.trim() : '';
+		var postcodeOk = isUkPostcode(postcodeVal);
+
 		var ready =
 			name && name.value.trim() !== '' &&
 			email && isEmailValid(email.value) &&
 			addr1 && addr1.value.trim() !== '' &&
 			city && city.value.trim() !== '' &&
-			postcode && postcode.value.trim() !== '';
+			postcodeVal !== '' && postcodeOk;
 
 		submit.disabled = !ready;
+
+		var errorNode = form.querySelector('[data-pyj-error]');
+		if (errorNode) {
+			if (postcodeVal !== '' && !postcodeOk) {
+				errorNode.textContent = 'This free service is available for UK delivery addresses only. Please enter a valid UK postcode.';
+				errorNode.removeAttribute('hidden');
+			} else {
+				errorNode.textContent = '';
+				errorNode.setAttribute('hidden', '');
+			}
+		}
 	}
 
 	function bindForm(form) {

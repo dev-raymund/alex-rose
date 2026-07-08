@@ -11,6 +11,13 @@
 		return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 	}
 
+	// UK-only postal service: the delivery postcode must look like a UK postcode
+	// (mirrors alex_rose_2026_is_uk_postcode server-side). Rejects overseas codes.
+	function isUkPostcode(value) {
+		var pc = String(value == null ? '' : value).toUpperCase().trim().replace(/\s+/g, ' ');
+		return /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/.test(pc);
+	}
+
 	function isFormValid(form) {
 		var first = form.querySelector('#sm-first');
 		var last = form.querySelector('#sm-last');
@@ -242,6 +249,12 @@
 		if (!email || !isEmailValid(email.value)) {
 			valid = false;
 		}
+		if (cfg.postcode) {
+			var pc = form.querySelector(cfg.postcode);
+			if (!pc || !isUkPostcode(pc.value)) {
+				valid = false;
+			}
+		}
 		return valid;
 	}
 
@@ -249,6 +262,21 @@
 		var submit = form.querySelector(cfg.submit);
 		if (submit) {
 			submit.disabled = !isBookingValid(form, cfg);
+		}
+		// UK-only: show an inline notice when a postcode is entered but not UK.
+		if (cfg.postcode) {
+			var pc = form.querySelector(cfg.postcode);
+			var err = form.querySelector(cfg.error);
+			if (pc && err) {
+				var val = String(pc.value || '').trim();
+				if (val !== '' && !isUkPostcode(val)) {
+					err.textContent = 'This service is available within the UK only. Please enter a valid UK postcode.';
+					err.removeAttribute('hidden');
+				} else {
+					err.textContent = '';
+					err.setAttribute('hidden', '');
+				}
+			}
 		}
 	}
 
@@ -334,6 +362,7 @@
 		required: '[data-sm-post-required]',
 		name: '#sm-post-name',
 		email: '#sm-post-email',
+		postcode: '#sm-post-postcode',
 		submit: '[data-sm-post-submit]',
 		error: '[data-sm-post-error]',
 		success: '[data-sm-post-success]',

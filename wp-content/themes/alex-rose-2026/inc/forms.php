@@ -133,6 +133,23 @@ function alex_rose_2026_form_field_list(string $name): array {
 }
 
 /**
+ * Loose check that a postcode looks like a UK postcode.
+ *
+ * The prepaid-box / post-a-jacket services are UK delivery only. Those forms
+ * carry no country field, so the postcode is the location signal we gate on:
+ * an overseas postcode (e.g. a 4-digit code) must not be accepted, otherwise
+ * the tailor is emailed a box request that cannot be fulfilled. Accepts the
+ * postcode with or without the internal space and in any case.
+ */
+function alex_rose_2026_is_uk_postcode(string $postcode): bool {
+	$postcode = preg_replace('/\s+/', ' ', strtoupper(trim($postcode)));
+	if ($postcode === '') {
+		return false;
+	}
+	return (bool) preg_match('/^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/', $postcode);
+}
+
+/**
  * Send a success/failure response back to the form, choosing JSON or a
  * redirect based on whether the submission was made over AJAX.
  *
@@ -461,6 +478,10 @@ function alex_rose_2026_handle_pyj_request_box(): void {
 		alex_rose_2026_form_respond(false, $action, __('Please complete the required fields with a valid delivery address.', 'alex-rose-2026'));
 	}
 
+	if (! alex_rose_2026_is_uk_postcode($postcode)) {
+		alex_rose_2026_form_respond(false, $action, __('This free service is available for UK delivery addresses only. Please enter a valid UK postcode, or contact us if you are outside the UK.', 'alex-rose-2026'));
+	}
+
 	$address_lines = array_filter(array($addr1, $addr2, $city, $postcode));
 
 	$body = alex_rose_2026_form_build_body(
@@ -675,6 +696,10 @@ function alex_rose_2026_handle_sm_post_jacket(): void {
 
 	if ($name === '' || ! is_email($email) || $address1 === '' || $town === '' || $postcode === '') {
 		alex_rose_2026_form_respond(false, $action, __('Please enter your name, a valid email address, and your full delivery address.', 'alex-rose-2026'));
+	}
+
+	if (! alex_rose_2026_is_uk_postcode($postcode)) {
+		alex_rose_2026_form_respond(false, $action, __('This service is available for UK delivery addresses only. Please enter a valid UK postcode, or contact us if you are outside the UK.', 'alex-rose-2026'));
 	}
 
 	$body = alex_rose_2026_form_build_body(
