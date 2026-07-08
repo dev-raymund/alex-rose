@@ -86,6 +86,40 @@
 			});
 		});
 
+		// Deep-linking: /how-it-works/#step-3 opens the 3rd step (1-based) so
+		// footer / cross-page links can land the visitor on a specific step.
+		function indexFromHash() {
+			var m = /#step-(\d+)/.exec(window.location.hash || '');
+			if (!m) {
+				return -1;
+			}
+			var i = parseInt(m[1], 10) - 1;
+			return i >= 0 && i < total ? i : -1;
+		}
+
+		function activateFromHash(scrollSection) {
+			var i = indexFromHash();
+			if (i < 0) {
+				return false;
+			}
+			activate(i);
+			if (scrollSection) {
+				var section = document.querySelector('.hiw-steps');
+				if (section && typeof section.scrollIntoView === 'function') {
+					try {
+						section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+					} catch (e) {
+						section.scrollIntoView();
+					}
+				}
+			}
+			return true;
+		}
+
+		window.addEventListener('hashchange', function () {
+			activateFromHash(true);
+		});
+
 		var tablist = document.querySelector('.hiw-tabs__grid');
 		if (tablist) {
 			tablist.addEventListener('keydown', function (e) {
@@ -115,7 +149,9 @@
 			});
 		}
 
-		activate(currentIndex());
+		if (!activateFromHash(true)) {
+			activate(currentIndex());
+		}
 	}
 
 	if (document.readyState === 'loading') {

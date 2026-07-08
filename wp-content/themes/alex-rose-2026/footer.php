@@ -48,6 +48,7 @@ $year = (string) gmdate('Y');
 			<ul class="site-footer--marketing__links">
 				<li><a href="<?php echo esc_url(home_url('/our-story')); ?>"><?php esc_html_e('Our Story', 'alex-rose-2026'); ?></a></li>
 				<li><a href="<?php echo esc_url(home_url('/how-it-works')); ?>"><?php esc_html_e('How It Works', 'alex-rose-2026'); ?></a></li>
+				<li><a href="<?php echo esc_url(home_url('/how-it-works/#step-3')); ?>"><?php esc_html_e('How to Get Measured', 'alex-rose-2026'); ?></a></li>
 				<li><a href="<?php echo esc_url(home_url('/design')); ?>"><?php esc_html_e('Design Your Jacket', 'alex-rose-2026'); ?></a></li>
 				<li><a href="<?php echo esc_url(home_url('/gift-vouchers')); ?>"><?php esc_html_e('Gift Vouchers', 'alex-rose-2026'); ?></a></li>
 				<li><a href="<?php echo esc_url(home_url('/faq')); ?>"><?php esc_html_e('FAQ', 'alex-rose-2026'); ?></a></li>
