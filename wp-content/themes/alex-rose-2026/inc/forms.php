@@ -938,7 +938,7 @@ function alex_rose_2026_send_launch_discount_email(string $email, string $code):
 	$site_url     = 'https://www.alexrose.uk';
 	$support      = 'harold@alexrose.uk';
 	$address      = '2A Rodley Ln, Rodley, Leeds LS13 1HU';
-	$valid_until  = __('10 July 2026', 'alex-rose-2026');
+	$valid_until  = __('31 July 2026', 'alex-rose-2026');
 
 	$subject = __('Your code is inside', 'alex-rose-2026');
 

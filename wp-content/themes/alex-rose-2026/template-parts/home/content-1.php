@@ -205,7 +205,7 @@ $stars_row = function () use ($star_svg): string {
 
 			<div class="home-founding__aside">
 				<p class="home-founding__closes"><?php esc_html_e('Offer closes in', 'alex-rose-2026'); ?></p>
-				<div class="home-founding__countdown" data-countdown="2026-07-10T23:59:59">
+				<div class="home-founding__countdown" data-countdown="2026-07-31T23:59:59">
 					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="days">--</span><span class="home-founding__unit-label"><?php esc_html_e('days', 'alex-rose-2026'); ?></span></div>
 					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="hours">--</span><span class="home-founding__unit-label"><?php esc_html_e('hours', 'alex-rose-2026'); ?></span></div>
 					<div class="home-founding__unit"><span class="home-founding__unit-num" data-cd="mins">--</span><span class="home-founding__unit-label"><?php esc_html_e('mins', 'alex-rose-2026'); ?></span></div>
@@ -221,7 +221,7 @@ $stars_row = function () use ($star_svg): string {
 				</div>
 			</div>
 		</div>
-		<p class="home-founding__fine"><?php esc_html_e('Offer valid until 10 July 2026  ·  One jacket per customer  ·  Cannot be combined with other offers', 'alex-rose-2026'); ?></p>
+		<p class="home-founding__fine"><?php esc_html_e('Offer valid until 31 July 2026  ·  One jacket per customer  ·  Cannot be combined with other offers', 'alex-rose-2026'); ?></p>
 	</div>
 </section>
 <script>
