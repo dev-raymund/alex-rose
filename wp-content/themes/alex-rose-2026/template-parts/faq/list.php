@@ -39,7 +39,7 @@ $groups = array(
 				'a' => sprintf(
 					/* translators: %s: link to schedule a call page */
 					__('There are instructions on how to measure. If you have any difficulty you can %s with our master tailor who will be delighted to assist you.', 'alex-rose-2026'),
-					'<a href="' . esc_url(home_url('/schedule-a-call/')) . '">' . esc_html__('book a Zoom meeting', 'alex-rose-2026') . '</a>'
+					'<a href="' . esc_url(home_url('/schedule-a-call/')) . '">' . esc_html__('book a meeting on Teams or Google Meet', 'alex-rose-2026') . '</a>'
 				),
 			),
 			array(
@@ -76,7 +76,7 @@ $groups = array(
 				'q' => __('What happens if the jacket doesn\'t fit?', 'alex-rose-2026'),
 				'a' => sprintf(
 					/* translators: %s: email link */
-					__('If you have any problems, please email some photos and we will arrange a time to discuss over Zoom. %s', 'alex-rose-2026'),
+					__('If you have any problems, please email some photos and we will arrange a time to discuss over Teams or Google Meet. %s', 'alex-rose-2026'),
 					'<a href="mailto:tailor@alexrose.uk">tailor@alexrose.uk</a>'
 				),
 			),
