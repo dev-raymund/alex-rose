@@ -202,6 +202,8 @@ $chevron = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="
 					?>
 				</p>
 
+				<?php get_template_part('template-parts/send-measurements/offer'); ?>
+
 				<input type="hidden" name="sac_date" value="">
 				<input type="hidden" name="sac_time" value="">
 				<input type="hidden" name="sac_tz" value="">
