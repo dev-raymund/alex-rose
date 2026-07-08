@@ -474,11 +474,21 @@ function alex_rose_2026_order_has_bespoke_jacket($order): bool {
  * After a jacket order is placed/paid, send the customer to the Send
  * Measurements page instead of the default order-received page. Scoped to
  * jacket orders so any other products keep the normal thank-you page.
+ *
+ * Only redirects once the order is validly placed: paid (processing/completed)
+ * or on-hold (e.g. BACS awaiting an offline transfer). Orders still awaiting
+ * payment — a Klarna / card checkout the customer abandoned, which WooCommerce
+ * leaves as pending or failed — keep the default order-received page so an
+ * unpaid order never lands on the "success" page. The status check is used
+ * rather than needs_payment() so a zero-total order can't slip through.
  */
 add_filter(
 	'woocommerce_get_return_url',
 	static function ($return_url, $order) {
-		if (alex_rose_2026_order_has_bespoke_jacket($order)) {
+		if (
+			alex_rose_2026_order_has_bespoke_jacket($order)
+			&& ($order->is_paid() || $order->has_status('on-hold'))
+		) {
 			return add_query_arg('order_id', $order->get_id(), home_url('/send-measurements/'));
 		}
 		return $return_url;
