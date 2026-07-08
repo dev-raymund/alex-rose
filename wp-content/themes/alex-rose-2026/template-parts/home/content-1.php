@@ -304,7 +304,7 @@ $stars_row = function () use ($star_svg): string {
 			</a>
 			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/country')); ?>">
 				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-9.jpg')); ?>" alt="" loading="lazy" width="600" height="800">
+					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/06/country-1.jpg')); ?>" alt="" loading="lazy" width="600" height="800">
 				</span>
 				<span class="home-occ-card__shade" aria-hidden="true"></span>
 				<div class="home-occ-card__body">
