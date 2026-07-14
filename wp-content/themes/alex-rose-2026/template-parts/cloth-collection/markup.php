@@ -28,6 +28,11 @@ $collection = alex_rose_2026_current_cloth_collection();
 				</p>
 			</div>
 		</section>
+	<?php elseif (alex_rose_2026_cloth_collection_is_coming_soon()) : ?>
+		<?php
+		get_template_part('template-parts/cloth-collection/hero');
+		get_template_part('template-parts/cloth-collection/coming-soon');
+		?>
 	<?php else : ?>
 		<?php
 		get_template_part('template-parts/cloth-collection/hero');

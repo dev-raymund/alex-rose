@@ -602,6 +602,17 @@
 	text-align: center;
 }
 
+/* Coming-soon body sits below the collection hero, so it needs less top room. */
+.page-cloth-collection .cc-soon {
+	padding-top: 88px;
+}
+
+.page-cloth-collection .cc-soon .cc-missing__body a {
+	color: var(--ar-gold);
+	text-decoration: none;
+	border-bottom: 1px solid currentColor;
+}
+
 .page-cloth-collection .cc-missing__inner {
 	max-width: 36rem;
 	margin: 0 auto;

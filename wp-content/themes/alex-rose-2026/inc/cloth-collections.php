@@ -187,6 +187,30 @@ function alex_rose_2026_current_cloth_collection_slug(): ?string {
 }
 
 /**
+ * Slugs whose collection page shows a "Coming soon" placeholder instead of the
+ * full collection view. The collection stays listed everywhere (cloths grid,
+ * header mega-menu, sidebar, samples form) — only the page body changes.
+ * Filterable so the list can be managed without editing this file.
+ *
+ * @return string[]
+ */
+function alex_rose_2026_coming_soon_cloth_collections(): array {
+	$slugs = apply_filters('alex_rose_2026_coming_soon_cloth_collections', array('english-riviera'));
+	return array_values(array_unique(array_map('sanitize_title', (array) $slugs)));
+}
+
+/**
+ * True when the given collection slug (default: the current page) is flagged
+ * "coming soon".
+ */
+function alex_rose_2026_cloth_collection_is_coming_soon(?string $slug = null): bool {
+	if ($slug === null) {
+		$slug = alex_rose_2026_current_cloth_collection_slug();
+	}
+	return $slug !== null && $slug !== '' && in_array($slug, alex_rose_2026_coming_soon_cloth_collections(), true);
+}
+
+/**
  * Skeleton record returned when a page has no data yet.
  *
  * @return array<string, mixed>
