@@ -18,7 +18,7 @@ $principles = array(
 	array(
 		'number' => '02',
 		'title'  => __('The fit must be exact.', 'alex-rose-2026'),
-		'body'   => __('Harold does not make near-enough jackets. Every measurement is confirmed with you before cutting begins. If a measurement is unclear, Harold will ask again. He would rather delay an order than deliver a jacket that does not sit perfectly.', 'alex-rose-2026'),
+		'body'   => __('Harold does not make near-enough jackets. Every measurement is confirmed with you before cutting begins. If a measurement is unclear, Harold will ask again. He would rather delay an order than deliver a jacket that does not fit perfectly.', 'alex-rose-2026'),
 	),
 	array(
 		'number' => '03',

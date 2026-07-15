@@ -38,7 +38,7 @@ $milestones = array(
 		'year'  => 1956,
 		'tag'   => __('Growth', 'alex-rose-2026'),
 		'title' => __('Rooted in the community.', 'alex-rose-2026'),
-		'body'  => __('In 1956 the company opened number two factory in Allerton Bywater in the former Miners Welfare Club building. We needed the extra capacity to cope with increased volume of orders.', 'alex-rose-2026'),
+		'body'  => __('In 1956 the company opened number two factory in Allerton Bywater in the former Miners Welfare Club building, which was originally a school. We needed the extra capacity to cope with increased volume of orders.', 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/05/history-1956.jpg'),
 	),
 	array(
@@ -138,6 +138,13 @@ $milestones = array(
 		'title' => __('Modern Legacy.', 'alex-rose-2026'),
 		'body'  => __('Today, Alexander Rose continues to blend traditional craftsmanship with cutting-edge technology, serving discerning clients worldwide.', 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/05/history-2024.png'),
+	),
+	array(
+		'year'  => 2026,
+		'tag'   => __('Global Reach', 'alex-rose-2026'),
+		'title' => __('Tailoring meets technology.', 'alex-rose-2026'),
+		'body'  => __('Refining personal tailoring through AI technology to reach a global audience, while still retaining the human interaction between the tailor and his client.', 'alex-rose-2026'),
+		'image' => alex_rose_2026_uploads_url('/2026/07/history-2026.png'),
 	),
 );
 
