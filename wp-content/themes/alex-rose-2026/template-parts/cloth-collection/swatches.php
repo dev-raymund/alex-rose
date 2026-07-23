@@ -23,14 +23,20 @@ if ($collection === null || empty($collection['swatches'])) {
 
 		<ul class="cc-swatches__grid">
 			<?php foreach ((array) $collection['swatches'] as $swatch) : ?>
+				<?php
+				$ar_swatch_ref = sanitize_title($swatch['name']);
+				$ar_swatch_url = add_query_arg('c', $ar_swatch_ref, home_url('/design-your-jacket/'));
+				?>
 				<li class="cc-swatch">
-					<figure class="cc-swatch__figure">
-						<div class="cc-swatch__media">
-							<img class="cc-swatch__img" src="<?php echo esc_url($swatch['image']); ?>" alt="<?php echo esc_attr($swatch['alt']); ?>" loading="lazy">
-							<span class="cc-swatch__frame" aria-hidden="true"></span>
-						</div>
-						<figcaption class="cc-swatch__name"><?php echo esc_html($swatch['name']); ?></figcaption>
-					</figure>
+					<a class="cc-swatch__link" href="<?php echo esc_url($ar_swatch_url); ?>">
+						<figure class="cc-swatch__figure">
+							<div class="cc-swatch__media">
+								<img class="cc-swatch__img" src="<?php echo esc_url($swatch['image']); ?>" alt="<?php echo esc_attr($swatch['alt']); ?>" loading="lazy">
+								<span class="cc-swatch__frame" aria-hidden="true"></span>
+							</div>
+							<figcaption class="cc-swatch__name"><?php echo esc_html($swatch['name']); ?></figcaption>
+						</figure>
+					</a>
 				</li>
 			<?php endforeach; ?>
 		</ul>
