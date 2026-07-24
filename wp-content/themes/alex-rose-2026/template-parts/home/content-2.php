@@ -99,6 +99,53 @@ if (! defined('ABSPATH')) {
 	</div>
 </section>
 
+<section class="home-guarantee">
+	<div class="home-guarantee__inner">
+		<div class="home-guarantee__grid">
+			<div class="home-guarantee__aside">
+				<div class="home-guarantee__sticky">
+					<div class="home-guarantee__badge">
+						<span class="home-guarantee__mark" aria-hidden="true">
+							<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.5 8 L6.5 12 L13.5 4" stroke="#C8A96A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+						</span>
+						<p class="home-guarantee__kicker"><?php esc_html_e('Fit Guarantee', 'alex-rose-2026'); ?></p>
+					</div>
+					<h2 class="home-guarantee__title"><?php echo esc_html__('If it does not fit,', 'alex-rose-2026'); ?><br><?php echo esc_html__('we put it right.', 'alex-rose-2026'); ?></h2>
+					<p class="home-guarantee__lead"><?php esc_html_e('A jacket should fit exactly as you intended. If it does not, that is our responsibility — not yours.', 'alex-rose-2026'); ?></p>
+					<a class="home-btn-gold home-guarantee__cta" href="<?php echo esc_url(home_url('/design')); ?>"><?php esc_html_e('Start Your Jacket', 'alex-rose-2026'); ?></a>
+				</div>
+			</div>
+			<ul class="home-guarantee__list">
+				<?php
+				$ar_guarantees = array(
+					array(
+						'title' => __('Free alterations, no questions asked.', 'alex-rose-2026'),
+						'text'  => __('If your jacket needs any adjustment when it arrives, contact us and we arrange everything at no cost.', 'alex-rose-2026'),
+					),
+					array(
+						'title' => __('Harold reviews every order personally.', 'alex-rose-2026'),
+						'text'  => __('Before a single thread is cut, Harold checks your measurements. If anything is unclear, he contacts you first.', 'alex-rose-2026'),
+					),
+					array(
+						'title' => __('No time limit. Ever.', 'alex-rose-2026'),
+						'text'  => __('Your fit guarantee does not expire. We stand behind every jacket we make, wherever you are in the world.', 'alex-rose-2026'),
+					),
+				);
+				foreach ($ar_guarantees as $ar_g) :
+					?>
+					<li class="home-guarantee__item">
+						<svg class="home-guarantee__check" width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M1.5 6.5 L5 10 L11.5 3" stroke="#C8A96A" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+						<div class="home-guarantee__item-body">
+							<p class="home-guarantee__item-title"><?php echo esc_html($ar_g['title']); ?></p>
+							<p class="home-guarantee__item-text"><?php echo esc_html($ar_g['text']); ?></p>
+						</div>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	</div>
+</section>
+
 <section class="home-clients">
 	<div class="home-clients__head home-gutters">
 		<div>

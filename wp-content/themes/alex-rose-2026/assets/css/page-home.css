@@ -1114,6 +1114,127 @@
 	padding-top: 32px;
 }
 
+/* ----- Fit guarantee ----- */
+.page-home .home-guarantee {
+	background: rgb(245, 245, 241);
+}
+
+.page-home .home-guarantee__inner {
+	width: 100%;
+	max-width: 72rem;
+	margin: 0 auto;
+	padding: 56px 40px;
+}
+
+@media (min-width: 768px) {
+	.page-home .home-guarantee__inner {
+		padding: 80px 64px;
+	}
+}
+
+.page-home .home-guarantee__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 48px;
+	align-items: start;
+}
+
+@media (min-width: 768px) {
+	.page-home .home-guarantee__grid {
+		grid-template-columns: 1fr 1fr;
+		gap: 80px;
+	}
+}
+
+@media (min-width: 768px) {
+	.page-home .home-guarantee__sticky {
+		position: sticky;
+		top: 112px;
+	}
+}
+
+.page-home .home-guarantee__badge {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 24px;
+}
+
+.page-home .home-guarantee__mark {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: 1px solid var(--ar-gold);
+}
+
+.page-home .home-guarantee__kicker {
+	margin: 0;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-home .home-guarantee__title {
+	margin: 0 0 20px;
+	font-weight: 300;
+	color: var(--ar-charcoal);
+	font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+	line-height: 1.15;
+	letter-spacing: -0.03em;
+}
+
+.page-home .home-guarantee__lead {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.8;
+	color: rgba(13, 13, 13, 0.5);
+}
+
+.page-home .home-guarantee__cta {
+	margin-top: 32px;
+}
+
+.page-home .home-guarantee__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid rgba(13, 13, 13, 0.09);
+}
+
+.page-home .home-guarantee__item {
+	display: flex;
+	align-items: flex-start;
+	gap: 16px;
+	padding: 24px 0;
+	border-top: 1px solid rgba(13, 13, 13, 0.09);
+}
+
+.page-home .home-guarantee__check {
+	flex-shrink: 0;
+	margin-top: 3px;
+}
+
+.page-home .home-guarantee__item-title {
+	margin: 0 0 6px;
+	font-weight: 300;
+	font-size: 13.5px;
+	line-height: 1.4;
+	letter-spacing: -0.01em;
+	color: var(--ar-charcoal);
+}
+
+.page-home .home-guarantee__item-text {
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.8;
+	color: rgba(13, 13, 13, 0.48);
+}
+
 /* ----- Clients strip ----- */
 .page-home .home-clients {
 	background: var(--ar-charcoal);
