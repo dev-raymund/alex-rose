@@ -36,6 +36,7 @@ const DESIGN_TAGS = {
 };
 const DESIGN_PAGE_SIZE = 100;
 const DESIGN_DEPTH = 2;
+const REQUESTED_FABRIC_REFERENCE_ID = new URLSearchParams(window.location.search).get("c")?.trim() || "";
 
 // Virtual try-on (Rendream "try before you buy" — overlays the 3D jacket
 // snapshot onto the customer's uploaded photo).
@@ -44,6 +45,9 @@ const TRY_ON_API_KEY = "e632c636-57fd-4a67-beea-b376669b3411";
 const DRAFT_IMAGE_STORAGE_KEY = "draftImage";
 const TRY_ON_RESULT_STORAGE_KEY = "virtualTryOnResult";
 const VALID_TRY_ON_PERSON_FORMATS = ["image/jpeg", "image/png"];
+const TRY_ON_PROGRESS_MESSAGES = ["Getting Ready", "Nearly There", "Just Putting the Finishing Touches"];
+const TRY_ON_PROGRESS_INTERVAL = 8500;
+const ROTATION_TIP_DURATION = 5000;
 
 const CURRENCIES = {
   GBP: { symbol: "£", rate: 1 },
@@ -68,12 +72,26 @@ const BASE_CATEGORY_ORDER = [
 ];
 const MONOGRAM_CATEGORY = { id: "monogram", label: "Monogram" };
 
+const CATEGORY_SUBTITLES = {
+  fabrics: "Choose your cloth collection",
+  lining: "Select your lining colour",
+  buttons: "Choose your button material",
+  buttoning: "Number of front buttons",
+  pockets: "Choose your pocket style",
+  vents: "Choose back vent style",
+  monogram: "Add a personal inscription to your lining",
+};
+
 const state = {
   step: 1,
   mobileView: "preview",
+  mobilePanelOpen: false,
   drawerOpen: false,
+  showRotationTip: false,
+  rotationTipShown: false,
   selectedCategory: "fabrics",
   selectedCollection: "",
+  openCollection: "",
   selectedSwatch: "",
   selectedSwatchImg: "",
   selectedSwatchRef: "",
@@ -87,6 +105,7 @@ const state = {
   zoomOpen: false,
   tryPhoto: "",
   trySubmitting: false,
+  tryProgressIndex: 0,
   tryError: "",
   tryOnResult: loadSessionValue(TRY_ON_RESULT_STORAGE_KEY),
   tryForm: loadCustomer(),
@@ -141,6 +160,9 @@ function LININGS_DEFAULT() {
 
 const tailormate = createTailormateVisualizer();
 let tailormateFrame = 0;
+let previewResizeFrame = 0;
+let tryProgressTimer = null;
+let rotationTipTimer = null;
 const monogramPreview = createMonogramPreview();
 let monogramFrame = 0;
 
@@ -234,6 +256,26 @@ function saveSessionValue(key, value) {
   } catch (_) {}
 }
 
+function startTryProgress() {
+  stopTryProgress();
+  state.tryProgressIndex = 0;
+  tryProgressTimer = setInterval(() => {
+    if (state.tryProgressIndex >= TRY_ON_PROGRESS_MESSAGES.length - 1) {
+      stopTryProgress();
+      return;
+    }
+    state.tryProgressIndex += 1;
+    render();
+  }, TRY_ON_PROGRESS_INTERVAL);
+}
+
+function stopTryProgress() {
+  if (tryProgressTimer) {
+    clearInterval(tryProgressTimer);
+    tryProgressTimer = null;
+  }
+}
+
 function clearTryOnResult() {
   state.tryOnResult = "";
   state.tryError = "";
@@ -291,6 +333,19 @@ function getDesignProperty(item, name) {
   return prop ? prop.value || "" : "";
 }
 
+function getDesignCollectionMeta(item) {
+  const prop = Array.isArray(item.properties)
+    ? item.properties.find((e) => String(e.Property || e.name || "").toLowerCase() === "collection")
+    : null;
+  if (!prop) return null;
+  return {
+    value: prop.value || "",
+    label: prop.label || "",
+    thumbnail: resolveDesignUrl(prop.thumbnail),
+    description: prop.description || "",
+  };
+}
+
 function formatCollectionTitle(value) {
   const base = String(value || "Other Fabrics").trim();
   const title = /^the\s/i.test(base) ? base : "The " + base;
@@ -313,7 +368,7 @@ function normalizeDesignItem(item, type) {
   const liningMatch = cleanReferenceId.match(/lining[_-]?(.+)/i);
   const id = type === "lining" && liningMatch ? liningMatch[1] : cleanReferenceId;
   const textureUrl = resolveDesignUrl(item.Url || item.WebpUrl);
-  const thumbnailUrl = resolveDesignUrl(item.WebpUrl || item.Url);
+  const thumbnailUrl = resolveDesignUrl(item.Url || item.WebpUrl);
   const repeat = Number(item.Repeat);
   return {
     id,
@@ -326,6 +381,7 @@ function normalizeDesignItem(item, type) {
     price: Number(item.Price || 0),
     repeat: Number.isFinite(repeat) ? repeat : undefined,
     collection: getDesignProperty(item, "Collection"),
+    collectionMeta: getDesignCollectionMeta(item),
     properties: Array.isArray(item.properties) ? item.properties : [],
     raw: item,
   };
@@ -334,16 +390,20 @@ function normalizeDesignItem(item, type) {
 function groupFabrics(items) {
   const groups = new Map();
   items.forEach((item) => {
+    const meta = item.collectionMeta;
     const collectionName = item.collection || "Other Fabrics";
-    const key = slugify(collectionName || "other-fabrics");
+    const key = slugify((meta && meta.value) || collectionName || "other-fabrics");
     if (!groups.has(key)) {
+      const thumbnail = (meta && meta.thumbnail) || item.img || item.url;
+      const description = (meta && meta.description) || "";
       groups.set(key, {
         slug: key,
-        name: formatCollectionTitle(collectionName),
-        eyebrow: "",
-        heroImg: item.img || item.url,
-        clothImg: item.img || item.url,
-        tagline: "",
+        name: (meta && meta.label) || formatCollectionTitle(collectionName),
+        eyebrow: description,
+        heroImg: thumbnail,
+        clothImg: thumbnail,
+        tagline: description,
+        description,
         swatches: [],
       });
     }
@@ -371,6 +431,26 @@ async function fetchDesignPage(tag, page, limit) {
 }
 
 function selectDefaultFabricIfNeeded() {
+  const requestedFabric = REQUESTED_FABRIC_REFERENCE_ID && catalog.fabrics.grouped
+    .map((collection) => ({
+      collection: collection,
+      swatch: collection.swatches.find((swatch) =>
+        [swatch.referenceId, swatch.cleanReferenceId || stripFileExtension(swatch.referenceId) || swatch.name]
+          .includes(REQUESTED_FABRIC_REFERENCE_ID)
+      ),
+    }))
+    .find(({ swatch }) => swatch);
+
+  if (requestedFabric) {
+    const collection = requestedFabric.collection;
+    const swatch = requestedFabric.swatch;
+    state.selectedCollection = collection.slug;
+    state.selectedSwatch = swatch.name;
+    state.selectedSwatchImg = swatch.url || swatch.img;
+    state.selectedSwatchRef = swatch.cleanReferenceId || stripFileExtension(swatch.referenceId) || swatch.name;
+    return;
+  }
+
   const selectedCollection = getCollection(state.selectedCollection);
   const selectedSwatch = selectedCollection
     ? selectedCollection.swatches.find((swatch) => {
@@ -453,6 +533,18 @@ function getSceneMenu(categoryId) {
   const aliases = SCENE_MENU_ALIASES[categoryId] || [categoryId];
   const slugs = aliases.map(slugifySceneValue);
   return sceneCatalog.menus.find((menu) => slugs.includes(slugifySceneValue(menu.label || menu.id))) || null;
+}
+
+function getFirstSceneMenuPosition() {
+  return (sceneCatalog.menus[0] && sceneCatalog.menus[0].position) || null;
+}
+
+function getActiveMenuPosition() {
+  if (state.selectedCategory === "fabrics" || state.selectedCategory === "lining" || state.selectedCategory === "buttons") {
+    return getFirstSceneMenuPosition();
+  }
+  const menu = getSceneMenu(state.selectedCategory);
+  return (menu && menu.position) || null;
 }
 
 function getVisibleSceneMenus() {
@@ -618,6 +710,8 @@ function getTailormateState() {
     pockets: state.pockets,
     vents: state.vents,
     sceneSelections: getSceneSelections(),
+    activeMenu: state.selectedCategory,
+    menuPosition: getActiveMenuPosition(),
     monogram: state.monogram,
     showLoader: state.show3dLoaderOnNextSync,
   };
@@ -626,15 +720,34 @@ function getTailormateState() {
 function scheduleTailormateSync() {
   cancelAnimationFrame(tailormateFrame);
   tailormateFrame = requestAnimationFrame(() => {
-    const mount = container.querySelector("[data-tm3d-mount]");
+    const mount = container.querySelector(".tm3d-shell--primary[data-tm3d-mount]") || container.querySelector("[data-tm3d-mount]");
     if (!mount) return;
     tailormate.attach(mount);
     const tmState = getTailormateState();
     state.show3dLoaderOnNextSync = false;
-    tailormate.sync(tmState).catch((error) => {
-      console.error("Tailormate3D sync failed", error);
-    });
+    tailormate.sync(tmState)
+      .then(() => {
+        if (mount.classList.contains("tm3d-shell--primary")) {
+          showRotationTipAfterLoad();
+        }
+      })
+      .catch((error) => {
+        console.error("Tailormate3D sync failed", error);
+      });
   });
+}
+
+function showRotationTipAfterLoad() {
+  if (state.rotationTipShown || state.showRotationTip) return;
+  state.rotationTipShown = true;
+  state.showRotationTip = true;
+  render();
+
+  clearTimeout(rotationTipTimer);
+  rotationTipTimer = setTimeout(() => {
+    state.showRotationTip = false;
+    render();
+  }, ROTATION_TIP_DURATION);
 }
 
 function scheduleMonogramSync() {
@@ -653,6 +766,14 @@ function scheduleMonogramSync() {
   });
 }
 
+function schedulePreviewResize() {
+  cancelAnimationFrame(previewResizeFrame);
+  previewResizeFrame = requestAnimationFrame(() => {
+    tailormate.resize();
+    scheduleMonogramSync();
+  });
+}
+
 function setStep(step) {
   state.step = Math.max(1, Math.min(5, step));
   window.scrollTo({ top: 0, behavior: "smooth" });
@@ -662,6 +783,38 @@ function setStep(step) {
 function setCategory(category) {
   state.selectedCategory = category;
   render();
+}
+
+function openMobileCategory(category) {
+  state.selectedCategory = category;
+  state.mobilePanelOpen = true;
+  render();
+}
+
+function closeMobilePanel() {
+  state.mobilePanelOpen = false;
+  render();
+}
+
+function resetPreviewPosition() {
+  tailormate.resetPosition().catch((error) => {
+    console.error("Tailormate3D reset failed", error);
+  });
+}
+
+function scrollMobileCarousel(direction) {
+  const track = container.querySelector(".mobile-category-carousel__track");
+  const card = track && track.querySelector(".mobile-category-card");
+  if (!track || !card) return;
+
+  const gap = Number.parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap || "0") || 0;
+  const distance = card.getBoundingClientRect().width + gap;
+  track.scrollBy({ left: direction * distance, behavior: "smooth" });
+}
+
+function syncMobileCarouselToSelectedCategory() {
+  const selectedCard = container.querySelector(".mobile-category-card.is-selected");
+  if (selectedCard) selectedCard.scrollIntoView({ block: "nearest", inline: "nearest" });
 }
 
 function setMobileView(view) {
@@ -681,6 +834,7 @@ function chooseCollection(slug, swatch) {
   state.selectedSwatchImg = swatch.url || swatch.img;
   state.selectedSwatchRef = swatch.cleanReferenceId || stripFileExtension(swatch.referenceId) || swatch.name;
   state.mobileView = "preview";
+  state.mobilePanelOpen = false;
   state.show3dLoaderOnNextSync = true;
   clearTryOnResult();
   render();
@@ -688,6 +842,7 @@ function chooseCollection(slug, swatch) {
 
 function chooseOption(key, value) {
   state[key] = value;
+  state.mobilePanelOpen = false;
   state.show3dLoaderOnNextSync = true;
   clearTryOnResult();
   render();
@@ -874,6 +1029,7 @@ async function submitTryOnPreview() {
 
   state.trySubmitting = true;
   state.tryError = "";
+  startTryProgress();
   render();
 
   try {
@@ -917,6 +1073,7 @@ async function submitTryOnPreview() {
       ? error.message
       : "An error occurred while generating your jacket preview.";
   } finally {
+    stopTryProgress();
     state.trySubmitting = false;
     render();
   }
@@ -929,11 +1086,51 @@ function renderTailormateMount(scope) {
     scope === "primary"
       ? '<div class="tm3d-monogram" data-monogram-image-preview ' + (state.selectedCategory === "monogram" ? "" : "hidden") + '></div>'
       : "";
+  const rotationTip = scope === "primary" && state.showRotationTip ? renderRotationTipOverlay() : "";
   return (
     '<div class="tm3d-shell tm3d-shell--' + scope + '" data-tm3d-mount>' +
       '<div class="tm3d-loader" data-tm3d-loader hidden><span></span></div>' +
       '<div class="tm3d-fallback">3D preview unavailable</div>' +
+      rotationTip +
       monogramOverlay +
+    "</div>"
+  );
+}
+
+function renderRotationTipOverlay() {
+  return (
+    '<div class="tm3d-rotation-tip" aria-live="polite">' +
+      '<div class="tm3d-rotation-tip__garment" aria-hidden="true">' +
+        '<svg width="120" height="120" viewBox="0 0 24 24" fill="none">' +
+          '<path d="M8.5 3 5 5.5 3 9l2.5 2 1.5-1v9h10v-9l1.5 1L21 9l-2-3.5L15.5 3a3.5 3.5 0 0 1-7 0Z"></path>' +
+        "</svg>" +
+      "</div>" +
+      '<svg class="tm3d-rotation-tip__arrows" viewBox="0 0 512 190" fill="none" aria-hidden="true">' +
+        '<path d="m203.43 185.54c-2.75-3.88-2.1-5.83 5.34-19.26 2.76-4.86 5.02-9.39 5.02-9.87 0-0.49-11.17-1.95-24.6-2.92-88.05-7.12-152.95-25.57-178.04-50.66-15.7-15.7-14.73-35.93 2.27-50.66 26.38-22.66 80.28-38.36 161.53-47.26 36.9-3.88 125.76-3.88 161.85 0 85.14 9.55 139.84 26.22 163.47 49.85 27.19 27.19 6.64 57.14-52.6 76.56-15.86 5.18-50.5 13.11-69.43 15.86-15.7 2.27-19.27 1.3-20.07-5.5-0.65-5.83 2.42-7.61 19.26-10.36 63.12-10.04 107.79-27.68 117.34-46.29 12.3-23.63-52.44-51.79-144.21-62.8-56-6.64-133.37-6.64-189.37 0-76.88 9.23-135.96 30.27-144.86 51.79-7.61 18.62 31.72 40.3 96.3 53.25 36.58 7.29 99.54 14.25 99.54 10.85 0-0.65-2.1-5.34-4.85-10.69-5.83-11.65-6.31-17.31-1.14-19.58 2.92-1.29 9.88 1.13 43.06 15.86 40.62 17.97 45.8 21.37 42.4 27.68-0.81 1.62-6.15 5.02-11.81 7.61-5.67 2.42-22.82 10.19-38.36 17.15-15.38 7.12-29.78 12.79-31.89 12.79-1.94 0-4.85-1.62-6.15-3.4z"></path>' +
+      "</svg>" +
+      '<div class="tm3d-rotation-tip__caption">' +
+        "<p>Tip: You can swivel the jacket around to view it from all angles.</p>" +
+      "</div>" +
+    "</div>"
+  );
+}
+
+const SWATCH_CHECK_BADGE =
+  '<span class="swatch__check" aria-hidden="true">' +
+    '<svg viewBox="0 0 24 24" width="8" height="8" fill="none">' +
+      '<path d="M20 6 9 17l-5-5" stroke="#111" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />' +
+    "</svg>" +
+  "</span>";
+
+function renderPanelHeader(categoryId) {
+  const categories = getCategoryOrder();
+  const category = categories.find((item) => item.id === categoryId) || categories[0];
+  const title = (category && category.label) || "";
+  const sub = CATEGORY_SUBTITLES[categoryId] || "";
+  return (
+    '<div class="panel__header">' +
+      '<h2 class="panel__header-title">' + escapeHtml(title) + "</h2>" +
+      (sub ? '<span class="panel__header-sub">' + escapeHtml(sub) + "</span>" : "") +
     "</div>"
   );
 }
@@ -978,36 +1175,64 @@ function renderCategoryPanel(categoryId) {
 
   if (categoryId === "fabrics") {
     const fabricCollections = getFabricCollections();
+    const openCollection = fabricCollections.find((entry) => entry.slug === state.openCollection);
+    const fabricStatus =
+      (catalog.fabrics.loading ? '<p class="panel__copy" style="margin-bottom:14px;">Loading live fabrics...</p>' : "") +
+      (catalog.fabrics.error ? '<p class="panel__copy" style="margin-bottom:14px;">Unable to load fabrics.</p>' : "") +
+      (!catalog.fabrics.loading && !catalog.fabrics.error && !fabricCollections.length ? '<p class="panel__copy" style="margin-bottom:14px;">No fabrics found.</p>' : "");
+
+    if (openCollection) {
+      return (
+        '<div class="panel__section">' +
+          '<button type="button" class="collection-back" data-action="close-collection">← Collections</button>' +
+          '<div class="collection-head">' +
+            (openCollection.heroImg ? '<div class="collection-head__media"><img src="' + escapeHtml(openCollection.heroImg) + '" alt="' + escapeHtml(openCollection.name) + '" /></div>' : "") +
+            '<div class="collection-head__body">' +
+              '<h3 class="collection-head__title">' + escapeHtml(openCollection.name) + "</h3>" +
+              (openCollection.description ? '<p class="collection-head__copy">' + escapeHtml(openCollection.description) + "</p>" : "") +
+            "</div>" +
+          "</div>" +
+          '<div class="swatches">' +
+            openCollection.swatches.map((swatch) => {
+              const ref = swatch.cleanReferenceId || stripFileExtension(swatch.referenceId) || swatch.name;
+              const isSelected =
+                state.selectedCollection === openCollection.slug &&
+                (state.selectedSwatchRef ? state.selectedSwatchRef === ref : state.selectedSwatch === swatch.name);
+              return (
+                '<button type="button" class="swatch ' + (isSelected ? "is-selected" : "") + '" ' +
+                  'data-action="swatch" data-collection="' + openCollection.slug + '" ' +
+                  'data-swatch="' + escapeHtml(swatch.name) + '" ' +
+                  'data-img="' + escapeHtml(swatch.url || swatch.img) + '" ' +
+                  'data-ref="' + escapeHtml(ref) + '">' +
+                  '<div class="swatch__media">' +
+                    '<img src="' + escapeHtml(swatch.img || swatch.url) + '" alt="' + escapeHtml(swatch.name) + '" />' +
+                    (isSelected ? SWATCH_CHECK_BADGE : "") +
+                  "</div>" +
+                  '<div class="swatch__label">' + escapeHtml(swatch.name) + "</div>" +
+                "</button>"
+              );
+            }).join("") +
+          "</div>" +
+          '<a class="inline-link" href="' + escapeHtml(samplesUrl) + '">Request free cloth samples →</a>' +
+        "</div>"
+      );
+    }
+
     return (
       '<div class="panel__section">' +
-        '<div class="section-title"><h3>Fabrics</h3><p>Collections &amp; swatches</p></div>' +
-        (catalog.fabrics.loading ? '<p class="panel__copy" style="margin-bottom:14px;">Loading live fabrics...</p>' : "") +
-        (catalog.fabrics.error ? '<p class="panel__copy" style="margin-bottom:14px;">Unable to load fabrics.</p>' : "") +
-        (!catalog.fabrics.loading && !catalog.fabrics.error && !fabricCollections.length ? '<p class="panel__copy" style="margin-bottom:14px;">No fabrics found.</p>' : "") +
-        fabricCollections.map((entry) =>
-          '<article class="collection">' +
-            '<h4 class="collection__title">' + escapeHtml(entry.name) + "</h4>" +
-            '<div class="swatches">' +
-              entry.swatches.map((swatch) => {
-                const ref = swatch.cleanReferenceId || stripFileExtension(swatch.referenceId);
-                const isSelected =
-                  state.selectedCollection === entry.slug &&
-                  (state.selectedSwatchRef ? state.selectedSwatchRef === ref : state.selectedSwatch === swatch.name);
-                return (
-                  '<button type="button" class="swatch ' + (isSelected ? "is-selected" : "") + '" ' +
-                    'data-action="swatch" data-collection="' + entry.slug + '" ' +
-                    'data-swatch="' + escapeHtml(swatch.name) + '" ' +
-                    'data-img="' + escapeHtml(swatch.url || swatch.img) + '" ' +
-                    'data-ref="' + escapeHtml(ref || swatch.name) + '">' +
-                    '<img src="' + escapeHtml(swatch.img || swatch.url) + '" alt="' + escapeHtml(swatch.name) + '" />' +
-                    '<div class="swatch__label">' + escapeHtml(swatch.name) + "</div>" +
-                  "</button>"
-                );
-              }).join("") +
-            "</div>" +
-          "</article>"
-        ).join("") +
-        '<a class="inline-link" href="' + escapeHtml(samplesUrl) + '">Request free cloth samples →</a>' +
+        '<div class="section-title"><h3>Fabrics</h3><p>Choose your cloth collection</p></div>' +
+        fabricStatus +
+        '<div class="collection-grid">' +
+          fabricCollections.map((entry) =>
+            '<button type="button" class="collection-card ' + (state.selectedCollection === entry.slug ? "is-selected" : "") + '" data-action="open-collection" data-collection="' + entry.slug + '">' +
+              '<div class="collection-card__media">' +
+                (entry.heroImg ? '<img src="' + escapeHtml(entry.heroImg) + '" alt="' + escapeHtml(entry.name) + '" />' : "") +
+              "</div>" +
+              '<h4 class="collection-card__title">' + escapeHtml(entry.name) + "</h4>" +
+              (entry.description ? '<p class="collection-card__copy">' + escapeHtml(entry.description) + "</p>" : "") +
+            "</button>"
+          ).join("") +
+        "</div>" +
       "</div>"
     );
   }
@@ -1021,15 +1246,19 @@ function renderCategoryPanel(categoryId) {
         (catalog.lining.error ? '<p class="panel__copy" style="margin-bottom:14px;">Unable to load linings.</p>' : "") +
         (!catalog.lining.loading && !catalog.lining.error && !liningOptions.length ? '<p class="panel__copy" style="margin-bottom:14px;">No linings found.</p>' : "") +
         '<div class="swatches" style="grid-template-columns:repeat(auto-fill,minmax(92px,1fr));">' +
-          liningOptions.map((item) =>
-            '<button type="button" class="swatch ' + (state.lining === item.id ? "is-selected" : "") + '" data-action="option" data-key="lining" data-value="' + item.id + '">' +
-              (item.img || item.url
-                ? '<img src="' + escapeHtml(item.img || item.url) + '" alt="' + escapeHtml(item.label) + '" />'
-                : '<span style="display:block;width:100%;aspect-ratio:1;background:' + item.color + ';border:1px solid rgba(0,0,0,0.08);"></span>'
-              ) +
+          liningOptions.map((item) => {
+            const isSelected = state.lining === item.id;
+            return '<button type="button" class="swatch ' + (isSelected ? "is-selected" : "") + '" data-action="option" data-key="lining" data-value="' + item.id + '">' +
+              '<div class="swatch__media">' +
+                (item.img || item.url
+                  ? '<img src="' + escapeHtml(item.img || item.url) + '" alt="' + escapeHtml(item.label) + '" />'
+                  : '<span style="display:block;width:100%;aspect-ratio:1;background:' + item.color + ';border:1px solid rgba(0,0,0,0.08);"></span>'
+                ) +
+                (isSelected ? SWATCH_CHECK_BADGE : "") +
+              "</div>" +
               '<div class="swatch__label">' + escapeHtml(item.label) + "</div>" +
-            "</button>"
-          ).join("") +
+            "</button>";
+          }).join("") +
         "</div>" +
       "</div>"
     );
@@ -1043,14 +1272,17 @@ function renderCategoryPanel(categoryId) {
         (catalog.buttons.loading ? '<p class="panel__copy" style="margin-bottom:14px;">Loading live buttons...</p>' : "") +
         (catalog.buttons.error ? '<p class="panel__copy" style="margin-bottom:14px;">Unable to load buttons.</p>' : "") +
         (!catalog.buttons.loading && !catalog.buttons.error && !buttonOptions.length ? '<p class="panel__copy" style="margin-bottom:14px;">No buttons found.</p>' : "") +
-        '<div class="choice-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));">' +
-          buttonOptions.map((item) =>
-            '<button type="button" class="choice-card ' + (state.buttons === item.id ? "is-selected" : "") + '" data-action="option" data-key="buttons" data-value="' + item.id + '">' +
-              '<div class="choice-card__media"><img src="' + escapeHtml(item.img || item.url) + '" alt="' + escapeHtml(item.label) + '" /></div>' +
-              '<p class="choice-card__title">' + escapeHtml(item.label) + "</p>" +
-              '<p class="choice-card__copy">Button finish</p>' +
-            "</button>"
-          ).join("") +
+        '<div class="choice-grid choice-grid--buttons" style="grid-template-columns:repeat(4,minmax(0,1fr));">' +
+          buttonOptions.map((item) => {
+            const isSelected = state.buttons === item.id;
+            return '<button type="button" class="swatch ' + (isSelected ? "is-selected" : "") + '" data-action="option" data-key="buttons" data-value="' + item.id + '">' +
+              '<div class="swatch__media">' +
+                '<img src="' + escapeHtml(item.img || item.url) + '" alt="' + escapeHtml(item.label) + '" />' +
+                (isSelected ? SWATCH_CHECK_BADGE : "") +
+              "</div>" +
+              '<div class="swatch__label">' + escapeHtml(item.label) + "</div>" +
+            "</button>";
+          }).join("") +
         "</div>" +
       "</div>"
     );
@@ -1096,10 +1328,11 @@ function renderStepOne() {
       "</aside>" +
 
       '<aside class="panel">' +
+        renderPanelHeader(state.selectedCategory) +
         renderCategoryPanel(state.selectedCategory) +
       "</aside>" +
 
-      '<div class="preview ' + (state.mobileView === "options" ? "is-mobile-options" : "") + '">' +
+      '<div class="preview ' + (state.mobilePanelOpen ? "has-mobile-panel" : "") + '">' +
         renderTailormateMount("primary") +
         '<div class="preview__top">' +
           "<div>" +
@@ -1119,31 +1352,56 @@ function renderStepOne() {
           ).join("") +
         "</div>" +
 
-        '<button type="button" class="preview__zoom" data-action="zoom-open" aria-label="Zoom jacket preview">' +
-          '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.8"></circle><path d="m21 21-4.35-4.35M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>' +
-        "</button>" +
+        '<div class="preview__tools" aria-label="Preview tools">' +
+          '<button type="button" class="preview__tool" data-action="preview-reset" aria-label="Reset 3D model position">' +
+            '<svg width="18" height="18" viewBox="0 0 512 512" aria-hidden="true">' +
+              '<path fill="currentColor" d="M234.5 463.9c-79.1-9.6-142.3-57.7-172.1-130.8-4.8-11.7-5.4-16.5-2.4-20.3 2.4-3.2 7.2-5.2 10.3-4.4 4.9 1.2 7.4 4.5 11.2 14.3 21.5 55.8 66.3 97.2 123 113.4 18.9 5.5 26 6.3 51 6.3 19.7.1 24.7-.3 34.7-2.2 24.8-4.7 49-14.7 70.8-29.2 9.8-6.5 15.5-11.4 26.5-22.4 7.8-7.8 17-18.3 20.8-23.6 9.2-13 25.4-45.6 23.6-47.4-.2-.3-19.8 5.4-43.4 12.5-23.7 7.1-44.3 12.9-45.8 12.9-3.7 0-8.4-4.6-9.2-9.2-.8-4.2 1.2-8.8 4.7-10.6 3.9-2 109.8-33.2 112.7-33.2 3.7 0 11.1 3.9 13.4 7.2 3 4 34.9 111.6 34.2 115-1 4.3-5.9 7.8-10.9 7.8-7.7 0-7.9-.6-22.2-48.2-7.1-23.6-13.1-42.8-13.4-42.8-.3 0-1.2 1.7-1.9 3.8-2.9 8.2-12.3 26.3-18.8 36.2-33.3 50.3-82.8 83-140.8 93-14 2.4-43.6 3.4-56 1.9z"></path>' +
+              '<path fill="currentColor" d="M54.5 220.6c-5.1-2.2-8.2-7-11.4-17.4-17.4-56.7-30.1-101-29.6-103.4.8-3.3 5.8-7.8 8.8-7.9 9.7-.5 9.6-.7 24.3 48.4 7.1 23.5 13.1 42.7 13.5 42.7.3 0 1.2-1.9 1.9-4.2 1.9-6.6 12.1-26.3 18.7-36.3 24.9-37.6 59.1-65.4 100.7-81.6 61.4-23.9 133.3-16.2 188.4 20.2 25.8 17.1 51 43.5 65.4 68.4 9.5 16.6 18.8 38.3 18.8 43.9 0 8.9-11.8 13.7-17.8 7.3-1.2-1.2-4.4-7.9-7.2-14.7-20.9-51.2-61-89.4-112.6-107.3-21.6-7.5-40-10.1-66.5-9.4-29.3.8-49.2 5.5-75.4 18.1-33.3 16-59.9 40.3-79.1 72.2-6.4 10.7-14 26.9-15.1 32.4-.5 2.7-.3 3.2.8 2.8 6.4-2.5 86.1-25.8 88.1-25.8 3.6 0 7.6 3.5 8.9 7.9.9 3.2.8 4.4-.5 7.3-.9 1.9-2.7 4-3.9 4.6-4.5 2.3-109.9 33.2-113 33.2-1.7-.1-4.6-.7-6.2-1.4z"></path>' +
+            "</svg>" +
+          "</button>" +
+          '<button type="button" class="preview__tool preview__zoom" data-action="zoom-open" aria-label="Zoom jacket preview">' +
+            '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.8"></circle><path d="m21 21-4.35-4.35M11 8v6M8 11h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path></svg>' +
+          "</button>" +
+        "</div>" +
 
         '<div class="preview__bottom preview__bottom--desktop">' +
-          '<button type="button" class="preview__action" data-action="modal-open" style="background:var(--ink);">Preview My Jacket ' + iconArrowUpRight() + '</button>' +
+          '<div class="preview__actions">' +
+            '<button type="button" class="preview__action preview__action--cart" data-action="reserve-now">Add to Cart</button>' +
+            '<button type="button" class="preview__action preview__action--preview" data-action="modal-open">Preview My Jacket ' + iconArrowUpRight() + '</button>' +
+          "</div>" +
         "</div>" +
 
         '<div class="preview__bottom preview__bottom--mobile">' +
-          '<div class="preview__tabs mobile-toggle">' +
-            '<button type="button" class="preview-tab ' + (state.mobileView === "preview" ? "is-selected" : "") + '" data-action="view" data-value="preview"><span>Preview</span></button>' +
-            '<button type="button" class="preview-tab ' + (state.mobileView === "options" ? "is-selected" : "") + '" data-action="view" data-value="options"><span>Options</span></button>' +
+          '<div class="mobile-category-rail">' +
+            '<button type="button" class="mobile-category-nav" data-action="mobile-carousel-prev" aria-label="Previous design options"><span aria-hidden="true">‹</span></button>' +
+            '<div class="mobile-category-carousel" aria-label="Design options">' +
+              '<div class="mobile-category-carousel__track">' +
+                categories.map((item) =>
+                  '<button type="button" class="preview-tab mobile-category-card ' + (state.selectedCategory === item.id ? "is-selected" : "") + '" data-action="mobile-category" data-value="' + item.id + '">' +
+                    getCategoryIcon(item.id) +
+                    "<span>" + item.label + "</span>" +
+                  "</button>"
+                ).join("") +
+              "</div>" +
+            "</div>" +
+            '<button type="button" class="mobile-category-nav" data-action="mobile-carousel-next" aria-label="Next design options"><span aria-hidden="true">›</span></button>' +
           "</div>" +
-          '<div class="preview__tabs" style="grid-template-columns:repeat(' + categories.length + ',1fr);">' +
-            categories.map((item) =>
-              '<button type="button" class="preview-tab ' + (state.selectedCategory === item.id ? "is-selected" : "") + '" data-action="category" data-value="' + item.id + '">' +
-                getCategoryIcon(item.id) +
-                "<span>" + item.label + "</span>" +
-              "</button>"
-            ).join("") +
+          '<div class="preview__actions">' +
+            '<button type="button" class="preview__action preview__action--cart" data-action="reserve-now">Add to Cart</button>' +
+            '<button type="button" class="preview__action preview__action--preview" data-action="modal-open">Preview My Jacket ' + iconArrowUpRight() + '</button>' +
           "</div>" +
-          '<button type="button" class="preview__action" data-action="modal-open">Preview My Jacket ' + iconArrowUpRight() + '</button>' +
         "</div>" +
 
-        '<div class="mobile-options">' + renderCategoryPanel(state.selectedCategory) + "</div>" +
+        '<div class="mobile-options">' +
+          '<div class="mobile-options__header">' +
+            "<div>" +
+              '<p class="mobile-options__eyebrow">Design Options</p>' +
+              '<h2>' + escapeHtml((categories.find((item) => item.id === state.selectedCategory) || { label: "Options" }).label) + "</h2>" +
+            "</div>" +
+            '<button type="button" class="mobile-options__close" data-action="mobile-panel-close" aria-label="Close options panel"><span aria-hidden="true">×</span></button>' +
+          "</div>" +
+          '<div class="mobile-options__body">' + renderCategoryPanel(state.selectedCategory) + "</div>" +
+        "</div>" +
       "</div>" +
     "</section>"
   );
@@ -1451,7 +1709,7 @@ function renderTryModal() {
   if (!state.modalOpen) return "";
   return (
     '<div class="modal" data-action="modal-backdrop">' +
-      '<div class="try-modal" role="dialog" aria-modal="true" aria-label="Try before you buy">' +
+      '<div class="try-modal ' + (state.tryOnResult ? "has-result" : "") + '" role="dialog" aria-modal="true" aria-label="Try before you buy">' +
         '<div class="try-modal__head">' +
           '<p class="panel__eyebrow">Try Before You Buy</p>' +
           "<h2>Upload your photo to see yourself wearing your new jacket.</h2>" +
@@ -1471,17 +1729,21 @@ function renderTryModal() {
             '<p class="small-note" style="text-align:left;">Your photo and details are used only by your master tailor and are never shared or stored publicly.</p>' +
           "</div>" +
           '<div class="try-modal__upload">' +
-            '<label class="field"><span>Your Photo</span></label>' +
-            '<label class="upload-zone ' + (state.tryPhoto ? "has-photo" : "") + '">' +
-              '<input type="file" accept="image/jpeg,image/png" data-action="try-photo" />' +
-              (state.tryPhoto
-                ? '<img src="' + state.tryPhoto + '" alt="Your uploaded photo" /><span>Change Photo</span>'
-                : '<span class="upload-zone__icon">+</span><strong>Click to Upload</strong><em>Upload a high-resolution photo (*.jpg or *.png) that presents your full body in a well-defined pose.</em>'
-              ) +
-            "</label>" +
+            '<label class="field"><span>' + (state.tryOnResult ? "Your Preview" : "Your Photo") + "</span></label>" +
             (state.tryOnResult
               ? '<div class="try-modal__result"><img src="' + state.tryOnResult + '" alt="Virtual try-on result" /></div>'
-              : ""
+              : state.trySubmitting
+                ? '<div class="try-modal__loading">' +
+                    '<span class="try-modal__spinner" aria-hidden="true"></span>' +
+                    '<p class="try-modal__loading-text">' + escapeHtml(TRY_ON_PROGRESS_MESSAGES[state.tryProgressIndex] || "") + "…</p>" +
+                  "</div>"
+                : '<label class="upload-zone ' + (state.tryPhoto ? "has-photo" : "") + '">' +
+                    '<input type="file" accept="image/jpeg,image/png" data-action="try-photo" />' +
+                    (state.tryPhoto
+                      ? '<img src="' + state.tryPhoto + '" alt="Your uploaded photo" /><span>Change Photo</span>'
+                      : '<span class="upload-zone__icon">+</span><strong>Click to Upload</strong><em>Upload a high-resolution photo (*.jpg or *.png) that presents your full body in a well-defined pose.</em>'
+                    ) +
+                  "</label>"
             ) +
           "</div>" +
         "</div>" +
@@ -1507,6 +1769,7 @@ function render() {
     '<div class="ar-stage">' + renderStage() + "</div>" +
     renderZoomModal() +
     renderTryModal();
+  syncMobileCarouselToSelectedCategory();
   scheduleTailormateSync();
   scheduleMonogramSync();
 }
@@ -1520,16 +1783,24 @@ function handleClick(event) {
   const action = target.dataset.action;
   const value = target.dataset.value;
 
+  if (action === "noop") { event.preventDefault(); return; }
   if (action === "step")          { setStep(Number(value)); return; }
   if (action === "category")      { setCategory(value); return; }
+  if (action === "mobile-category") { openMobileCategory(value); return; }
+  if (action === "mobile-panel-close") { closeMobilePanel(); return; }
+  if (action === "mobile-carousel-prev") { scrollMobileCarousel(-1); return; }
+  if (action === "mobile-carousel-next") { scrollMobileCarousel(1); return; }
   if (action === "view")          { setMobileView(value); return; }
   if (action === "currency")      { setCurrency(value); return; }
+  if (action === "open-collection") { state.openCollection = target.dataset.collection || ""; render(); return; }
+  if (action === "close-collection") { state.openCollection = ""; render(); return; }
   if (action === "measure-choice"){ chooseMeasurementChoice(value); return; }
   if (action === "unit")          { chooseOption(target.dataset.key, value); return; }
   if (action === "modal-open")    { openModal(); return; }
   if (action === "modal-close")   { closeModal(); return; }
   if (action === "modal-backdrop"){ if (event.target === target) closeModal(); return; }
   if (action === "zoom-open")     { openZoom(); return; }
+  if (action === "preview-reset") { resetPreviewPosition(); return; }
   if (action === "zoom-close")    { closeZoom(); return; }
   if (action === "try-continue")  { submitTryOnPreview(); return; }
   if (action === "checkout-now") { checkoutNow(); return; }
@@ -1641,10 +1912,8 @@ function iconMonogram() {
 container.addEventListener("click", handleClick);
 container.addEventListener("input", handleInput);
 container.addEventListener("change", handleChange);
-window.addEventListener("resize", () => {
-  tailormate.resize();
-  scheduleMonogramSync();
-});
+window.addEventListener("resize", schedulePreviewResize);
+window.addEventListener("orientationchange", schedulePreviewResize);
 
 render();
 loadSceneCatalog();

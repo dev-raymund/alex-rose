@@ -35,7 +35,7 @@ if ($ar_logged_in) {
 ?>
 <main id="main" class="site-main site-main--account" tabindex="-1">
 	<section class="arac-hero">
-		<div class="arac-hero__inner">
+		<div class="arac-hero__inner ar-container ar-container--6xl">
 			<span class="arac-hero__rule" aria-hidden="true"></span>
 			<p class="arac-hero__eyebrow"><?php echo esc_html($ar_eyebrow); ?></p>
 			<h1 class="arac-hero__title"><?php echo esc_html($ar_title); ?></h1>
@@ -44,7 +44,7 @@ if ($ar_logged_in) {
 	</section>
 
 	<div class="arac-body">
-		<div class="arac-body__inner">
+		<div class="arac-body__inner ar-container ar-container--6xl">
 			<?php
 			while (have_posts()) :
 				the_post();
