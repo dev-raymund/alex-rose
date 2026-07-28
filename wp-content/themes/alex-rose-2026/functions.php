@@ -386,6 +386,27 @@ add_action(
 			);
 		}
 
+		$cookie_css = ALEX_ROSE_2026_DIR . '/assets/css/cookie-banner.css';
+		if (is_readable($cookie_css)) {
+			wp_enqueue_style(
+				'alex-rose-2026-cookie-banner',
+				ALEX_ROSE_2026_URI . '/assets/css/cookie-banner.css',
+				array('alex-rose-2026'),
+				(string) filemtime($cookie_css)
+			);
+		}
+
+		$cookie_js = ALEX_ROSE_2026_DIR . '/assets/js/cookie-banner.js';
+		if (is_readable($cookie_js)) {
+			wp_enqueue_script(
+				'alex-rose-2026-cookie-banner',
+				ALEX_ROSE_2026_URI . '/assets/js/cookie-banner.js',
+				array(),
+				(string) filemtime($cookie_js),
+				true
+			);
+		}
+
 		$form_js_path = ALEX_ROSE_2026_DIR . '/assets/js/form-submit.js';
 		if (is_readable($form_js_path)) {
 			wp_register_script(
@@ -798,7 +819,7 @@ add_action(
 			);
 		}
 
-		if (is_page_template('template/privacy-policy.php')) {
+		if (is_page_template('template/privacy-policy.php') || is_page_template('template/cookie-policy.php')) {
 			$pp_css = ALEX_ROSE_2026_DIR . '/assets/css/page-privacy-policy.css';
 			$pp_ver = is_readable($pp_css) ? (string) filemtime($pp_css) : ALEX_ROSE_2026_VERSION;
 			wp_enqueue_style(

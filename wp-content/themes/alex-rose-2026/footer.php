@@ -70,7 +70,9 @@ $year = (string) gmdate('Y');
 			<ul class="site-footer--marketing__links">
 				<li><a href="<?php echo esc_url(home_url('/delivery-information')); ?>"><?php esc_html_e('Delivery Information', 'alex-rose-2026'); ?></a></li>
 				<li><a href="<?php echo esc_url(home_url('/privacy-policy')); ?>"><?php esc_html_e('Privacy Policy', 'alex-rose-2026'); ?></a></li>
+				<li><a href="<?php echo esc_url(home_url('/cookie-policy')); ?>"><?php esc_html_e('Cookie Policy', 'alex-rose-2026'); ?></a></li>
 				<li><a href="<?php echo esc_url(home_url('/terms-and-conditions')); ?>"><?php esc_html_e('Terms & Conditions', 'alex-rose-2026'); ?></a></li>
+				<li><a href="#" data-ar-cookie-settings><?php esc_html_e('Cookie Settings', 'alex-rose-2026'); ?></a></li>
 			</ul>
 		</div>
 	</div>
@@ -89,6 +91,7 @@ $year = (string) gmdate('Y');
 		</div>
 	</div>
 </footer>
+<?php get_template_part('template-parts/cookie-banner'); ?>
 <?php wp_footer(); ?>
 </body>
 </html>
