@@ -21,6 +21,7 @@ require_once ALEX_ROSE_2026_DIR . '/inc/off-the-cuff.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/forms.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/woocommerce.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/schema.php';
+require_once ALEX_ROSE_2026_DIR . '/inc/abandoned-checkout.php';
 
 /**
  * Absolute URL for a file under wp-content/uploads (correct when WordPress lives in a subdirectory).
