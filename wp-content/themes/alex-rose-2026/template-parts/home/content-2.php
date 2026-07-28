@@ -165,14 +165,14 @@ if (! defined('ABSPATH')) {
 		<div class="home-clients__strip">
 			<?php
 			$clients = array(
-				array('file' => 'client-2.png', 'pos' => '50% 15%', 'tag' => __('Business', 'alex-rose-2026')),
-				array('file' => 'client-3.png', 'pos' => '50% 12%', 'tag' => __('Evening', 'alex-rose-2026')),
-				array('file' => 'client-9.jpg', 'pos' => '50% 12%', 'tag' => __('Statement', 'alex-rose-2026')),
-				array('file' => 'client-10.jpg', 'pos' => '50% 15%', 'tag' => __('Business', 'alex-rose-2026')),
-				array('file' => 'client-11.jpg', 'pos' => '50% 12%', 'tag' => __('Evening', 'alex-rose-2026')),
+				array('file' => 'client-2.webp', 'pos' => '50% 15%', 'tag' => __('Business', 'alex-rose-2026')),
+				array('file' => 'client-3.webp', 'pos' => '50% 12%', 'tag' => __('Evening', 'alex-rose-2026')),
+				array('file' => 'client-9.webp', 'pos' => '50% 12%', 'tag' => __('Statement', 'alex-rose-2026')),
+				array('file' => 'client-10.webp', 'pos' => '50% 15%', 'tag' => __('Business', 'alex-rose-2026')),
+				array('file' => 'client-11.webp', 'pos' => '50% 12%', 'tag' => __('Evening', 'alex-rose-2026')),
 			);
 			foreach ($clients as $i => $c ) :
-				$img_url = alex_rose_2026_uploads_url('2026/05/' . $c['file']);
+				$img_url = alex_rose_2026_uploads_url('2026/07/' . $c['file']);
 				?>
 				<article
 					class="home-client-card"

@@ -10,7 +10,7 @@ if (! defined('ABSPATH')) {
 }
 ?>
 <section class="home-hero">
-	<img class="home-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-4.jpg')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose Fine Tailoring', 'alex-rose-2026'); ?>" loading="eager" width="1920" height="1080">
+	<img class="home-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose Fine Tailoring', 'alex-rose-2026'); ?>" loading="eager" width="1920" height="1080">
 	<div class="home-hero__shade" aria-hidden="true"></div>
 	<div class="home-hero__shade-bottom" aria-hidden="true"></div>
 	<div class="home-hero__inner home-gutters">
@@ -256,7 +256,7 @@ $stars_row = function () use ($star_svg): string {
 		<div class="home-occasions__grid">
 			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/business')); ?>">
 				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/occasion-business.jpg')); ?>" alt="" loading="lazy" width="600" height="800">
+					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/occasion-business.webp')); ?>" alt="" loading="lazy" width="600" height="800">
 				</span>
 				<span class="home-occ-card__shade" aria-hidden="true"></span>
 				<div class="home-occ-card__body">
@@ -272,7 +272,7 @@ $stars_row = function () use ($star_svg): string {
 			</a>
 			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/evening')); ?>">
 				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-6.jpg')); ?>" alt="" loading="lazy" width="600" height="800">
+					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-6.webp')); ?>" alt="" loading="lazy" width="600" height="800">
 				</span>
 				<span class="home-occ-card__shade" aria-hidden="true"></span>
 				<div class="home-occ-card__body">
@@ -288,7 +288,7 @@ $stars_row = function () use ($star_svg): string {
 			</a>
 			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/seasonal')); ?>">
 				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-5.jpg')); ?>" alt="" loading="lazy" width="600" height="800">
+					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-5.webp')); ?>" alt="" loading="lazy" width="600" height="800">
 				</span>
 				<span class="home-occ-card__shade" aria-hidden="true"></span>
 				<div class="home-occ-card__body">
@@ -304,7 +304,7 @@ $stars_row = function () use ($star_svg): string {
 			</a>
 			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/country')); ?>">
 				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/06/country-1.jpg')); ?>" alt="" loading="lazy" width="600" height="800">
+					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/country-1.webp')); ?>" alt="" loading="lazy" width="600" height="800">
 				</span>
 				<span class="home-occ-card__shade" aria-hidden="true"></span>
 				<div class="home-occ-card__body">

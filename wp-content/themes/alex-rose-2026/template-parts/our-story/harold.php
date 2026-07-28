@@ -13,7 +13,7 @@ if (! defined('ABSPATH')) {
 	<div class="os-harold__inner ar-container ar-container--6xl">
 		<div class="os-harold__media">
 			<div class="os-harold__media-frame">
-				<img class="os-harold__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/harold2.jpg')); ?>" alt="<?php esc_attr_e('Harold Rose, Master Tailor', 'alex-rose-2026'); ?>" loading="lazy">
+				<img class="os-harold__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/harold2.webp')); ?>" alt="<?php esc_attr_e('Harold Rose, Master Tailor', 'alex-rose-2026'); ?>" loading="lazy">
 				<span class="os-harold__corner os-harold__corner--tl-h" aria-hidden="true"></span>
 				<span class="os-harold__corner os-harold__corner--tl-v" aria-hidden="true"></span>
 				<span class="os-harold__corner os-harold__corner--br-h" aria-hidden="true"></span>

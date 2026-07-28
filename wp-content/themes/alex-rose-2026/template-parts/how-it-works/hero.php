@@ -10,7 +10,7 @@ if (! defined('ABSPATH')) {
 }
 ?>
 <section class="hiw-hero">
-	<img class="hiw-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/process-cutting.jpg')); ?>" alt="" aria-hidden="true" loading="eager" width="1920" height="900">
+	<img class="hiw-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/process-cutting.webp')); ?>" alt="" aria-hidden="true" loading="eager" width="1920" height="900">
 	<div class="hiw-hero__shade" aria-hidden="true"></div>
 	<div class="hiw-hero__inner">
 		<div class="hiw-hero__rule" aria-hidden="true"></div>

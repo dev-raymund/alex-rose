@@ -11,7 +11,7 @@ if (! defined('ABSPATH')) {
 ?>
 <section class="home-story home-story--cream" id="story">
 	<div class="home-story__media">
-		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/alexander-rose-factory-hd.png')); ?>" alt="<?php echo esc_attr__('Alexander Rose Ltd factory, archive', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
+		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/alexander-rose-factory-hd.webp')); ?>" alt="<?php echo esc_attr__('Alexander Rose Ltd factory, archive', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
 		<div class="home-story__caption"><p><?php esc_html_e('c. 1950s', 'alex-rose-2026'); ?></p></div>
 	</div>
 	<div class="home-story__body">
@@ -26,7 +26,7 @@ if (! defined('ABSPATH')) {
 
 <section class="home-story home-story--reverse home-story--cream">
 	<div class="home-story__media">
-		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/story-jacket.jpg')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
+		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/story-jacket.webp')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
 	</div>
 	<div class="home-story__body">
 		<div class="home-story__inner">
@@ -47,7 +47,7 @@ if (! defined('ABSPATH')) {
 		</div>
 	</div>
 	<div class="home-story__media home-story__media--tailor">
-		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/harold2.jpg')); ?>" alt="<?php echo esc_attr__('Your master tailor, Alex Rose Fine Tailoring', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
+		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/harold2.webp')); ?>" alt="<?php echo esc_attr__('Your master tailor, Alex Rose Fine Tailoring', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
 	</div>
 </section>
 
@@ -66,7 +66,7 @@ if (! defined('ABSPATH')) {
 		<div class="home-testimonials__grid">
 			<div class="home-testimonial">
 				<div class="home-testimonial__who">
-					<div class="home-testimonial__avatar"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/client-1.png')); ?>" alt="" width="56" height="56"></div>
+					<div class="home-testimonial__avatar"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/client-1.webp')); ?>" alt="" width="56" height="56"></div>
 					<div>
 						<p class="home-testimonial__name"><?php esc_html_e('Pankaj Madan', 'alex-rose-2026'); ?></p>
 						<p class="home-testimonial__meta"><?php esc_html_e('Client since 2012', 'alex-rose-2026'); ?></p>
@@ -78,7 +78,7 @@ if (! defined('ABSPATH')) {
 			</div>
 			<div class="home-testimonial">
 				<div class="home-testimonial__who">
-					<div class="home-testimonial__avatar"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/client-2.png')); ?>" alt="" width="56" height="56"></div>
+					<div class="home-testimonial__avatar"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/client-2.webp')); ?>" alt="" width="56" height="56"></div>
 					<div>
 						<p class="home-testimonial__name"><?php esc_html_e('Raj Singh', 'alex-rose-2026'); ?></p>
 						<p class="home-testimonial__meta"><?php esc_html_e('Client since 2004', 'alex-rose-2026'); ?></p>
@@ -90,7 +90,7 @@ if (! defined('ABSPATH')) {
 			</div>
 			<div class="home-testimonial">
 				<div class="home-testimonial__who">
-					<div class="home-testimonial__avatar"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/client-3.png')); ?>" alt="" width="56" height="56"></div>
+					<div class="home-testimonial__avatar"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/client-3.webp')); ?>" alt="" width="56" height="56"></div>
 					<div>
 						<p class="home-testimonial__name"><?php esc_html_e('Jovi Overo', 'alex-rose-2026'); ?></p>
 						<p class="home-testimonial__meta"><?php esc_html_e('Verified client', 'alex-rose-2026'); ?></p>
@@ -124,7 +124,7 @@ if (! defined('ABSPATH')) {
 		</div>
 		<div class="home-journal__grid">
 			<a class="home-journal__feature" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-				<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-4.jpg')); ?>" alt="" width="900" height="600">
+				<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>" alt="" width="900" height="600">
 				<div class="home-journal__feature-shade" aria-hidden="true"></div>
 				<div class="home-journal__feature-body">
 					<div class="flex items-center gap-12">
@@ -141,7 +141,7 @@ if (! defined('ABSPATH')) {
 			<div>
 				<p style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.35);margin:0 0 8px;"><?php esc_html_e('More From the Journal', 'alex-rose-2026'); ?></p>
 				<a class="home-journal__side-item" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-2.jpg')); ?>" alt="" width="72" height="72"></div>
+					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-2.webp')); ?>" alt="" width="72" height="72"></div>
 					<div class="home-journal__side-body">
 						<div class="home-journal__side-meta">
 							<span class="home-journal__side-tag"><?php esc_html_e('The Craft', 'alex-rose-2026'); ?></span>
@@ -152,7 +152,7 @@ if (! defined('ABSPATH')) {
 					</div>
 				</a>
 				<a class="home-journal__side-item" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-9.jpg')); ?>" alt="" width="72" height="72"></div>
+					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-9.webp')); ?>" alt="" width="72" height="72"></div>
 					<div class="home-journal__side-body">
 						<div class="home-journal__side-meta">
 							<span class="home-journal__side-tag"><?php esc_html_e('Cloth', 'alex-rose-2026'); ?></span>
@@ -163,7 +163,7 @@ if (! defined('ABSPATH')) {
 					</div>
 				</a>
 				<a class="home-journal__side-item" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-5.jpg')); ?>" alt="" width="72" height="72"></div>
+					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-5.webp')); ?>" alt="" width="72" height="72"></div>
 					<div class="home-journal__side-body">
 						<div class="home-journal__side-meta">
 							<span class="home-journal__side-tag"><?php esc_html_e('Fit Guide', 'alex-rose-2026'); ?></span>

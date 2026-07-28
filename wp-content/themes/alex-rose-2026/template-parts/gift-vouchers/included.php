@@ -28,7 +28,7 @@ $check_svg = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke
 	<div class="gv-included__inner ar-container ar-container--6xl">
 		<div class="gv-included__grid">
 			<div class="gv-included__media">
-				<img class="gv-included__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/gift-voucher.jpg')); ?>" alt="<?php esc_attr_e('Alex Rose Gift Voucher in envelope', 'alex-rose-2026'); ?>" loading="lazy">
+				<img class="gv-included__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/gift-voucher.webp')); ?>" alt="<?php esc_attr_e('Alex Rose Gift Voucher in envelope', 'alex-rose-2026'); ?>" loading="lazy">
 			</div>
 
 			<div class="gv-included__body">
