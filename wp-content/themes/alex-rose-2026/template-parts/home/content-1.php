@@ -10,17 +10,19 @@ if (! defined('ABSPATH')) {
 }
 ?>
 <section class="home-hero">
-	<img class="home-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose Fine Tailoring', 'alex-rose-2026'); ?>" loading="eager" width="1920" height="1080">
+	<div class="home-hero__media">
+		<img class="home-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose Fine Tailoring', 'alex-rose-2026'); ?>" loading="eager" width="1920" height="1080">
+	</div>
 	<div class="home-hero__shade" aria-hidden="true"></div>
 	<div class="home-hero__shade-bottom" aria-hidden="true"></div>
-	<div class="home-hero__inner home-gutters">
+	<div class="home-hero__inner home-gutters" data-ar-no-reveal>
 		<p class="home-hero__kicker"><?php esc_html_e('Specialists in Made-to-Measure Jackets', 'alex-rose-2026'); ?></p>
 		<div class="home-hero__spacer" aria-hidden="true"></div>
 		<div class="home-hero__copy">
 			<h1 class="home-hero__title">
-				<?php echo esc_html__('Custom Jackets', 'alex-rose-2026'); ?><br>
-				<?php echo esc_html__('Designed to Fit', 'alex-rose-2026'); ?><br>
-				<?php echo esc_html__('You Properly.', 'alex-rose-2026'); ?>
+				<span class="home-hero__title-line"><?php echo esc_html__('Custom Jackets', 'alex-rose-2026'); ?></span>
+				<span class="home-hero__title-line"><?php echo esc_html__('Designed to Fit', 'alex-rose-2026'); ?></span>
+				<span class="home-hero__title-line"><?php echo esc_html__('You Properly.', 'alex-rose-2026'); ?></span>
 			</h1>
 			<p class="home-hero__lead">
 				<?php echo esc_html__('Design your jacket online. Refine the fit in person.', 'alex-rose-2026'); ?><br>

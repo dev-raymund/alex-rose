@@ -192,15 +192,32 @@
 		}
 
 		var images = main.querySelectorAll('.home-story__media > img');
-		if (!images.length) {
+		var heroMedia = main.querySelector('.home-hero__media');
+		if (!images.length && !heroMedia) {
 			return;
 		}
 
 		var ticking = false;
 
+		function updateHero(vh) {
+			var hero = heroMedia.parentElement;
+			var rect = hero.getBoundingClientRect();
+			if (rect.bottom < 0 || rect.top > vh) {
+				return;
+			}
+			/* Centred at rest, travelling up to 11% of the hero height (media overhangs 12%). */
+			var progress = (vh - rect.top) / (vh + rect.height);
+			var offset = (progress - 0.5) * rect.height * 0.22;
+			heroMedia.style.transform = 'translate3d(0, ' + offset.toFixed(2) + 'px, 0)';
+		}
+
 		function update() {
 			ticking = false;
 			var vh = window.innerHeight || document.documentElement.clientHeight;
+
+			if (heroMedia) {
+				updateHero(vh);
+			}
 
 			images.forEach(function (img) {
 				var section = img.closest('.home-story__media');
