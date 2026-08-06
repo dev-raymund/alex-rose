@@ -2,6 +2,12 @@
 /**
  * Launch — founding-member landing page markup.
  *
+ * RETIRED — unreachable. Rendered only by template/launch.php, whose
+ * `Template Name` header was removed when the 20% founding promotion ended.
+ * Kept for reference; the copy below still quotes 20% and the 31 July 2026
+ * closing date, so rewrite it before reviving. Its form posts to the
+ * `lp_join_waitlist` handler, which was deleted from inc/forms.php.
+ *
  * @package Alex_Rose_2026
  */
 

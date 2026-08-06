@@ -21,7 +21,6 @@ require_once ALEX_ROSE_2026_DIR . '/inc/off-the-cuff.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/forms.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/woocommerce.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/schema.php';
-require_once ALEX_ROSE_2026_DIR . '/inc/abandoned-checkout.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/referral-links.php';
 
 /**
@@ -322,7 +321,6 @@ function alex_rose_2026_form_templates(): array {
 		'template/post-your-jacket.php',
 		'template/send-measurements.php',
 		'template/off-the-cuff.php',
-		'template/launch.php',
 		'template/feedback.php',
 	);
 }
@@ -672,28 +670,6 @@ add_action(
 					ALEX_ROSE_2026_URI . '/assets/js/page-feedback.js',
 					array('alex-rose-2026-form-submit'),
 					(string) filemtime($fb_js),
-					true
-				);
-			}
-		}
-
-		if (is_page_template('template/launch.php')) {
-			$lp_css = ALEX_ROSE_2026_DIR . '/assets/css/page-launch.css';
-			$lp_ver = is_readable($lp_css) ? (string) filemtime($lp_css) : ALEX_ROSE_2026_VERSION;
-			wp_enqueue_style(
-				'alex-rose-2026-launch',
-				ALEX_ROSE_2026_URI . '/assets/css/page-launch.css',
-				array('alex-rose-2026'),
-				$lp_ver
-			);
-
-			$lp_js = ALEX_ROSE_2026_DIR . '/assets/js/page-launch.js';
-			if (is_readable($lp_js)) {
-				wp_enqueue_script(
-					'alex-rose-2026-launch',
-					ALEX_ROSE_2026_URI . '/assets/js/page-launch.js',
-					array('alex-rose-2026-form-submit'),
-					(string) filemtime($lp_js),
 					true
 				);
 			}

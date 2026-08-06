@@ -1,5 +1,21 @@
 <?php
 /**
+ * RETIRED — this module is no longer loaded.
+ *
+ * The recovery email was built entirely around the 20% founding discount
+ * (EARLY20 / STLBMAN20), which has been withdrawn, so the `require_once` in
+ * functions.php was removed rather than the file. To revive it, restore that
+ * require and rewrite the email body in alex_rose_2026_abandoned_send_email()
+ * with whatever offer replaces the founding code — along with the campaign-end
+ * date in alex_rose_2026_abandoned_campaign_end() and the hardcoded code in
+ * alex_rose_2026_abandoned_code().
+ *
+ * NOTE: the self-cleanup that unschedules `alex_rose_2026_abandoned_cron` lives
+ * in this file, so it can no longer run. If the feature was ever switched on in
+ * production, clear the leftover event once:
+ *
+ *     wp cron event delete alex_rose_2026_abandoned_cron
+ *
  * Automatic abandoned-checkout recovery email.
  *
  * WooCommerce does not track abandoned checkouts on its own (no order is

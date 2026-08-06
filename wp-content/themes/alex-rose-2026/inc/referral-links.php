@@ -13,8 +13,8 @@
  *         $links['jane'] = array(
  *             'source'   => 'jane-doe',
  *             'medium'   => 'influencer',
- *             'campaign' => 'founding-referral',
- *             'code'     => 'JANE20',
+ *             'campaign' => 'partner-referral',
+ *             'code'     => 'JANE10',
  *         );
  *         return $links;
  *     });
@@ -34,14 +34,11 @@ const ALEX_ROSE_2026_REFERRAL_COOKIE = 'ar_ref_code';
  * @return array<string, array<string, string>>
  */
 function alex_rose_2026_referral_links(): array {
-	$links = array(
-		'brian' => array(
-			'source'   => 'brian-klimek',
-			'medium'   => 'influencer',
-			'campaign' => 'founding-referral',
-			'code'     => 'STLBMAN20',
-		),
-	);
+	// Empty since the 20% founding promotion was retired — the /brian short link
+	// and its STLBMAN20 code were removed with it. The redirect + coupon
+	// persistence below stays in place for future partners; add them here or via
+	// the filter.
+	$links = array();
 
 	return (array) apply_filters('alex_rose_2026_referral_links', $links);
 }
