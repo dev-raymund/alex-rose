@@ -312,18 +312,50 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	background: var(--ar-ink);
 	border-top: 1px solid rgba(172, 167, 167, 0.35);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-	overflow-x: auto;
-	scrollbar-width: none;
+	overflow: hidden;
 }
 
-.page-home .home-stats::-webkit-scrollbar {
-	display: none;
-}
-
+/*
+ * Infinite marquee. The track holds four identical passes of the stat list, so
+ * shifting it -50% (two passes) lands on a frame identical to the start and the
+ * loop is seamless. Every cell keeps its right border — dropping it on the last
+ * one would open a visible gap at the seam.
+ */
 .page-home .home-stats__track {
 	display: flex;
 	align-items: stretch;
-	min-width: max-content;
+	width: max-content;
+	animation: home-stats-marquee 88s linear infinite;
+	will-change: transform;
+}
+
+.page-home .home-stats:hover .home-stats__track,
+.page-home .home-stats:focus-within .home-stats__track {
+	animation-play-state: paused;
+}
+
+@keyframes home-stats-marquee {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-50%, 0, 0);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-home .home-stats {
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+
+	.page-home .home-stats::-webkit-scrollbar {
+		display: none;
+	}
+
+	.page-home .home-stats__track {
+		animation: none;
+	}
 }
 
 .page-home .home-stats__cell {
@@ -332,10 +364,6 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	gap: 12px;
 	padding: 16px 32px;
 	border-right: 1px solid var(--ar-border-light);
-}
-
-.page-home .home-stats__cell:last-child {
-	border-right: none;
 }
 
 .page-home .home-stats__num {

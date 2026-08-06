@@ -42,32 +42,34 @@ if (! defined('ABSPATH')) {
 	</div>
 </section>
 
-<div class="home-stats">
+<?php
+$stats = array(
+	array('num' => '1945', 'label' => __('Founded', 'alex-rose-2026')),
+	array('num' => '100%', 'label' => __('Made to Measure', 'alex-rose-2026')),
+	array('num' => '£595', 'label' => __('Jackets From', 'alex-rose-2026'), 'price' => '595'),
+	array('num' => __('Yes', 'alex-rose-2026'), 'label' => __('Free Cloth Samples', 'alex-rose-2026')),
+	array('num' => __('Yes', 'alex-rose-2026'), 'label' => __('Free Discovery Call', 'alex-rose-2026')),
+	array('num' => __('Worldwide', 'alex-rose-2026'), 'label' => __('Delivered', 'alex-rose-2026')),
+);
+?>
+<div class="home-stats" data-ar-no-reveal>
 	<div class="home-stats__track">
-		<div class="home-stats__cell">
-			<span class="home-stats__num">1945</span>
-			<span class="home-stats__label"><?php esc_html_e('Founded', 'alex-rose-2026'); ?></span>
-		</div>
-		<div class="home-stats__cell">
-			<span class="home-stats__num">100%</span>
-			<span class="home-stats__label"><?php esc_html_e('Made to Measure', 'alex-rose-2026'); ?></span>
-		</div>
-		<div class="home-stats__cell">
-			<span class="home-stats__num ar-price" data-ar-price="595">£595</span>
-			<span class="home-stats__label"><?php esc_html_e('Jackets From', 'alex-rose-2026'); ?></span>
-		</div>
-		<div class="home-stats__cell">
-			<span class="home-stats__num"><?php esc_html_e('Yes', 'alex-rose-2026'); ?></span>
-			<span class="home-stats__label"><?php esc_html_e('Free Cloth Samples', 'alex-rose-2026'); ?></span>
-		</div>
-		<div class="home-stats__cell">
-			<span class="home-stats__num"><?php esc_html_e('Yes', 'alex-rose-2026'); ?></span>
-			<span class="home-stats__label"><?php esc_html_e('Free Discovery Call', 'alex-rose-2026'); ?></span>
-		</div>
-		<div class="home-stats__cell">
-			<span class="home-stats__num"><?php esc_html_e('Worldwide', 'alex-rose-2026'); ?></span>
-			<span class="home-stats__label"><?php esc_html_e('Delivered', 'alex-rose-2026'); ?></span>
-		</div>
+		<?php
+		/* Rendered four times. The marquee translates -50%, i.e. exactly two
+		   passes, so the loop restarts on an identical frame. Four rather than
+		   two keeps the track wider than any viewport, so no gap opens up on
+		   ultrawide screens, and -50% stays a whole number of passes. */
+		for ($pass = 0; $pass < 4; $pass++) :
+			foreach ($stats as $stat) :
+				?>
+				<div class="home-stats__cell"<?php echo 0 === $pass ? '' : ' aria-hidden="true"'; ?>>
+					<span class="home-stats__num<?php echo isset($stat['price']) ? ' ar-price' : ''; ?>"<?php echo isset($stat['price']) ? ' data-ar-price="' . esc_attr($stat['price']) . '"' : ''; ?>><?php echo esc_html($stat['num']); ?></span>
+					<span class="home-stats__label"><?php echo esc_html($stat['label']); ?></span>
+				</div>
+				<?php
+			endforeach;
+		endfor;
+		?>
 	</div>
 </div>
 
