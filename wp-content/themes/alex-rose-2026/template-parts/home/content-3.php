@@ -217,6 +217,6 @@ if (! defined('ABSPATH')) {
 		</div>
 	</div>
 	<div class="home-cta__media">
-		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-6.jpg')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
+		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-6.webp')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
 	</div>
 </section>

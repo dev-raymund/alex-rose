@@ -14,7 +14,7 @@ if (! defined('ABSPATH')) {
 		<div class="home-split__row">
 			<div class="home-split__media">
 				<div class="home-split__video-box">
-					<video src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/how-it-works.mp4')); ?>" controls playsinline preload="metadata" poster="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/lifestyle-4.jpg')); ?>"></video>
+					<video src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/how-it-works.mp4')); ?>" controls playsinline preload="metadata" poster="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>"></video>
 					<div class="home-split__corner home-split__corner--tl-h" aria-hidden="true"></div>
 					<div class="home-split__corner home-split__corner--tl-v" aria-hidden="true"></div>
 					<div class="home-split__corner home-split__corner--br-h" aria-hidden="true"></div>

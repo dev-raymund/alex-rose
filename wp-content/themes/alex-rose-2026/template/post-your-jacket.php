@@ -14,7 +14,7 @@ get_header();
 
 <main id="main" class="page-post-your-jacket" tabindex="-1">
 	<section class="pyj-hero">
-		<img class="pyj-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/06/process-basting.jpg')); ?>" alt="" aria-hidden="true" loading="eager">
+		<img class="pyj-hero__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/08/process-basting.webp')); ?>" alt="" aria-hidden="true" loading="eager">
 		<div class="pyj-hero__shade" aria-hidden="true"></div>
 		<div class="pyj-hero__inner">
 			<div class="pyj-hero__rule" aria-hidden="true"></div>

@@ -750,6 +750,12 @@ function showRotationTipAfterLoad() {
   }, ROTATION_TIP_DURATION);
 }
 
+function closeRotationTip() {
+  clearTimeout(rotationTipTimer);
+  state.showRotationTip = false;
+  render();
+}
+
 function scheduleMonogramSync() {
   cancelAnimationFrame(monogramFrame);
   monogramFrame = requestAnimationFrame(() => {
@@ -1100,6 +1106,9 @@ function renderTailormateMount(scope) {
 function renderRotationTipOverlay() {
   return (
     '<div class="tm3d-rotation-tip" aria-live="polite">' +
+      '<button type="button" class="tm3d-rotation-tip__close" data-action="rotation-tip-close" aria-label="Close swivel instructions">' +
+        '<span aria-hidden="true">×</span>' +
+      "</button>" +
       '<div class="tm3d-rotation-tip__garment" aria-hidden="true">' +
         '<svg width="120" height="120" viewBox="0 0 24 24" fill="none">' +
           '<path d="M8.5 3 5 5.5 3 9l2.5 2 1.5-1v9h10v-9l1.5 1L21 9l-2-3.5L15.5 3a3.5 3.5 0 0 1-7 0Z"></path>' +
@@ -1392,7 +1401,7 @@ function renderStepOne() {
           "</div>" +
         "</div>" +
 
-        '<div class="mobile-options">' +
+        '<div class="mobile-options ' + (state.selectedCategory === "monogram" ? "has-monogram-action" : "") + '">' +
           '<div class="mobile-options__header">' +
             "<div>" +
               '<p class="mobile-options__eyebrow">Design Options</p>' +
@@ -1401,6 +1410,11 @@ function renderStepOne() {
             '<button type="button" class="mobile-options__close" data-action="mobile-panel-close" aria-label="Close options panel"><span aria-hidden="true">×</span></button>' +
           "</div>" +
           '<div class="mobile-options__body">' + renderCategoryPanel(state.selectedCategory) + "</div>" +
+          (state.selectedCategory === "monogram"
+            ? '<div class="mobile-options__monogram-action">' +
+                '<button type="button" class="mobile-options__see-monogram" data-action="mobile-panel-close">See Monogram</button>' +
+              "</div>"
+            : "") +
         "</div>" +
       "</div>" +
     "</section>"
@@ -1801,6 +1815,7 @@ function handleClick(event) {
   if (action === "modal-backdrop"){ if (event.target === target) closeModal(); return; }
   if (action === "zoom-open")     { openZoom(); return; }
   if (action === "preview-reset") { resetPreviewPosition(); return; }
+  if (action === "rotation-tip-close") { closeRotationTip(); return; }
   if (action === "zoom-close")    { closeZoom(); return; }
   if (action === "try-continue")  { submitTryOnPreview(); return; }
   if (action === "checkout-now") { checkoutNow(); return; }

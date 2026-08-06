@@ -163,7 +163,7 @@ function alex_rose_2026_off_the_cuff_post_date_label(int $post_id): string {
  * add_filter( 'alex_rose_2026_off_the_cuff_featured_post_id', fn () => 123 );
  */
 function alex_rose_2026_off_the_cuff_featured_post_id(): int {
-	return (int) apply_filters('alex_rose_2026_off_the_cuff_featured_post_id', 131);
+	return (int) apply_filters('alex_rose_2026_off_the_cuff_featured_post_id', 604);
 }
 
 /**
