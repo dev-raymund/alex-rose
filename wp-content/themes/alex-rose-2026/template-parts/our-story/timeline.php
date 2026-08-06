@@ -129,14 +129,14 @@ $milestones = array(
 		'year'  => 2018,
 		'tag'   => __('Legacy', 'alex-rose-2026'),
 		'title' => __('Back to the beginning.', 'alex-rose-2026'),
-		'body'  => __('We are proud of our family clothing heritage and therefore rebranded back to our original company name of Alexander Rose.', 'alex-rose-2026'),
+		'body'  => __('We are proud of our family clothing heritage, honouring the legacy of our founder Alexander Rose as we carry the business forward today as Alex Rose Fine Tailoring.', 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/07/history-2018.webp'),
 	),
 	array(
 		'year'  => 2024,
 		'tag'   => __('Modern Legacy', 'alex-rose-2026'),
 		'title' => __('Modern Legacy.', 'alex-rose-2026'),
-		'body'  => __('Today, Alexander Rose continues to blend traditional craftsmanship with cutting-edge technology, serving discerning clients worldwide.', 'alex-rose-2026'),
+		'body'  => __('Today, Alex Rose Fine Tailoring continues to blend traditional craftsmanship with cutting-edge technology, serving discerning clients worldwide.', 'alex-rose-2026'),
 		'image' => alex_rose_2026_uploads_url('2026/07/history-2024.webp'),
 	),
 	array(

@@ -435,24 +435,6 @@ function alex_rose_2026_abandoned_send_email(object $row): bool {
 }
 
 /* -------------------------------------------------------------------------
- * Coupon auto-apply from the recovery link
- * ------------------------------------------------------------------------- */
-
-add_action('wp', static function (): void {
-	if (is_admin() || ! function_exists('WC') || ! isset($_GET['ar_code'])) {
-		return;
-	}
-	$code = sanitize_text_field(wp_unslash($_GET['ar_code']));
-	if ($code === '') {
-		return;
-	}
-	$cart = WC()->cart;
-	if ($cart && ! $cart->is_empty() && ! $cart->has_discount($code)) {
-		$cart->apply_coupon($code);
-	}
-});
-
-/* -------------------------------------------------------------------------
  * Unsubscribe
  * ------------------------------------------------------------------------- */
 

@@ -22,6 +22,7 @@ require_once ALEX_ROSE_2026_DIR . '/inc/forms.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/woocommerce.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/schema.php';
 require_once ALEX_ROSE_2026_DIR . '/inc/abandoned-checkout.php';
+require_once ALEX_ROSE_2026_DIR . '/inc/referral-links.php';
 
 /**
  * Absolute URL for a file under wp-content/uploads (correct when WordPress lives in a subdirectory).
@@ -404,6 +405,27 @@ add_action(
 				ALEX_ROSE_2026_URI . '/assets/js/cookie-banner.js',
 				array(),
 				(string) filemtime($cookie_js),
+				true
+			);
+		}
+
+		$samples_css = ALEX_ROSE_2026_DIR . '/assets/css/cloth-samples-modal.css';
+		if (is_readable($samples_css)) {
+			wp_enqueue_style(
+				'alex-rose-2026-cloth-samples-modal',
+				ALEX_ROSE_2026_URI . '/assets/css/cloth-samples-modal.css',
+				array('alex-rose-2026'),
+				(string) filemtime($samples_css)
+			);
+		}
+
+		$samples_js = ALEX_ROSE_2026_DIR . '/assets/js/cloth-samples-modal.js';
+		if (is_readable($samples_js)) {
+			wp_enqueue_script(
+				'alex-rose-2026-cloth-samples-modal',
+				ALEX_ROSE_2026_URI . '/assets/js/cloth-samples-modal.js',
+				array(),
+				(string) filemtime($samples_js),
 				true
 			);
 		}

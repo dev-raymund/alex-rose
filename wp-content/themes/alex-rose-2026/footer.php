@@ -92,6 +92,7 @@ $year = (string) gmdate('Y');
 	</div>
 </footer>
 <?php get_template_part('template-parts/cookie-banner'); ?>
+<?php get_template_part('template-parts/cloth-samples-modal'); ?>
 <?php wp_footer(); ?>
 </body>
 </html>

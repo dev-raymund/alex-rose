@@ -10,6 +10,8 @@
 <head>
 	<meta charset="<?php bloginfo('charset'); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?php // Auto-upgrade any stray http:// subresource to https so no mixed-content warning ever shows. ?>
+	<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class('site'); ?>>

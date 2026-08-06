@@ -122,57 +122,68 @@ if (! defined('ABSPATH')) {
 				<span><?php esc_html_e('All Articles', 'alex-rose-2026'); ?></span> <span aria-hidden="true">→</span>
 			</a>
 		</div>
+		<?php
+		// Same data source as the Off the Cuff landing page (inc/off-the-cuff.php).
+		$journal_featured = function_exists('alex_rose_2026_off_the_cuff_featured_post') ? alex_rose_2026_off_the_cuff_featured_post() : null;
+		$journal_articles = function_exists('alex_rose_2026_off_the_cuff_articles') ? alex_rose_2026_off_the_cuff_articles(array('posts_per_page' => 4)) : array();
+		// No explicit featured post set? Promote the most recent article.
+		if (! $journal_featured instanceof WP_Post && ! empty($journal_articles)) {
+			$journal_featured = array_shift($journal_articles);
+		}
+		$journal_sides = array_slice($journal_articles, 0, 3);
+
+		$feat_id   = $journal_featured instanceof WP_Post ? (int) $journal_featured->ID : 0;
+		$feat_cat  = $feat_id ? alex_rose_2026_off_the_cuff_post_category($feat_id) : null;
+		$feat_meta = $feat_id ? array_filter(array(
+			$feat_cat instanceof WP_Term ? $feat_cat->name : '',
+			alex_rose_2026_off_the_cuff_post_date_label($feat_id),
+			alex_rose_2026_off_the_cuff_reading_time($feat_id),
+		)) : array();
+		$feat_img  = $feat_id ? get_the_post_thumbnail_url($journal_featured, 'large') : '';
+		if (! $feat_img) {
+			$feat_img = alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp');
+		}
+		?>
 		<div class="home-journal__grid">
-			<a class="home-journal__feature" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-				<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>" alt="" width="900" height="600">
+			<?php if ($journal_featured instanceof WP_Post) : ?>
+			<a class="home-journal__feature" href="<?php echo esc_url(get_permalink($journal_featured)); ?>">
+				<img src="<?php echo esc_url($feat_img); ?>" alt="<?php echo esc_attr(get_the_title($journal_featured)); ?>" width="900" height="600">
 				<div class="home-journal__feature-shade" aria-hidden="true"></div>
 				<div class="home-journal__feature-body">
 					<div class="flex items-center gap-12">
 						<span class="home-journal__side-tag" style="border:1px solid rgba(200,169,106,0.38);padding:4px 8px;background:rgba(0,0,0,0.4);color:var(--ar-gold);"><?php esc_html_e('Featured', 'alex-rose-2026'); ?></span>
-						<span style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.5);"><?php esc_html_e('Fit Guide · April 2025 · 4 min read', 'alex-rose-2026'); ?></span>
+						<span style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.5);"><?php echo esc_html(implode(' · ', $feat_meta)); ?></span>
 					</div>
 					<div class="max-w-lg" style="max-width:32rem;">
-						<h3><?php esc_html_e('How to Measure Yourself for a Made-to-Measure Jacket', 'alex-rose-2026'); ?></h3>
-						<p><?php esc_html_e('A step-by-step guide to taking the four key measurements your master tailor needs, chest, shoulders, sleeve, and body length. Get this right and the rest follows.', 'alex-rose-2026'); ?></p>
+						<h3><?php echo esc_html(get_the_title($journal_featured)); ?></h3>
+						<p><?php echo esc_html(get_the_excerpt($journal_featured)); ?></p>
 						<span class="home-journal__read-pill"><?php esc_html_e('Read Article', 'alex-rose-2026'); ?> →</span>
 					</div>
 				</div>
 			</a>
+			<?php endif; ?>
 			<div>
 				<p style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.35);margin:0 0 8px;"><?php esc_html_e('More From the Journal', 'alex-rose-2026'); ?></p>
-				<a class="home-journal__side-item" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-2.webp')); ?>" alt="" width="72" height="72"></div>
+				<?php foreach ($journal_sides as $journal_side) :
+					$side_id   = (int) $journal_side->ID;
+					$side_cat  = alex_rose_2026_off_the_cuff_post_category($side_id);
+					$side_name = $side_cat instanceof WP_Term ? $side_cat->name : '';
+					$side_img  = get_the_post_thumbnail_url($journal_side, 'thumbnail');
+				?>
+				<a class="home-journal__side-item" href="<?php echo esc_url(get_permalink($journal_side)); ?>">
+					<?php if ($side_img) : ?>
+						<div class="home-journal__side-thumb"><img src="<?php echo esc_url($side_img); ?>" alt="" width="72" height="72"></div>
+					<?php endif; ?>
 					<div class="home-journal__side-body">
 						<div class="home-journal__side-meta">
-							<span class="home-journal__side-tag"><?php esc_html_e('The Craft', 'alex-rose-2026'); ?></span>
-							<span class="home-journal__side-time"><?php esc_html_e('5 min', 'alex-rose-2026'); ?></span>
+							<?php if ($side_name) : ?><span class="home-journal__side-tag"><?php echo esc_html($side_name); ?></span><?php endif; ?>
+							<span class="home-journal__side-time"><?php echo esc_html(alex_rose_2026_off_the_cuff_reading_time($side_id)); ?></span>
 						</div>
-						<h4 class="home-journal__side-title"><?php esc_html_e('Notch, Peak or Shawl: Choosing the Right Lapel', 'alex-rose-2026'); ?></h4>
-						<p class="home-journal__side-excerpt home-line-clamp-2"><?php esc_html_e('Lapel shape is the single most visible design choice on a jacket. We break down when to use each style.', 'alex-rose-2026'); ?></p>
+						<h4 class="home-journal__side-title"><?php echo esc_html(get_the_title($journal_side)); ?></h4>
+						<p class="home-journal__side-excerpt home-line-clamp-2"><?php echo esc_html(get_the_excerpt($journal_side)); ?></p>
 					</div>
 				</a>
-				<a class="home-journal__side-item" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-9.webp')); ?>" alt="" width="72" height="72"></div>
-					<div class="home-journal__side-body">
-						<div class="home-journal__side-meta">
-							<span class="home-journal__side-tag"><?php esc_html_e('Cloth', 'alex-rose-2026'); ?></span>
-							<span class="home-journal__side-time"><?php esc_html_e('6 min', 'alex-rose-2026'); ?></span>
-						</div>
-						<h4 class="home-journal__side-title"><?php esc_html_e('The British Mills Behind Our Cloths', 'alex-rose-2026'); ?></h4>
-						<p class="home-journal__side-excerpt home-line-clamp-2"><?php esc_html_e('From the Yorkshire Dales to the Outer Hebrides, the mills supplying Alex Rose have been weaving cloth for generations.', 'alex-rose-2026'); ?></p>
-					</div>
-				</a>
-				<a class="home-journal__side-item" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-					<div class="home-journal__side-thumb"><img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-5.webp')); ?>" alt="" width="72" height="72"></div>
-					<div class="home-journal__side-body">
-						<div class="home-journal__side-meta">
-							<span class="home-journal__side-tag"><?php esc_html_e('Fit Guide', 'alex-rose-2026'); ?></span>
-							<span class="home-journal__side-time"><?php esc_html_e('4 min', 'alex-rose-2026'); ?></span>
-						</div>
-						<h4 class="home-journal__side-title"><?php esc_html_e('What Good Fit Actually Looks Like', 'alex-rose-2026'); ?></h4>
-						<p class="home-journal__side-excerpt home-line-clamp-2"><?php esc_html_e('Most men have never worn a truly well-fitting jacket. Here is what to look for, and what to ask your tailor.', 'alex-rose-2026'); ?></p>
-					</div>
-				</a>
+				<?php endforeach; ?>
 				<a class="home-journal__view-all" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>"><?php esc_html_e('View All Articles →', 'alex-rose-2026'); ?></a>
 			</div>
 		</div>
