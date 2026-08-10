@@ -636,7 +636,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 }
 
 .page-home .home-occasions__intro {
-	padding: 48px 40px 32px;
+	padding: 100px 40px 32px;
 }
 
 @media (min-width: 768px) {
@@ -664,7 +664,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 }
 
 .page-home .home-occasions__grid-wrap {
-	padding: 0 40px 48px;
+	padding: 0 40px 100px;
 }
 
 @media (min-width: 768px) {
@@ -932,6 +932,9 @@ html.ar-reveal-js .page-home .home-hero__actions {
 .page-home .home-split {
 	border-top: 1px solid #f4f4fd;
 	background: #f4f4fd;
+	/* The copy panel slides in from off to the right — clip so it never widens
+	   the document while it travels. */
+	overflow: hidden;
 }
 
 .page-home .home-split--dark {
@@ -943,12 +946,12 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	width: 100%;
 	max-width: 96rem;
 	margin: 0 auto;
-	padding: 40px 40px;
+	padding: 100px 40px;
 }
 
 @media (min-width: 768px) {
 	.page-home .home-split__inner {
-		padding: 48px 80px;
+		padding: 100px 80px;
 	}
 }
 
@@ -974,7 +977,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 
 @media (min-width: 1024px) {
 	.page-home .home-split__media {
-		width: 44%;
+		width: 48%;
 	}
 }
 
@@ -1043,9 +1046,39 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	color: rgba(255, 255, 255, 0.45);
 }
 
+/*
+ * Configurator panel. The copy sits in a raised card that overlaps the video on
+ * wide screens, so it needs to win the stacking order against the media column.
+ */
 .page-home .home-split__text {
+	position: relative;
+	z-index: 1;
 	width: 100%;
 	flex: 1 1 auto;
+	padding: 32px;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(6px);
+	border: 1px solid rgba(13, 13, 13, 0.08);
+	box-shadow: 0 24px 50px -12px rgba(13, 13, 13, 0.22);
+}
+
+@media (min-width: 1024px) {
+	.page-home .home-split__text {
+		padding: 48px;
+		/* Pulls the panel back over the video; the row's 96px gap becomes 48px. */
+		margin-left: -48px;
+	}
+}
+
+/*
+ * The panel is static; its contents slide in from the right, overriding the
+ * default rise in ar-reveal.css. Needs to out-specify
+ * `html.ar-reveal-js [data-ar-reveal]` (0,3,1) — these are (0,5,1). The
+ * reduced-motion block in ar-reveal.css uses !important, so it still wins.
+ */
+html.ar-reveal-js .page-home .home-split__copy[data-ar-reveal]:not(.is-visible),
+html.ar-reveal-js .page-home .home-split__btn-wrap[data-ar-reveal]:not(.is-visible) {
+	transform: translate3d(64px, 0, 0);
 }
 
 .page-home .home-split__kicker {
@@ -1140,12 +1173,12 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	width: 100%;
 	max-width: 96rem;
 	margin: 0 auto;
-	padding: 40px 40px;
+	padding: 100px 40px;
 }
 
 @media (min-width: 768px) {
 	.page-home .home-how__inner {
-		padding: 48px 80px;
+		padding: 100px 80px;
 	}
 }
 
@@ -1294,12 +1327,12 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	width: 100%;
 	max-width: 72rem;
 	margin: 0 auto;
-	padding: 56px 40px;
+	padding: 100px 40px;
 }
 
 @media (min-width: 768px) {
 	.page-home .home-guarantee__inner {
-		padding: 80px 64px;
+		padding: 100px 64px;
 	}
 }
 
@@ -1416,7 +1449,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-	padding: 48px 40px 24px;
+	padding: 100px 40px 24px;
 }
 
 @media (min-width: 768px) {
@@ -1783,7 +1816,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	align-items: center;
 	justify-content: space-between;
 	gap: 16px;
-	padding: 32px 40px;
+	padding: 32px 40px 100px;
 }
 
 @media (min-width: 768px) {
@@ -1878,12 +1911,12 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	width: 100%;
 	display: flex;
 	align-items: center;
-	padding: 96px 40px;
+	padding: 100px 40px;
 }
 
 @media (min-width: 768px) {
 	.page-home .home-story__body {
-		padding: 128px 80px;
+		padding: 100px 80px;
 	}
 }
 
@@ -1989,7 +2022,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 
 .page-home .home-testimonials__inner {
 	width: 100%;
-	padding: 56px 40px;
+	padding: 100px 40px;
 }
 
 @media (min-width: 768px) {
@@ -2181,7 +2214,7 @@ html.ar-reveal-js .page-home .home-hero__actions {
 }
 
 .page-home .home-journal__inner {
-	padding: 48px 40px 16px;
+	padding: 100px 40px 100px;
 }
 
 @media (min-width: 768px) {
@@ -2383,12 +2416,12 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	width: 100%;
 	display: flex;
 	align-items: center;
-	padding: 80px 40px;
+	padding: 100px 40px;
 }
 
 @media (min-width: 768px) {
 	.page-home .home-cta__text {
-		padding: 96px 80px;
+		padding: 100px 80px;
 	}
 }
 

@@ -25,9 +25,11 @@ if (! defined('ABSPATH')) {
 				</div>
 			</div>
 			<div class="home-split__text">
-				<p class="home-split__kicker"><?php esc_html_e('The Configurator', 'alex-rose-2026'); ?></p>
-				<h2 class="home-split__h2"><?php echo esc_html__('Design every', 'alex-rose-2026'); ?><br><?php echo esc_html__('detail.', 'alex-rose-2026'); ?></h2>
-				<p class="home-split__p"><?php esc_html_e('Every choice is yours: lapels, cloth, buttons, lining. Design your jacket online, then your master tailor takes care of the rest.', 'alex-rose-2026'); ?></p>
+				<div class="home-split__copy">
+					<p class="home-split__kicker"><?php esc_html_e('The Configurator', 'alex-rose-2026'); ?></p>
+					<h2 class="home-split__h2"><?php echo esc_html__('Design every', 'alex-rose-2026'); ?><br><?php echo esc_html__('detail.', 'alex-rose-2026'); ?></h2>
+					<p class="home-split__p"><?php esc_html_e('Every choice is yours: lapels, cloth, buttons, lining. Design your jacket online, then your master tailor takes care of the rest.', 'alex-rose-2026'); ?></p>
+				</div>
 				<div class="home-split__btn-wrap">
 					<a class="home-btn-gold" href="<?php echo esc_url(home_url('/design')); ?>"><?php esc_html_e('Start Your Design', 'alex-rose-2026'); ?></a>
 				</div>

@@ -29,7 +29,11 @@
 		'.home-stats__cell',
 		'.home-occ-card',
 		'.home-split__media',
-		'.home-split__text',
+		/* The configurator panel itself stays put; its two content groups are the
+		   reveal targets (a reveal on the panel would block them — see
+		   hasRevealAncestor). */
+		'.home-split__copy',
+		'.home-split__btn-wrap',
 		'.home-how__cell',
 		'.home-guarantee__sticky',
 		'.home-guarantee__item',
