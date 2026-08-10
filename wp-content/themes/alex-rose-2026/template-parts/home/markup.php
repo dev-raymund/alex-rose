@@ -219,8 +219,36 @@ if (! defined('ABSPATH')) {
 	review.addEventListener('focusout',  function () { paused = false; });
 
 	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-	if (!reduceMotion) {
-		start();
+
+	// The row sits below the fold, so firing on load spends the slide-up before
+	// anyone can see it — and the rotation would be several slides in by the time
+	// they scroll down. Hold both until the carousel is actually on screen.
+	function activate() {
+		review.classList.remove('is-primed');
+		review.classList.add('is-inview');
+		if (!reduceMotion) {
+			start();
+		}
+	}
+
+	if (reduceMotion || !('IntersectionObserver' in window)) {
+		activate();
+	} else {
+		// Only prime once we know we can un-prime: .is-primed is what hides the
+		// slide, so it must never be set unless this observer is running.
+		review.classList.add('is-primed');
+
+		var reviewObserver = new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (!entry.isIntersecting) {
+					return;
+				}
+				reviewObserver.unobserve(entry.target);
+				activate();
+			});
+		}, { threshold: 0.25 });
+
+		reviewObserver.observe(review);
 	}
 })();
 </script>

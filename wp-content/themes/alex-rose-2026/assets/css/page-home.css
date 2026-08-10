@@ -459,13 +459,22 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	transition: opacity 0.28s ease;
 }
 
-/*
- * Each slide rises into place. The carousel toggles .is-active per rotation, so
- * the animation re-triggers on every change, and on load for the first slide
- * (which ships with .is-active already on it).
- */
 .page-home .home-reviews__slide.is-active {
 	display: flex;
+}
+
+/*
+ * Each slide rises into place, re-triggering on every rotation because the
+ * carousel toggles .is-active. The first slide is held until the row scrolls
+ * into view: the script adds .is-primed (hide) up front and .is-inview (play)
+ * on intersection. .is-primed is only ever set by the script that clears it, so
+ * the slides stay visible if that script never runs.
+ */
+.page-home .home-reviews__carousel.is-primed .home-reviews__slide.is-active {
+	opacity: 0;
+}
+
+.page-home .home-reviews__carousel.is-inview .home-reviews__slide.is-active {
 	animation: home-reviews-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
@@ -604,7 +613,13 @@ html.ar-reveal-js .page-home .home-hero__actions {
 		transition: none;
 	}
 
-	.page-home .home-reviews__slide.is-active {
+	/*
+	 * Must out-specify the .is-inview rule above (0,5,0), or the rise would
+	 * still play here — matching specificity plus later source order does it.
+	 */
+	.page-home .home-reviews__slide.is-active,
+	.page-home .home-reviews__carousel.is-primed .home-reviews__slide.is-active,
+	.page-home .home-reviews__carousel.is-inview .home-reviews__slide.is-active {
 		opacity: 1;
 		animation: none;
 		transform: none;
@@ -615,6 +630,9 @@ html.ar-reveal-js .page-home .home-hero__actions {
 .page-home .home-occasions {
 	background: var(--ar-cream);
 	border-top: 1px solid rgba(0, 0, 0, 0.06);
+	/* Columns drift vertically on scroll — clip so they never bleed into the
+	   neighbouring sections at the extremes of their travel. */
+	overflow: hidden;
 }
 
 .page-home .home-occasions__intro {
@@ -666,6 +684,16 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	.page-home .home-occasions__grid {
 		grid-template-columns: repeat(4, 1fr);
 	}
+}
+
+/*
+ * Parallax column. The transform lives here rather than on the card because
+ * ar-reveal.js already drives the card's own transform for its entrance
+ * animation — writing both to one element would break the reveal.
+ */
+.page-home .home-occ-col {
+	height: 100%;
+	will-change: transform;
 }
 
 .page-home .home-occ-card {

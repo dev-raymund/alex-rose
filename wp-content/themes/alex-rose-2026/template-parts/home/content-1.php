@@ -192,70 +192,78 @@ $stars_row = function () use ($star_svg): string {
 	</div>
 	<div class="home-occasions__grid-wrap">
 		<div class="home-occasions__grid">
-			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/business')); ?>">
-				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/occasion-business.webp')); ?>" alt="" loading="lazy" width="600" height="800">
-				</span>
-				<span class="home-occ-card__shade" aria-hidden="true"></span>
-				<div class="home-occ-card__body">
-					<p class="home-occ-card__tags"><?php esc_html_e('Office · Meetings · Travel', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__title-wrap">
-						<h3 class="home-occ-card__title"><?php esc_html_e('Business & Smart Casual', 'alex-rose-2026'); ?></h3>
+			<div class="home-occ-col">
+				<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/business')); ?>">
+					<span class="home-occ-card__media" aria-hidden="true">
+						<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/occasion-business.webp')); ?>" alt="" loading="lazy" width="600" height="800">
+					</span>
+					<span class="home-occ-card__shade" aria-hidden="true"></span>
+					<div class="home-occ-card__body">
+						<p class="home-occ-card__tags"><?php esc_html_e('Office · Meetings · Travel', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__title-wrap">
+							<h3 class="home-occ-card__title"><?php esc_html_e('Business & Smart Casual', 'alex-rose-2026'); ?></h3>
+						</div>
+						<p class="home-occ-card__desc"><?php esc_html_e('Precision fit for the modern professional. A jacket that carries you from boardroom to bar without missing a step.', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__row">
+							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
+						</div>
 					</div>
-					<p class="home-occ-card__desc"><?php esc_html_e('Precision fit for the modern professional. A jacket that carries you from boardroom to bar without missing a step.', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__row">
-						<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
+				</a>
+			</div>
+			<div class="home-occ-col">
+				<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/evening')); ?>">
+					<span class="home-occ-card__media" aria-hidden="true">
+						<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-6.webp')); ?>" alt="" loading="lazy" width="600" height="800">
+					</span>
+					<span class="home-occ-card__shade" aria-hidden="true"></span>
+					<div class="home-occ-card__body">
+						<p class="home-occ-card__tags"><?php esc_html_e('Galas · Dinners · Events', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__title-wrap">
+							<h3 class="home-occ-card__title"><?php esc_html_e('Evening & Statement', 'alex-rose-2026'); ?></h3>
+						</div>
+						<p class="home-occ-card__desc"><?php esc_html_e('Bold cloth, sharp lines, and presence for the moments that matter. When the dress code calls for more than ordinary.', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__row">
+							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
+						</div>
 					</div>
-				</div>
-			</a>
-			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/evening')); ?>">
-				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-6.webp')); ?>" alt="" loading="lazy" width="600" height="800">
-				</span>
-				<span class="home-occ-card__shade" aria-hidden="true"></span>
-				<div class="home-occ-card__body">
-					<p class="home-occ-card__tags"><?php esc_html_e('Galas · Dinners · Events', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__title-wrap">
-						<h3 class="home-occ-card__title"><?php esc_html_e('Evening & Statement', 'alex-rose-2026'); ?></h3>
+				</a>
+			</div>
+			<div class="home-occ-col">
+				<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/seasonal')); ?>">
+					<span class="home-occ-card__media" aria-hidden="true">
+						<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-5.webp')); ?>" alt="" loading="lazy" width="600" height="800">
+					</span>
+					<span class="home-occ-card__shade" aria-hidden="true"></span>
+					<div class="home-occ-card__body">
+						<p class="home-occ-card__tags"><?php esc_html_e('Spring · Autumn · Layering', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__title-wrap">
+							<h3 class="home-occ-card__title"><?php esc_html_e('Seasonal Jackets', 'alex-rose-2026'); ?></h3>
+						</div>
+						<p class="home-occ-card__desc"><?php esc_html_e('Weight, texture, and colour tuned to the season—so your jacket feels right the day it arrives and years later.', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__row">
+							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
+						</div>
 					</div>
-					<p class="home-occ-card__desc"><?php esc_html_e('Bold cloth, sharp lines, and presence for the moments that matter. When the dress code calls for more than ordinary.', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__row">
-						<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
+				</a>
+			</div>
+			<div class="home-occ-col">
+				<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/country')); ?>">
+					<span class="home-occ-card__media" aria-hidden="true">
+						<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/country-1.webp')); ?>" alt="" loading="lazy" width="600" height="800">
+					</span>
+					<span class="home-occ-card__shade" aria-hidden="true"></span>
+					<div class="home-occ-card__body">
+						<p class="home-occ-card__tags"><?php esc_html_e('Weekends · Field · Country', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__title-wrap">
+							<h3 class="home-occ-card__title"><?php esc_html_e('Country & Heritage', 'alex-rose-2026'); ?></h3>
+						</div>
+						<p class="home-occ-card__desc"><?php esc_html_e('Relaxed tailoring with character—tweeds, checks, and cloth that looks as good in town as it does outdoors.', 'alex-rose-2026'); ?></p>
+						<div class="home-occ-card__row">
+							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
+						</div>
 					</div>
-				</div>
-			</a>
-			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/seasonal')); ?>">
-				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-5.webp')); ?>" alt="" loading="lazy" width="600" height="800">
-				</span>
-				<span class="home-occ-card__shade" aria-hidden="true"></span>
-				<div class="home-occ-card__body">
-					<p class="home-occ-card__tags"><?php esc_html_e('Spring · Autumn · Layering', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__title-wrap">
-						<h3 class="home-occ-card__title"><?php esc_html_e('Seasonal Jackets', 'alex-rose-2026'); ?></h3>
-					</div>
-					<p class="home-occ-card__desc"><?php esc_html_e('Weight, texture, and colour tuned to the season—so your jacket feels right the day it arrives and years later.', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__row">
-						<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
-					</div>
-				</div>
-			</a>
-			<a class="home-occ-card" href="<?php echo esc_url(home_url('/occasions/country')); ?>">
-				<span class="home-occ-card__media" aria-hidden="true">
-					<img class="home-occ-card__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/country-1.webp')); ?>" alt="" loading="lazy" width="600" height="800">
-				</span>
-				<span class="home-occ-card__shade" aria-hidden="true"></span>
-				<div class="home-occ-card__body">
-					<p class="home-occ-card__tags"><?php esc_html_e('Weekends · Field · Country', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__title-wrap">
-						<h3 class="home-occ-card__title"><?php esc_html_e('Country & Heritage', 'alex-rose-2026'); ?></h3>
-					</div>
-					<p class="home-occ-card__desc"><?php esc_html_e('Relaxed tailoring with character—tweeds, checks, and cloth that looks as good in town as it does outdoors.', 'alex-rose-2026'); ?></p>
-					<div class="home-occ-card__row">
-						<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
-					</div>
-				</div>
-			</a>
+				</a>
+			</div>
 		</div>
 	</div>
 </section>

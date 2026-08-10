@@ -31,6 +31,8 @@
 		'.home-split__media',
 		'.home-split__text',
 		'.home-how__cell',
+		'.home-guarantee__sticky',
+		'.home-guarantee__item',
 		'.home-client-card',
 		'.home-story__inner',
 		'.home-story__media',
@@ -193,7 +195,9 @@
 
 		var images = main.querySelectorAll('.home-story__media > img');
 		var heroMedia = main.querySelector('.home-hero__media');
-		if (!images.length && !heroMedia) {
+		var occGrid = main.querySelector('.home-occasions__grid');
+		var occCols = occGrid ? occGrid.querySelectorAll('.home-occ-col') : [];
+		if (!images.length && !heroMedia && !occCols.length) {
 			return;
 		}
 
@@ -211,12 +215,38 @@
 			heroMedia.style.transform = 'translate3d(0, ' + offset.toFixed(2) + 'px, 0)';
 		}
 
+		/*
+		 * Occasions columns drift against each other. Even-indexed cards (1st and
+		 * 3rd) start low and rise; odd ones (2nd and 4th) start high and sink,
+		 * so the two columns cross over as the grid crosses the viewport. One
+		 * shared progress value keeps them in lockstep, and the 2:1 amplitude
+		 * split matches the reference design. Works at both grid widths: the
+		 * index parity maps to the left/right column at 2 columns and to
+		 * alternating columns at 4.
+		 */
+		function updateOccasions(vh) {
+			var rect = occGrid.getBoundingClientRect();
+			if (rect.bottom < 0 || rect.top > vh) {
+				return;
+			}
+			var progress = (vh - rect.top) / (vh + rect.height) - 0.5;
+
+			occCols.forEach(function (col, i) {
+				var offset = i % 2 === 0 ? progress * -96 : progress * 48;
+				col.style.transform = 'translate3d(0, ' + offset.toFixed(2) + 'px, 0)';
+			});
+		}
+
 		function update() {
 			ticking = false;
 			var vh = window.innerHeight || document.documentElement.clientHeight;
 
 			if (heroMedia) {
 				updateHero(vh);
+			}
+
+			if (occCols.length) {
+				updateOccasions(vh);
 			}
 
 			images.forEach(function (img) {
