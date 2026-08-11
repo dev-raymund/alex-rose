@@ -123,7 +123,7 @@ if (! defined('ABSPATH')) {
 				<h2 class="home-occasions__title"><?php esc_html_e('Off the Cuff.', 'alex-rose-2026'); ?></h2>
 			</div>
 			<a class="home-testimonials__out" style="color: rgba(0,0,0,0.4);" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>">
-				<span><?php esc_html_e('All Articles', 'alex-rose-2026'); ?></span> <span aria-hidden="true">→</span>
+				<span><?php esc_html_e('All Articles', 'alex-rose-2026'); ?></span> <span class="home-journal__arrow" aria-hidden="true">→</span>
 			</a>
 		</div>
 		<?php
@@ -167,7 +167,10 @@ if (! defined('ABSPATH')) {
 			</a>
 			<?php endif; ?>
 			<div>
-				<p style="font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(0,0,0,0.35);margin:0 0 8px;"><?php esc_html_e('More From the Journal', 'alex-rose-2026'); ?></p>
+				<div class="home-journal__side-head">
+					<p class="home-journal__side-head-label"><?php esc_html_e('More From the Journal', 'alex-rose-2026'); ?></p>
+					<span class="home-journal__side-head-rule" aria-hidden="true"></span>
+				</div>
 				<?php foreach ($journal_sides as $journal_side) :
 					$side_id   = (int) $journal_side->ID;
 					$side_cat  = alex_rose_2026_off_the_cuff_post_category($side_id);
@@ -188,7 +191,7 @@ if (! defined('ABSPATH')) {
 					</div>
 				</a>
 				<?php endforeach; ?>
-				<a class="home-journal__view-all" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>"><?php esc_html_e('View All Articles →', 'alex-rose-2026'); ?></a>
+				<a class="home-journal__view-all" href="<?php echo esc_url(home_url('/off-the-cuff')); ?>"><span><?php esc_html_e('View All Articles', 'alex-rose-2026'); ?></span> <span class="home-journal__arrow" aria-hidden="true">→</span></a>
 			</div>
 		</div>
 	</div>
