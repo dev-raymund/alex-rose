@@ -1535,6 +1535,37 @@ html.ar-reveal-js .page-home .home-personal__media[data-ar-reveal]:not(.is-visib
 	display: block;
 }
 
+/*
+ * Icons draw their outline, then the tinted fills come up behind it. Both the
+ * marker attribute and --ar-draw-len are stamped by ar-reveal.js, so without
+ * that script nothing here matches and the icons render normally.
+ */
+html.ar-reveal-js .page-home .home-how__icon [data-ar-draw] {
+	stroke-dasharray: var(--ar-draw-len);
+	stroke-dashoffset: var(--ar-draw-len);
+	fill-opacity: 0;
+}
+
+html.ar-reveal-js .page-home .home-how__cell.is-visible .home-how__icon [data-ar-draw] {
+	stroke-dashoffset: 0;
+	fill-opacity: var(--ar-draw-fill, 1);
+	/* --ar-reveal-delay is set on the cell and inherits down, so each icon
+	   follows its own card in. Fills trail the outline. */
+	transition:
+		stroke-dashoffset 1.15s cubic-bezier(0.22, 1, 0.36, 1)
+			calc(var(--ar-reveal-delay, 0ms) + 200ms),
+		fill-opacity 0.6s ease calc(var(--ar-reveal-delay, 0ms) + 900ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html.ar-reveal-js .page-home .home-how__icon [data-ar-draw] {
+		stroke-dasharray: none;
+		stroke-dashoffset: 0;
+		fill-opacity: var(--ar-draw-fill, 1);
+		transition: none;
+	}
+}
+
 .page-home .home-how__step {
 	font-size: 9px;
 	font-weight: 400;

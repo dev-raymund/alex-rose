@@ -35,6 +35,7 @@
 		'.home-split__copy',
 		'.home-split__btn-wrap',
 		'.home-how__cell',
+		'.home-how__cta',
 		'.home-guarantee__sticky',
 		'.home-guarantee__item',
 		/* The card itself carries the scroll drift, so its two halves reveal. */
@@ -196,6 +197,42 @@
 		});
 	}
 
+	/*
+	 * Line-art step icons draw themselves in when their cell reveals. CSS cannot
+	 * read a path's length, so each shape is measured here and stamped with
+	 * --ar-draw-len plus a [data-ar-draw] marker. The dashed hidden state in
+	 * page-home.css keys off that marker, so if this never runs the icons simply
+	 * render fully drawn rather than staying invisible.
+	 */
+	function initIconDraw() {
+		var SHAPES = 'path, line, rect, circle, ellipse, polyline, polygon';
+		var icons = main.querySelectorAll('.home-how__icon svg');
+
+		icons.forEach(function (svg) {
+			svg.querySelectorAll(SHAPES).forEach(function (shape) {
+				if (typeof shape.getTotalLength !== 'function') {
+					return;
+				}
+
+				var len;
+				try {
+					len = shape.getTotalLength();
+				} catch (err) {
+					return;
+				}
+				if (!len) {
+					return;
+				}
+
+				// Remember the authored fill so it can fade back to its own value
+				// once the outline has drawn, rather than a single flat one.
+				shape.style.setProperty('--ar-draw-len', len.toFixed(1));
+				shape.style.setProperty('--ar-draw-fill', window.getComputedStyle(shape).fillOpacity);
+				shape.setAttribute('data-ar-draw', '');
+			});
+		});
+	}
+
 	function initParallax() {
 		if (reducedMotion) {
 			return;
@@ -317,6 +354,7 @@
 			return;
 		}
 
+		initIconDraw();
 		initObserver(targets);
 		initParallax();
 	}
