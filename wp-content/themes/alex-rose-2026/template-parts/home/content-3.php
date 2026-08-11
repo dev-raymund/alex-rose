@@ -25,6 +25,7 @@ if (! defined('ABSPATH')) {
 </section>
 
 <section class="home-story home-story--reverse home-story--cream">
+	<span class="home-story__watermark" aria-hidden="true"><?php echo esc_html_x('LIFETIME', 'decorative background word', 'alex-rose-2026'); ?></span>
 	<div class="home-story__media">
 		<img src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/story-jacket.webp')); ?>" alt="<?php echo esc_attr__('Made-to-measure jacket by Alex Rose', 'alex-rose-2026'); ?>" loading="lazy" width="1200" height="900">
 	</div>

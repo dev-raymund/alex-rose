@@ -242,11 +242,12 @@
 		var heroMedia = main.querySelector('.home-hero__media');
 		var occGrid = main.querySelector('.home-occasions__grid');
 		var occCols = occGrid ? occGrid.querySelectorAll('.home-occ-col') : [];
+		var watermarks = main.querySelectorAll('.home-story__watermark');
 		var personalGrid = main.querySelector('.home-personal__grid');
 		var personalCard = personalGrid
 			? personalGrid.querySelector('.home-personal__card:nth-child(2)')
 			: null;
-		if (!images.length && !heroMedia && !occCols.length && !personalCard) {
+		if (!images.length && !heroMedia && !occCols.length && !personalCard && !watermarks.length) {
 			return;
 		}
 
@@ -286,6 +287,26 @@
 			});
 		}
 
+		/*
+		 * The oversized background word travels left across its band. Progress
+		 * runs 0 -> 1 over the section's whole pass, so it starts flush at the
+		 * left edge and never exposes a gap behind itself. The -50% keeps the
+		 * vertical centring the CSS set up.
+		 */
+		function updateWatermarks(vh) {
+			watermarks.forEach(function (mark) {
+				var band = mark.parentElement;
+				var rect = band.getBoundingClientRect();
+				if (rect.bottom < 0 || rect.top > vh) {
+					return;
+				}
+				var progress = (vh - rect.top) / (vh + rect.height);
+				var offset = progress * -500;
+				mark.style.transform =
+					'translate3d(' + offset.toFixed(2) + 'px, -50%, 0)';
+			});
+		}
+
 		/* Only the middle personalisation card drifts; the outer two sit still. */
 		function updatePersonal(vh) {
 			var rect = personalGrid.getBoundingClientRect();
@@ -311,6 +332,10 @@
 
 			if (personalCard) {
 				updatePersonal(vh);
+			}
+
+			if (watermarks.length) {
+				updateWatermarks(vh);
 			}
 
 			images.forEach(function (img) {

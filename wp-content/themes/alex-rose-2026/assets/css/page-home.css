@@ -2139,6 +2139,39 @@ html.ar-reveal-js .page-home .home-how__cell.is-visible .home-how__icon [data-ar
 	min-height: 72vh;
 	border-top: 1px solid rgba(0, 0, 0, 0.06);
 	overflow: hidden;
+	/* Containing block for the oversized background word. */
+	position: relative;
+}
+
+/*
+ * Giant decorative word set behind the band. ar-reveal.js slides it left as the
+ * section passes; without that script it simply sits at rest. Hidden on small
+ * screens, where there is no room for it to read as texture.
+ */
+.page-home .home-story__watermark {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	z-index: 0;
+	display: none;
+	white-space: nowrap;
+	pointer-events: none;
+	user-select: none;
+	opacity: 0.05;
+	font-family: "Verdana Pro", Verdana, Geneva, sans-serif;
+	font-size: clamp(15rem, 30vw, 25rem);
+	font-weight: 700;
+	letter-spacing: -0.05em;
+	line-height: 1;
+	color: var(--ar-charcoal);
+	transform: translate3d(0, -50%, 0);
+	will-change: transform;
+}
+
+@media (min-width: 768px) {
+	.page-home .home-story__watermark {
+		display: block;
+	}
 }
 
 @media (min-width: 1024px) {
@@ -2160,6 +2193,7 @@ html.ar-reveal-js .page-home .home-how__cell.is-visible .home-how__icon [data-ar
 .page-home .home-story__media {
 	width: 100%;
 	position: relative;
+	z-index: 1;
 	overflow: hidden;
 	min-height: 360px;
 }
@@ -2195,6 +2229,8 @@ html.ar-reveal-js .page-home .home-how__cell.is-visible .home-how__icon [data-ar
 
 .page-home .home-story__body {
 	width: 100%;
+	position: relative;
+	z-index: 1;
 	display: flex;
 	align-items: center;
 	padding: 100px 40px;
