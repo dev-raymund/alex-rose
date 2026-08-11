@@ -37,6 +37,10 @@
 		'.home-how__cell',
 		'.home-guarantee__sticky',
 		'.home-guarantee__item',
+		/* The card itself carries the scroll drift, so its two halves reveal. */
+		'.home-personal__media',
+		'.home-personal__body',
+		'.home-personal__foot',
 		'.home-client-card',
 		'.home-story__inner',
 		'.home-story__media',
@@ -201,7 +205,11 @@
 		var heroMedia = main.querySelector('.home-hero__media');
 		var occGrid = main.querySelector('.home-occasions__grid');
 		var occCols = occGrid ? occGrid.querySelectorAll('.home-occ-col') : [];
-		if (!images.length && !heroMedia && !occCols.length) {
+		var personalGrid = main.querySelector('.home-personal__grid');
+		var personalCard = personalGrid
+			? personalGrid.querySelector('.home-personal__card:nth-child(2)')
+			: null;
+		if (!images.length && !heroMedia && !occCols.length && !personalCard) {
 			return;
 		}
 
@@ -241,6 +249,17 @@
 			});
 		}
 
+		/* Only the middle personalisation card drifts; the outer two sit still. */
+		function updatePersonal(vh) {
+			var rect = personalGrid.getBoundingClientRect();
+			if (rect.bottom < 0 || rect.top > vh) {
+				return;
+			}
+			var progress = (vh - rect.top) / (vh + rect.height) - 0.5;
+			var offset = progress * -64;
+			personalCard.style.transform = 'translate3d(0, ' + offset.toFixed(2) + 'px, 0)';
+		}
+
 		function update() {
 			ticking = false;
 			var vh = window.innerHeight || document.documentElement.clientHeight;
@@ -251,6 +270,10 @@
 
 			if (occCols.length) {
 				updateOccasions(vh);
+			}
+
+			if (personalCard) {
+				updatePersonal(vh);
 			}
 
 			images.forEach(function (img) {

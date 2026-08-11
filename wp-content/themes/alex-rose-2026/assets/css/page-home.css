@@ -1123,6 +1123,261 @@ html.ar-reveal-js .page-home .home-split__btn-wrap[data-ar-reveal]:not(.is-visib
 }
 
 
+/* ----- Bespoke personalisation ----- */
+.page-home .home-personal {
+	position: relative;
+	background: var(--ar-cream);
+	/* The middle card drifts on scroll — clip so it never bleeds out. */
+	overflow: hidden;
+}
+
+.page-home .home-personal__inner {
+	width: 100%;
+	max-width: 80rem;
+	margin: 0 auto;
+	padding: 100px 40px;
+}
+
+@media (min-width: 768px) {
+	.page-home .home-personal__inner {
+		padding: 100px 64px;
+	}
+}
+
+.page-home .home-personal__head {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	margin-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+	.page-home .home-personal__head {
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+}
+
+.page-home .home-personal__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: var(--ar-gold);
+}
+
+.page-home .home-personal__title {
+	margin: 0;
+	max-width: 520px;
+	font-weight: 300;
+	font-size: clamp(2rem, 3.5vw, 3.5rem);
+	line-height: 1.1;
+	letter-spacing: -0.03em;
+	color: var(--ar-charcoal);
+}
+
+.page-home .home-personal__lead {
+	margin: 0;
+	max-width: 400px;
+	font-size: 15px;
+	font-weight: 300;
+	line-height: 1.85;
+	color: rgba(13, 13, 13, 0.6);
+}
+
+.page-home .home-personal__grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 32px;
+	margin-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+	.page-home .home-personal__grid {
+		grid-template-columns: repeat(3, 1fr);
+		gap: 48px;
+	}
+}
+
+/*
+ * The card is the parallax element (middle one drifts); its media and body are
+ * the reveal targets. Keeping those on separate elements avoids the two
+ * transforms fighting — same split as the occasions columns.
+ */
+.page-home .home-personal__card {
+	display: flex;
+	flex-direction: column;
+	will-change: transform;
+}
+
+.page-home .home-personal__media {
+	position: relative;
+	overflow: hidden;
+	aspect-ratio: 4 / 5;
+}
+
+.page-home .home-personal__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transform: scale(1);
+	transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.page-home .home-personal__shade {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	background: linear-gradient(to top, rgba(13, 10, 5, 0.45) 0%, transparent 50%);
+	transition: background 0.45s ease;
+}
+
+/* Hairline across the foot of the image; draws in from the left on hover. */
+.page-home .home-personal__rule {
+	position: absolute;
+	left: 16px;
+	right: 16px;
+	bottom: 16px;
+	height: 1px;
+	background: rgba(255, 255, 255, 0.3);
+	transform: scaleX(0);
+	transform-origin: left center;
+	transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+	pointer-events: none;
+}
+
+/* Hover lives on the card so the caption below counts as part of the target. */
+@media (hover: hover) and (pointer: fine) {
+	.page-home .home-personal__card:hover .home-personal__img {
+		transform: scale(1.06);
+	}
+
+	.page-home .home-personal__card:hover .home-personal__rule {
+		transform: scaleX(1);
+	}
+
+	.page-home .home-personal__card:hover .home-personal__shade {
+		background: linear-gradient(to top, rgba(13, 10, 5, 0.68) 0%, rgba(13, 10, 5, 0.12) 60%, transparent 100%);
+	}
+
+	.page-home .home-personal__card:hover .home-personal__h3 {
+		color: var(--ar-gold);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-home .home-personal__img,
+	.page-home .home-personal__shade,
+	.page-home .home-personal__rule,
+	.page-home .home-personal__h3 {
+		transition: none;
+	}
+
+	.page-home .home-personal__card:hover .home-personal__img {
+		transform: scale(1);
+	}
+
+	/* It can never draw without motion, so show it outright rather than never. */
+	.page-home .home-personal__rule {
+		transform: scaleX(1);
+	}
+}
+
+.page-home .home-personal__body {
+	padding: 24px 0 8px;
+}
+
+.page-home .home-personal__h3 {
+	margin: 0 0 12px;
+	font-size: 18px;
+	font-weight: 300;
+	letter-spacing: -0.01em;
+	color: var(--ar-charcoal);
+	transition: color 0.3s ease;
+}
+
+.page-home .home-personal__desc {
+	margin: 0;
+	font-size: 13.5px;
+	font-weight: 300;
+	line-height: 1.8;
+	color: rgba(13, 13, 13, 0.6);
+}
+
+.page-home .home-personal__foot {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	padding-top: 40px;
+	border-top: 1px solid rgba(13, 13, 13, 0.12);
+}
+
+@media (min-width: 1024px) {
+	.page-home .home-personal__foot {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
+
+.page-home .home-personal__note {
+	margin: 0;
+	max-width: 600px;
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 1.8;
+	color: rgba(13, 13, 13, 0.5);
+}
+
+.page-home .home-personal__actions {
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: 16px;
+}
+
+@media (min-width: 640px) {
+	.page-home .home-personal__actions {
+		flex-direction: row;
+	}
+}
+
+.page-home .home-personal__btn-ghost {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 15px 32px;
+	white-space: nowrap;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	text-decoration: none;
+	color: var(--ar-charcoal);
+	border: 1px solid rgba(13, 13, 13, 0.25);
+	transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.page-home .home-personal__btn-ghost:hover,
+.page-home .home-personal__btn-ghost:focus-visible {
+	background: var(--ar-charcoal);
+	border-color: var(--ar-charcoal);
+	color: #fff;
+}
+
+/*
+ * Slides further up than the 20px default for a bit more presence. Uses the
+ * standard opacity/blur/transform reveal rather than a clip-path wipe: a wipe
+ * needs a property ar-reveal.css's reduced-motion block does not reset, so a
+ * missed reveal leaves the image permanently invisible instead of merely
+ * unanimated.
+ */
+html.ar-reveal-js .page-home .home-personal__media[data-ar-reveal]:not(.is-visible) {
+	transform: translate3d(0, 40px, 0);
+}
+
 .page-home .home-star {
 	display: inline-block;
 	color: #c8a96a;

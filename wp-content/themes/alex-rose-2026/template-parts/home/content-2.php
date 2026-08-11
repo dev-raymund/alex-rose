@@ -38,6 +38,63 @@ if (! defined('ABSPATH')) {
 	</div>
 </section>
 
+<section class="home-personal">
+	<div class="home-personal__inner">
+		<div class="home-personal__head">
+			<div class="home-personal__head-copy">
+				<p class="home-personal__kicker"><?php esc_html_e('Bespoke Personalisation', 'alex-rose-2026'); ?></p>
+				<h2 class="home-personal__title"><?php echo esc_html__('The part of the jacket', 'alex-rose-2026'); ?><br><?php echo esc_html__('that belongs to no one else.', 'alex-rose-2026'); ?></h2>
+			</div>
+			<p class="home-personal__lead"><?php esc_html_e('Every Alex Rose jacket can carry something of yours inside it. Tell me what you have in mind and we will work out how to put it there.', 'alex-rose-2026'); ?></p>
+		</div>
+
+		<div class="home-personal__grid">
+			<?php
+			$ar_personal = array(
+				array(
+					'file'  => 'personalisation-lining-name.webp',
+					'title' => __('Your name in the lining', 'alex-rose-2026'),
+					'text'  => __('Your initials or full name, monogrammed inside. The first thing people notice when they hang it up.', 'alex-rose-2026'),
+				),
+				array(
+					'file'  => 'personalisation-buttons.webp',
+					'title' => __('Engraved buttons', 'alex-rose-2026'),
+					'text'  => __('Your initials on every button. A detail almost no one will see. Which is rather the point.', 'alex-rose-2026'),
+				),
+				array(
+					'file'  => 'personalisation-lining.webp',
+					'title' => __('A lining designed by you', 'alex-rose-2026'),
+					'text'  => __('Hidden from the world, seen only by you. Your photograph, your artwork, your colour. If you can picture it, we can very likely make it.', 'alex-rose-2026'),
+				),
+			);
+			foreach ($ar_personal as $ar_p) :
+				?>
+				<article class="home-personal__card">
+					<div class="home-personal__media">
+						<img class="home-personal__img" src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/08/' . $ar_p['file'])); ?>" alt="<?php echo esc_attr($ar_p['title']); ?>" loading="lazy" width="600" height="750">
+						<span class="home-personal__shade" aria-hidden="true"></span>
+						<span class="home-personal__rule" aria-hidden="true"></span>
+					</div>
+					<div class="home-personal__body">
+						<h3 class="home-personal__h3"><?php echo esc_html($ar_p['title']); ?></h3>
+						<p class="home-personal__desc"><?php echo esc_html($ar_p['text']); ?></p>
+					</div>
+				</article>
+				<?php
+			endforeach;
+			?>
+		</div>
+
+		<div class="home-personal__foot">
+			<p class="home-personal__note"><?php esc_html_e('We can print almost anything that is your own. We cannot use material owned by someone else, including company logos, club badges, famous artworks, or images of well-known people. If you are unsure, simply ask.', 'alex-rose-2026'); ?></p>
+			<div class="home-personal__actions">
+				<a class="home-btn-gold" href="<?php echo esc_url(home_url('/schedule-a-call')); ?>"><?php esc_html_e('Book a chat with Harold', 'alex-rose-2026'); ?></a>
+				<a class="home-personal__btn-ghost" href="<?php echo esc_url(home_url('/design')); ?>"><?php esc_html_e('Design your jacket', 'alex-rose-2026'); ?></a>
+			</div>
+		</div>
+	</div>
+</section>
+
 <section class="home-how" id="how-it-works">
 	<div class="home-how__inner">
 		<div class="home-how__head">
