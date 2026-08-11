@@ -243,11 +243,13 @@
 		var occGrid = main.querySelector('.home-occasions__grid');
 		var occCols = occGrid ? occGrid.querySelectorAll('.home-occ-col') : [];
 		var watermarks = main.querySelectorAll('.home-story__watermark');
+		var storyBodies = main.querySelectorAll('.home-story__body');
 		var personalGrid = main.querySelector('.home-personal__grid');
 		var personalCard = personalGrid
 			? personalGrid.querySelector('.home-personal__card:nth-child(2)')
 			: null;
-		if (!images.length && !heroMedia && !occCols.length && !personalCard && !watermarks.length) {
+		if (!images.length && !heroMedia && !occCols.length && !personalCard &&
+			!watermarks.length && !storyBodies.length) {
 			return;
 		}
 
@@ -284,6 +286,28 @@
 			occCols.forEach(function (col, i) {
 				var offset = i % 2 === 0 ? progress * -96 : progress * 48;
 				col.style.transform = 'translate3d(0, ' + offset.toFixed(2) + 'px, 0)';
+			});
+		}
+
+		/*
+		 * The copy column drifts against its image, which moves the other way —
+		 * the two passing gives the band its depth. Applied to __body rather
+		 * than __inner because __inner is a reveal target and already owns its
+		 * own transform.
+		 */
+		function updateStoryBodies(vh) {
+			storyBodies.forEach(function (body) {
+				var band = body.closest('.home-story');
+				if (!band) {
+					return;
+				}
+				var rect = band.getBoundingClientRect();
+				if (rect.bottom < 0 || rect.top > vh) {
+					return;
+				}
+				var progress = (vh - rect.top) / (vh + rect.height) - 0.5;
+				body.style.transform =
+					'translate3d(0, ' + (progress * -26).toFixed(2) + 'px, 0)';
 			});
 		}
 
@@ -336,6 +360,10 @@
 
 			if (watermarks.length) {
 				updateWatermarks(vh);
+			}
+
+			if (storyBodies.length) {
+				updateStoryBodies(vh);
 			}
 
 			images.forEach(function (img) {

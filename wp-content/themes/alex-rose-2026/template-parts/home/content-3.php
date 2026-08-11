@@ -44,7 +44,10 @@ if (! defined('ABSPATH')) {
 			<p class="home-story__kicker"><?php esc_html_e('Personal, One-to-One Service', 'alex-rose-2026'); ?></p>
 			<h2 class="home-story__h2"><?php echo esc_html__('You speak directly with your', 'alex-rose-2026'); ?><br><?php echo esc_html__('master tailor.', 'alex-rose-2026'); ?></h2>
 			<p class="home-story__p"><?php esc_html_e('Every enquiry is read personally. Every order is reviewed by our tailor before a single thread is cut. That is how it has always worked at Alex Rose. And that is how it will always work.', 'alex-rose-2026'); ?></p>
-			<p class="home-story__sig"><?php esc_html_e('Your Master Tailor · Harold Rose', 'alex-rose-2026'); ?></p>
+			<div class="home-story__sig-row">
+				<span class="home-story__sig-rule" aria-hidden="true"></span>
+				<p class="home-story__sig"><?php esc_html_e('Your Master Tailor · Harold Rose', 'alex-rose-2026'); ?></p>
+			</div>
 		</div>
 	</div>
 	<div class="home-story__media home-story__media--tailor">

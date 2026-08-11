@@ -2204,11 +2204,18 @@ html.ar-reveal-js .page-home .home-how__cell.is-visible .home-how__icon [data-ar
 	}
 }
 
+/*
+ * Oversized on purpose: ar-reveal.js drifts this image +/-18px on scroll, and
+ * at exactly 100% height that travel exposed a strip of background at the top
+ * or bottom edge. The 15% overhang is the travel room.
+ */
 .page-home .home-story__media img {
 	position: absolute;
-	inset: 0;
+	left: 0;
+	right: 0;
+	top: -15%;
 	width: 100%;
-	height: 100%;
+	height: 130%;
 	object-fit: cover;
 	object-position: center;
 }
@@ -2309,8 +2316,56 @@ html.ar-reveal-js .page-home .home-how__cell.is-visible .home-how__icon [data-ar
 	color: #fff;
 }
 
+/*
+ * Only a colour override existed for this, so the kicker rendered as plain body
+ * text while every other section used the uppercase micro-label. Base styling
+ * matches .home-split__kicker.
+ */
+.page-home .home-story__kicker {
+	margin: 0 0 20px;
+	font-size: 10px;
+	text-transform: uppercase;
+	letter-spacing: 0.22em;
+	color: rgba(13, 13, 13, 0.45);
+}
+
 .page-home .home-story--dark .home-story__kicker {
 	color: rgba(200, 169, 106, 0.5);
+}
+
+.page-home .home-story__sig-row {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding-top: 16px;
+}
+
+.page-home .home-story__sig-rule {
+	flex-shrink: 0;
+	width: 48px;
+	height: 1px;
+	background: var(--ar-gold);
+	transform-origin: 0% 50%;
+}
+
+/*
+ * The rule draws itself in just behind its copy. It is only collapsed while the
+ * surrounding group is still hidden, so without ar-reveal.js it renders at full
+ * width rather than never appearing.
+ */
+html.ar-reveal-js .page-home .home-story__sig-rule {
+	transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s;
+}
+
+html.ar-reveal-js .page-home .home-story__inner[data-ar-reveal]:not(.is-visible) .home-story__sig-rule {
+	transform: scaleX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html.ar-reveal-js .page-home .home-story__sig-rule {
+		transition: none;
+		transform: none;
+	}
 }
 
 .page-home .home-story__sig {
