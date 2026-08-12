@@ -379,6 +379,14 @@
 				}
 				var progress = (vh - rect.top) / (vh + rect.height);
 				var offset = (progress - 0.5) * 36;
+				/*
+				 * The tailor portrait is top-anchored (no overhang above it in
+				 * page-home.css), so shift its travel to -36..0 — it only ever
+				 * drifts up, and never uncovers the top edge.
+				 */
+				if (section.classList.contains('home-story__media--tailor')) {
+					offset -= 18;
+				}
 				img.style.transform = 'translate3d(0, ' + offset.toFixed(2) + 'px, 0)';
 			});
 		}

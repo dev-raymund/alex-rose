@@ -2376,8 +2376,14 @@ html.ar-reveal-js .page-home .home-story__inner[data-ar-reveal]:not(.is-visible)
 	color: var(--ar-gold);
 }
 
+/*
+ * The tailor's head sits on the very top edge of the source photo, so this one
+ * is anchored to the top with no overhang above. ar-reveal.js biases its drift
+ * upward-only (see the --tailor branch there) so no gap opens at the top edge.
+ */
 .page-home .home-story__media--tailor img {
-	object-position: 50% 35%;
+	top: 0;
+	object-position: 50% 0;
 }
 
 .page-home .home-story__media--tailor::after {
