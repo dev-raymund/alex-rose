@@ -69,6 +69,86 @@ function alex_rose_2026_form_honeypot_field(): void {
 	<?php
 }
 
+/**
+ * Addresses and domains blocked from every public form.
+ *
+ * An entry is either a full address ('spam@example.com') or a bare domain
+ * ('mailinator.com'), which blocks that domain and its subdomains. To add one
+ * without editing the theme, filter this list:
+ *
+ *   add_filter('alex_rose_2026_blocked_emails', function ($list) {
+ *       $list[] = 'someone@example.com';
+ *       return $list;
+ *   });
+ *
+ * @return string[]
+ */
+function alex_rose_2026_blocked_emails(): array {
+	$list = array(
+		'melissasaldanamrkt@gmail.com',
+		// 'mailinator.com',
+	);
+
+	$list = (array) apply_filters('alex_rose_2026_blocked_emails', $list);
+
+	return array_values(array_filter(array_map(
+		static function ($entry) {
+			return is_string($entry) ? strtolower(trim($entry)) : '';
+		},
+		$list
+	)));
+}
+
+/**
+ * True when any address in the submission is blocked.
+ *
+ * Scans the whole payload rather than one named field: each form prefixes its
+ * email input differently (ct_email, rcs_email, sac_email...), and spam
+ * routinely repeats the address inside the message body too.
+ */
+function alex_rose_2026_form_has_blocked_email(): bool {
+	$blocked = alex_rose_2026_blocked_emails();
+	if ($blocked === array()) {
+		return false;
+	}
+
+	$haystack = array();
+	// Nonce is verified by the caller before this runs.
+	array_walk_recursive($_POST, static function ($value) use (&$haystack) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if (is_string($value)) {
+			$haystack[] = strtolower(wp_unslash($value));
+		}
+	});
+
+	if ($haystack === array()) {
+		return false;
+	}
+
+	if (! preg_match_all('/[\w.+-]+@[\w-]+\.[\w.-]+/', implode(' ', $haystack), $matches)) {
+		return false;
+	}
+
+	foreach ($matches[0] as $found) {
+		$domain = substr((string) strrchr($found, '@'), 1);
+
+		foreach ($blocked as $rule) {
+			// Full address: exact match only.
+			if (strpos($rule, '@') !== false) {
+				if ($found === $rule) {
+					return true;
+				}
+				continue;
+			}
+			// Bare domain: the domain itself, or any subdomain of it.
+			if ($domain === $rule || substr($domain, -strlen('.' . $rule)) === '.' . $rule) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 /* -------------------------------------------------------------------------
  * Helpers shared by every handler
  * ------------------------------------------------------------------------- */
@@ -188,9 +268,9 @@ function alex_rose_2026_form_respond(bool $ok, string $action, string $message, 
 }
 
 /**
- * Standard validation: nonce check + honeypot check. On failure, responds
- * (JSON or redirect) and exits — handlers can call this and assume the
- * request is sane afterwards.
+ * Standard validation: nonce check + honeypot check + blocked-sender check. On
+ * failure, responds (JSON or redirect) and exits — handlers can call this and
+ * assume the request is sane afterwards.
  */
 function alex_rose_2026_form_guard(string $action, string $nonce_action, string $nonce_field): void {
 	$nonce = isset($_POST[ $nonce_field ]) ? sanitize_text_field(wp_unslash((string) $_POST[ $nonce_field ])) : '';
@@ -200,6 +280,12 @@ function alex_rose_2026_form_guard(string $action, string $nonce_action, string 
 
 	$hp = alex_rose_2026_form_field(alex_rose_2026_form_honeypot_name());
 	if ($hp !== '') {
+		alex_rose_2026_form_respond(true, $action, __('Thank you.', 'alex-rose-2026'));
+	}
+
+	// Blocked sender. Reports success like the honeypot does: telling someone
+	// they are filtered just prompts them to switch address.
+	if (alex_rose_2026_form_has_blocked_email()) {
 		alex_rose_2026_form_respond(true, $action, __('Thank you.', 'alex-rose-2026'));
 	}
 }
@@ -923,6 +1009,180 @@ function alex_rose_2026_brevo_capture(string $email, string $action, array $cont
 
 	alex_rose_2026_brevo_add_contact($email, $attributes, $list_id ? array($list_id) : array());
 }
+
+/**
+ * Choose the founding discount code for a launch signup.
+ *
+ * Everyone gets the general EARLY20 code, except visitors who say they were
+ * referred by Brian Klimek (Instagram: Suttielinksbracesman) — they get his
+ * referral code STLBMAN20. Matching is loose so common spellings of the name
+ * or handle all resolve. Filterable via `alex_rose_2026_launch_discount_code`.
+ */
+function alex_rose_2026_launch_discount_code(string $referral): string {
+	$needle   = strtolower(trim($referral));
+	$is_brian = $needle !== '' && (
+		strpos($needle, 'brian') !== false ||
+		strpos($needle, 'klimek') !== false ||
+		strpos($needle, 'ttielinksbracesman') !== false || // suttie/suittie...
+		strpos($needle, 'stlbman') !== false
+	);
+
+	$code = $is_brian ? 'STLBMAN20' : 'EARLY20';
+
+	return (string) apply_filters('alex_rose_2026_launch_discount_code', $code, $referral);
+}
+
+/**
+ * Email a launch subscriber their 20%-off founding discount code directly from
+ * WordPress, so delivery does not depend on the Brevo automation. Best-effort:
+ * returns the wp_mail result but the caller does not block the signup on it.
+ */
+function alex_rose_2026_send_launch_discount_email(string $email, string $code): bool {
+	if (! is_email($email)) {
+		return false;
+	}
+
+	$code        = strtoupper($code);
+	$gold        = '#c8a96a';
+	$ink         = '#111111';
+	$site        = 'www.alexrose.uk';
+	$site_url     = 'https://www.alexrose.uk';
+	$support      = 'harold@alexrose.uk';
+	$address      = '2A Rodley Ln, Rodley, Leeds LS13 1HU';
+	$valid_until  = __('31 August 2026', 'alex-rose-2026');
+
+	$subject = __('Your code is inside', 'alex-rose-2026');
+
+	$preheader = esc_html__('As promised, here is your 20% off founding discount code.', 'alex-rose-2026');
+	$greeting  = esc_html__('Hi there,', 'alex-rose-2026');
+	$intro     = esc_html__('Thank you for joining the Alex Rose founding list. We’re glad to have you here.', 'alex-rose-2026');
+	$lead      = esc_html__('As promised, here is your personal discount code for 20% off your first jacket:', 'alex-rose-2026');
+	$general   = esc_html__('General code:', 'alex-rose-2026');
+	$referral_note = esc_html__('If you were referred by Brian Klimek (Suttielinksbracesman on Instagram), please use the referral code:', 'alex-rose-2026');
+	$closing   = esc_html__('We look forward to making your jacket.', 'alex-rose-2026');
+	$regards   = esc_html__('Warm regards,', 'alex-rose-2026');
+	$signoff   = esc_html__('Harold and the Alex Rose team', 'alex-rose-2026');
+	$brand     = esc_html__('Alex Rose Fine Tailoring', 'alex-rose-2026');
+
+	$validity = sprintf(
+		/* translators: 1: valid-until date, 2: website address */
+		esc_html__('This code is personal to you and valid until %1$s. Simply enter it when you design your jacket and check out at %2$s. You may enter only one code in the basket.', 'alex-rose-2026'),
+		esc_html($valid_until),
+		'<a href="' . esc_url($site_url) . '" style="color:' . $gold . ';text-decoration:none;">' . esc_html($site) . '</a>'
+	);
+	$support_line = sprintf(
+		/* translators: %s: support email address */
+		esc_html__('If you have any questions at all, simply reply to this email or reach Harold directly at %s. Every message is read personally.', 'alex-rose-2026'),
+		'<a href="mailto:' . esc_attr($support) . '" style="color:' . $gold . ';text-decoration:none;">' . esc_html($support) . '</a>'
+	);
+
+	$p = 'margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.7;color:#333333;';
+
+	$html = '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>'
+		. '<body style="margin:0;padding:0;background:#f4f2ee;">'
+		. '<span style="display:none;max-height:0;overflow:hidden;opacity:0;">' . $preheader . '</span>'
+		. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f2ee;padding:32px 0;"><tr><td align="center">'
+		. '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background:#ffffff;border:1px solid #e7e3da;">'
+		. '<tr><td style="background:' . $ink . ';padding:26px 40px;text-align:center;">'
+		. '<span style="font-family:Georgia,\'Times New Roman\',serif;font-size:22px;letter-spacing:0.28em;color:#ffffff;text-transform:uppercase;">Alex Rose</span>'
+		. '</td></tr>'
+		. '<tr><td style="height:3px;background:' . $gold . ';"></td></tr>'
+		. '<tr><td style="padding:40px;">'
+		. '<h1 style="margin:0 0 22px;font-family:Georgia,\'Times New Roman\',serif;font-size:24px;font-weight:normal;color:' . $ink . ';">' . esc_html__('Your code is inside.', 'alex-rose-2026') . '</h1>'
+		. '<p style="' . $p . '">' . $greeting . '</p>'
+		. '<p style="' . $p . '">' . $intro . '</p>'
+		. '<p style="' . $p . '">' . $lead . '</p>'
+		. '<p style="' . $p . '"><strong>' . $general . '</strong> EARLY20<br>' . $referral_note . ' <strong>STLBMAN20</strong></p>'
+		. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 28px;"><tr><td align="center" style="border:1px dashed ' . $gold . ';background:#faf7f0;padding:22px;">'
+		. '<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#8a8577;margin-bottom:8px;">' . esc_html__('Your code', 'alex-rose-2026') . '</div>'
+		. '<div style="font-family:Georgia,\'Times New Roman\',serif;font-size:32px;letter-spacing:0.12em;color:' . $ink . ';font-weight:bold;">' . esc_html($code) . '</div>'
+		. '</td></tr></table>'
+		. '<p style="' . $p . '">' . $validity . '</p>'
+		. '<p style="' . $p . '">' . $support_line . '</p>'
+		. '<p style="' . $p . '">' . $closing . '</p>'
+		. '<p style="' . $p . 'margin-bottom:4px;">' . $regards . '</p>'
+		. '<p style="margin:0;font-family:Georgia,\'Times New Roman\',serif;font-size:15px;color:' . $ink . ';">' . $signoff . '</p>'
+		. '</td></tr>'
+		. '<tr><td style="background:' . $ink . ';padding:28px 40px;text-align:center;">'
+		. '<div style="font-family:Georgia,\'Times New Roman\',serif;font-size:13px;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;margin-bottom:10px;">' . $brand . '</div>'
+		. '<a href="' . esc_url($site_url) . '" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:' . $gold . ';text-decoration:none;">' . esc_html($site) . '</a>'
+		. '<div style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:rgba(255,255,255,0.5);margin-top:12px;">' . esc_html($address) . '</div>'
+		. '</td></tr>'
+		. '</table></td></tr></table></body></html>';
+
+	$headers = array(
+		sprintf('From: %s <%s>', $brand, alex_rose_2026_form_from_address()),
+		'Content-Type: text/html; charset=UTF-8',
+		'Reply-To: Harold <' . $support . '>',
+	);
+
+	return (bool) wp_mail($email, $subject, $html, $headers);
+}
+
+/* --- Launch: Founding-member discount list ------------------------------ */
+
+function alex_rose_2026_handle_lp_join_waitlist(): void {
+	$action = 'lp_join_waitlist';
+	alex_rose_2026_form_guard($action, 'lp_join_waitlist', 'lp_nonce');
+
+	$email    = alex_rose_2026_form_field('lp_email');
+	$referral = alex_rose_2026_form_field('lp_referral');
+
+	if (! is_email($email)) {
+		alex_rose_2026_form_respond(false, $action, __('Please enter a valid email address.', 'alex-rose-2026'));
+	}
+
+	// A Brian Klimek referral earns his STLBMAN20 code; everyone else EARLY20.
+	$code = alex_rose_2026_launch_discount_code($referral);
+
+	// Add the subscriber to Brevo (no-op until an API key is configured).
+	alex_rose_2026_brevo_capture($email, $action, array('referral' => $referral));
+
+	// Email the subscriber their code straight from WordPress. Best-effort: a
+	// delivery failure is logged but does not block the signup (Brevo remains a
+	// backup path).
+	if (! alex_rose_2026_send_launch_discount_email($email, $code)) {
+		error_log('[Alex Rose] Launch discount email failed for ' . $email);
+	}
+
+	$body = alex_rose_2026_form_build_body(
+		array(
+			array('label' => __('Email', 'alex-rose-2026'),       'value' => $email),
+			array('label' => __('Referred by', 'alex-rose-2026'), 'value' => $referral),
+			array('label' => __('Code sent', 'alex-rose-2026'),   'value' => $code),
+		),
+		__('A new founding-member discount request has arrived via the Launch page:', 'alex-rose-2026')
+	);
+
+	// Founding-list signups also notify the build team, on top of the
+	// site-wide recipient. Scoped to this handler only.
+	$lp_extra_recipient = static function ($recipient) {
+		$extra     = 'harold@alexrose.uk, tailor@alexrose.uk';
+		$recipient = is_string($recipient) ? trim($recipient) : '';
+		return $recipient !== '' ? $recipient . ', ' . $extra : $extra;
+	};
+	add_filter('alex_rose_2026_form_recipient', $lp_extra_recipient, 20);
+
+	$sent = alex_rose_2026_form_send_mail(
+		sprintf(
+			/* translators: %s: subscriber email */
+			__('Founding list signup: %s', 'alex-rose-2026'),
+			$email
+		),
+		$body,
+		$email
+	);
+
+	remove_filter('alex_rose_2026_form_recipient', $lp_extra_recipient, 20);
+
+	if (! $sent) {
+		alex_rose_2026_form_respond(false, $action, __('Something went wrong. Please try again in a moment.', 'alex-rose-2026'));
+	}
+
+	alex_rose_2026_form_respond(true, $action, __('Thank you. Your discount code is on its way.', 'alex-rose-2026'));
+}
+add_action('admin_post_lp_join_waitlist', 'alex_rose_2026_handle_lp_join_waitlist');
+add_action('admin_post_nopriv_lp_join_waitlist', 'alex_rose_2026_handle_lp_join_waitlist');
 
 /* --- Feedback survey ---------------------------------------------------- */
 

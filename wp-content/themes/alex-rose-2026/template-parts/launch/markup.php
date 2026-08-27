@@ -2,12 +2,6 @@
 /**
  * Launch — founding-member landing page markup.
  *
- * RETIRED — unreachable. Rendered only by template/launch.php, whose
- * `Template Name` header was removed when the 20% founding promotion ended.
- * Kept for reference; the copy below still quotes 20% and the 31 July 2026
- * closing date, so rewrite it before reviving. Its form posts to the
- * `lp_join_waitlist` handler, which was deleted from inc/forms.php.
- *
  * @package Alex_Rose_2026
  */
 
@@ -40,10 +34,10 @@ $lp_chevron = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" vi
 	<main class="lp__main">
 		<div class="lp__inner">
 			<p class="lp__eyebrow"><?php esc_html_e('Founding offer', 'alex-rose-2026'); ?></p>
-			<h1 class="lp__title"><?php echo wp_kses(__('20% off your first jacket.<br>Offer closes 31 July 2026.', 'alex-rose-2026'), array('br' => array())); ?></h1>
+			<h1 class="lp__title"><?php echo wp_kses(__('20% off your first jacket.<br>Offer closes 31 August 2026.', 'alex-rose-2026'), array('br' => array())); ?></h1>
 			<p class="lp__lede"><?php esc_html_e('Made-to-measure jackets from a Leeds family tailoring business with eighty years of heritage. Join the founding list and receive your personal 20% discount code by return. No conditions.', 'alex-rose-2026'); ?></p>
 
-			<div class="lp__countdown" data-countdown="2026-07-31T23:59:59">
+			<div class="lp__countdown" data-countdown="2026-08-31T23:59:59">
 				<div class="lp__unit"><span class="lp__unit-num" data-cd="days">--</span><span class="lp__unit-label"><?php esc_html_e('days', 'alex-rose-2026'); ?></span></div>
 				<div class="lp__unit"><span class="lp__unit-num" data-cd="hours">--</span><span class="lp__unit-label"><?php esc_html_e('hours', 'alex-rose-2026'); ?></span></div>
 				<div class="lp__unit"><span class="lp__unit-num" data-cd="mins">--</span><span class="lp__unit-label"><?php esc_html_e('mins', 'alex-rose-2026'); ?></span></div>
@@ -81,7 +75,7 @@ $lp_chevron = '<svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" vi
 				</div>
 			</div>
 
-			<p class="lp__fine"><?php esc_html_e('Offer valid until 31 July 2026  ·  One jacket per customer  ·  No conditions', 'alex-rose-2026'); ?></p>
+			<p class="lp__fine"><?php esc_html_e('Offer valid until 31 August 2026  ·  One jacket per customer  ·  No conditions', 'alex-rose-2026'); ?></p>
 		</div>
 	</main>
 
