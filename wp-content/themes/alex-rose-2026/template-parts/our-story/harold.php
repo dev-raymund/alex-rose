@@ -24,14 +24,14 @@ if (! defined('ABSPATH')) {
 
 		<div class="os-harold__body">
 			<p class="os-harold__kicker"><?php esc_html_e('Meet Harold', 'alex-rose-2026'); ?></p>
-			<h1 class="os-harold__title">
+			<h2 class="os-harold__title">
 				<?php
 				echo wp_kses(
 					__('The man behind<br>every jacket.', 'alex-rose-2026'),
 					array('br' => array())
 				);
 				?>
-			</h1>
+			</h2>
 			<div class="os-harold__paragraphs">
 				<p><?php esc_html_e('Harold Rose grew up inside the family tailoring business his father Alexander founded in 1945, learning the trade from the inside out before becoming managing director in his own right.', 'alex-rose-2026'); ?></p>
 				<p><?php esc_html_e('Today, Harold reviews every order personally, confirms every detail with you directly, and remains available throughout. There is no intermediary. You are working with the tailor.', 'alex-rose-2026'); ?></p>

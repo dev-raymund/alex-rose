@@ -8,10 +8,10 @@
 get_header();
 ?>
 <main id="main" class="site-main" tabindex="-1">
+	<header class="page-header">
+		<h1 class="page-title"><?php esc_html_e('Posts', 'alex-rose-2026'); ?></h1>
+	</header>
 	<?php if (have_posts()) : ?>
-		<header class="page-header">
-			<h1 class="page-title"><?php esc_html_e('Posts', 'alex-rose-2026'); ?></h1>
-		</header>
 		<div class="post-list">
 			<?php
 			while (have_posts()) :
