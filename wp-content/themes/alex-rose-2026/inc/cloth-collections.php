@@ -114,6 +114,47 @@ function alex_rose_2026_is_cloths_menu_url(string $url): bool {
 }
 
 /**
+	 * Trim a collection's display title down to the cloth name itself, so alt text
+	 * reads "Aire — Harris Tweed jacket cloth swatch" rather than repeating
+	 * "The … Collection" on every swatch image.
+	 */
+function alex_rose_2026_collection_short_label(string $title): string {
+	$title = trim((string) preg_replace('/^the\s+/i', '', trim($title)));
+	return trim((string) preg_replace('/\s+collection$/i', '', $title));
+}
+
+/**
+	 * Descriptive alt text for a cloth swatch image.
+	 *
+	 * The ACF swatch repeater carries only a name and an image — there is no alt
+	 * field for an editor to fill in — so without this every swatch falls back to
+	 * the bare cloth name ("Aire"), which tells a screen reader nothing about what
+	 * it is describing and gives image search no context either.
+	 */
+function alex_rose_2026_cloth_swatch_alt(string $name, string $collection = ''): string {
+	$name       = trim($name);
+	$collection = alex_rose_2026_collection_short_label($collection);
+
+	if ($name === '' && $collection === '') {
+		return '';
+	}
+
+	if ($collection === '') {
+		/* translators: %s: cloth swatch name */
+		return sprintf(__('%s jacket cloth swatch', 'alex-rose-2026'), $name);
+	}
+
+	// A single-swatch collection names itself; avoid "Harris Tweed — Harris Tweed".
+	if ($name === '' || strcasecmp($name, $collection) === 0) {
+		/* translators: %s: collection name */
+		return sprintf(__('%s made-to-measure jacket cloth', 'alex-rose-2026'), $collection);
+	}
+
+	/* translators: 1: cloth swatch name, 2: collection name */
+	return sprintf(__('%1$s — %2$s jacket cloth swatch', 'alex-rose-2026'), $name, $collection);
+}
+
+/**
  * Collections + swatches for the Request Cloth Samples form, in display order.
  *
  * @return array<int, array{slug:string, label:string, swatches:array<int, array{id:string, name:string, image:string, alt:string}>}>
@@ -142,7 +183,7 @@ function alex_rose_2026_cloth_sample_collections(): array {
 					'id'    => $slug,
 					'name'  => $label,
 					'image' => (string) $col['cloth_image'],
-					'alt'   => $label,
+					'alt'   => alex_rose_2026_cloth_swatch_alt($label, $label),
 				),
 			);
 		} else {
@@ -156,7 +197,7 @@ function alex_rose_2026_cloth_sample_collections(): array {
 					'id'    => $slug . '-' . sanitize_title($name),
 					'name'  => $name,
 					'image' => (string) ( $swatch['image'] ?? '' ),
-					'alt'   => (string) ( $swatch['alt'] ?? $name ),
+					'alt'   => (string) ( $swatch['alt'] ?? alex_rose_2026_cloth_swatch_alt($name, $label) ),
 				);
 			}
 			$swatches = $mapped;
@@ -315,7 +356,7 @@ function alex_rose_2026_apply_acf_collection_fields(array $base, int $post_id): 
 			$mapped[] = array(
 				'name'  => $name,
 				'image' => $image,
-				'alt'   => $name !== '' ? $name : '',
+				'alt'   => alex_rose_2026_cloth_swatch_alt($name, (string) ( $base['title'] ?? '' )),
 			);
 		}
 		if (! empty($mapped)) {

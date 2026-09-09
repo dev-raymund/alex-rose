@@ -541,6 +541,47 @@ html.ar-reveal-js .page-home .home-hero__actions {
 	background: rgb(200, 169, 106);
 }
 
+/*
+ * Rotation timer. The bar is driven by an animation rather than a transition so
+ * hovering can freeze it mid-sweep (animation-play-state) and resume from the
+ * same point — a transition would have to be restarted from zero.
+ */
+.page-home .home-reviews__progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 1px;
+	background: rgba(0, 0, 0, 0.05);
+	pointer-events: none;
+}
+
+.page-home .home-reviews__progress-bar {
+	display: block;
+	height: 100%;
+	width: 0;
+	background: rgb(200, 169, 106);
+}
+
+.page-home .home-reviews__carousel.is-inview .home-reviews__progress-bar {
+	animation: home-reviews-progress var(--ar-reviews-delay, 6000ms) linear forwards;
+}
+
+.page-home .home-reviews__carousel.is-paused .home-reviews__progress-bar {
+	animation-play-state: paused;
+}
+
+@keyframes home-reviews-progress {
+	from { width: 0; }
+	to   { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.page-home .home-reviews__progress {
+		display: none;
+	}
+}
+
 .page-home .home-reviews__brands {
 	display: flex;
 	flex-direction: column;

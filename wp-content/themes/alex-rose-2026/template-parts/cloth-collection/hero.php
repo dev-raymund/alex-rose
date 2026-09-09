@@ -15,7 +15,7 @@ if ($collection === null) {
 }
 ?>
 <section class="cc-hero">
-	<img class="cc-hero__img" src="<?php echo esc_url($collection['hero_image']); ?>" alt="<?php echo esc_attr($collection['title']); ?>" loading="eager">
+	<img class="cc-hero__img" src="<?php echo esc_url($collection['hero_image']); ?>" alt="<?php echo esc_attr(alex_rose_2026_cloth_swatch_alt('', (string) $collection['title'])); ?>" loading="eager">
 	<div class="cc-hero__shade" aria-hidden="true"></div>
 	<div class="cc-hero__inner">
 		<p class="cc-hero__kicker"><?php echo esc_html($collection['kicker']); ?></p>

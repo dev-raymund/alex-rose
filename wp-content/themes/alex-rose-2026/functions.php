@@ -675,7 +675,7 @@ add_action(
 				);
 			}
 		}
-
+		
 		if (is_page_template('template/launch.php')) {
 			$lp_css = ALEX_ROSE_2026_DIR . '/assets/css/page-launch.css';
 			$lp_ver = is_readable($lp_css) ? (string) filemtime($lp_css) : ALEX_ROSE_2026_VERSION;
