@@ -16,22 +16,22 @@ if (! defined('ABSPATH')) {
 	<div class="home-hero__shade" aria-hidden="true"></div>
 	<div class="home-hero__shade-bottom" aria-hidden="true"></div>
 	<div class="home-hero__inner home-gutters" data-ar-no-reveal>
-		<p class="home-hero__kicker"><?php esc_html_e('British Made-to-Measure Since 1945', 'alex-rose-2026'); ?></p>
+		<p class="home-hero__kicker"><?php esc_html_e('Specialists in Made-to-Measure Jackets', 'alex-rose-2026'); ?></p>
 		<div class="home-hero__spacer" aria-hidden="true"></div>
 		<div class="home-hero__copy">
 			<h1 class="home-hero__title">
-				<span class="home-hero__title-line"><?php echo esc_html__('Made-to-Measure Jackets', 'alex-rose-2026'); ?></span>
+				<span class="home-hero__title-line"><?php echo esc_html__('Custom Jackets', 'alex-rose-2026'); ?></span>
 				<span class="home-hero__title-line"><?php echo esc_html__('Designed to Fit', 'alex-rose-2026'); ?></span>
 				<span class="home-hero__title-line"><?php echo esc_html__('You Properly.', 'alex-rose-2026'); ?></span>
 			</h1>
 			<p class="home-hero__lead">
-				<?php echo esc_html__('Design your jacket online. Get measured at home or on a video call.', 'alex-rose-2026'); ?><br>
-				<?php echo esc_html__('Leeds fitting appointments too, if you would rather come to us.', 'alex-rose-2026'); ?>
+				<?php echo esc_html__('Design your jacket online. Refine the fit in person.', 'alex-rose-2026'); ?><br>
+				<?php echo esc_html__('Made for how you live and dress.', 'alex-rose-2026'); ?>
 			</p>
 			<div class="home-hero__actions">
 				<a class="home-btn-gold" href="<?php echo esc_url(home_url('/design')); ?>"><?php esc_html_e('Design Your Jacket', 'alex-rose-2026'); ?></a>
 				<a class="home-link-quiet" href="<?php echo esc_url(home_url('/schedule-a-call')); ?>">
-					<span><?php esc_html_e('Book a 20-Minute Call', 'alex-rose-2026'); ?></span>
+					<span><?php esc_html_e('Book a Consultation', 'alex-rose-2026'); ?></span>
 					<span class="home-link-quiet__arrow" aria-hidden="true">→</span>
 				</a>
 			</div>
@@ -162,10 +162,6 @@ $stars_row = function () use ($star_svg): string {
 					></button>
 				<?php endforeach; ?>
 			</div>
-			<?php // Fill advances across the rotation delay; markup.php restarts it on each slide. ?>
-			<div class="home-reviews__progress" aria-hidden="true">
-				<span class="home-reviews__progress-bar" data-home-reviews-progress></span>
-			</div>
 		</div>
 
 		<div class="home-reviews__brands">
@@ -221,11 +217,11 @@ $stars_row = function () use ($star_svg): string {
 					</span>
 					<span class="home-occ-card__shade" aria-hidden="true"></span>
 					<div class="home-occ-card__body">
-						<p class="home-occ-card__tags"><?php esc_html_e('Events · Occasions · Statements', 'alex-rose-2026'); ?></p>
+						<p class="home-occ-card__tags"><?php esc_html_e('Galas · Dinners · Events', 'alex-rose-2026'); ?></p>
 						<div class="home-occ-card__title-wrap">
 							<h3 class="home-occ-card__title"><?php esc_html_e('Evening & Statement', 'alex-rose-2026'); ?></h3>
 						</div>
-						<p class="home-occ-card__desc"><?php esc_html_e('When ordinary will not do. Jackets that command the room with bold cloth and confident cut, built exactly for you.', 'alex-rose-2026'); ?></p>
+						<p class="home-occ-card__desc"><?php esc_html_e('Bold cloth, sharp lines, and presence for the moments that matter. When the dress code calls for more than ordinary.', 'alex-rose-2026'); ?></p>
 						<div class="home-occ-card__row">
 							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
 						</div>
@@ -239,11 +235,11 @@ $stars_row = function () use ($star_svg): string {
 					</span>
 					<span class="home-occ-card__shade" aria-hidden="true"></span>
 					<div class="home-occ-card__body">
-						<p class="home-occ-card__tags"><?php esc_html_e('Linen · Tweed · Heritage', 'alex-rose-2026'); ?></p>
+						<p class="home-occ-card__tags"><?php esc_html_e('Spring · Autumn · Layering', 'alex-rose-2026'); ?></p>
 						<div class="home-occ-card__title-wrap">
 							<h3 class="home-occ-card__title"><?php esc_html_e('Seasonal Jackets', 'alex-rose-2026'); ?></h3>
 						</div>
-						<p class="home-occ-card__desc"><?php esc_html_e('Lightweight linens for summer, robust tweeds for winter. The right cloth for every season, crafted to the same standard.', 'alex-rose-2026'); ?></p>
+						<p class="home-occ-card__desc"><?php esc_html_e('Weight, texture, and colour tuned to the season—so your jacket feels right the day it arrives and years later.', 'alex-rose-2026'); ?></p>
 						<div class="home-occ-card__row">
 							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
 						</div>
@@ -257,11 +253,11 @@ $stars_row = function () use ($star_svg): string {
 					</span>
 					<span class="home-occ-card__shade" aria-hidden="true"></span>
 					<div class="home-occ-card__body">
-						<p class="home-occ-card__tags"><?php esc_html_e('Races · Country · Garden Parties', 'alex-rose-2026'); ?></p>
+						<p class="home-occ-card__tags"><?php esc_html_e('Weekends · Field · Country', 'alex-rose-2026'); ?></p>
 						<div class="home-occ-card__title-wrap">
 							<h3 class="home-occ-card__title"><?php esc_html_e('Country & Heritage', 'alex-rose-2026'); ?></h3>
 						</div>
-						<p class="home-occ-card__desc"><?php esc_html_e('From Highland estates to English garden parties. Jackets rooted in British tradition, built for the life you lead outside.', 'alex-rose-2026'); ?></p>
+						<p class="home-occ-card__desc"><?php esc_html_e('Relaxed tailoring with character—tweeds, checks, and cloth that looks as good in town as it does outdoors.', 'alex-rose-2026'); ?></p>
 						<div class="home-occ-card__row">
 							<span class="home-occ-card__explore"><?php esc_html_e('Explore', 'alex-rose-2026'); ?></span>
 						</div>

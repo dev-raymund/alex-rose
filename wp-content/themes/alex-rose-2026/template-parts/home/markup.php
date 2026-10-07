@@ -164,27 +164,10 @@ if (! defined('ABSPATH')) {
 	var dots   = Array.prototype.slice.call(review.querySelectorAll('[data-home-reviews-dot]'));
 	if (slides.length === 0) return;
 
-	var DELAY = 6000;
 	var current = 0;
 	var paused  = false;
-	var timer = null;
-	var rotating = false;
-	var startedAt = 0;
-	var remaining = DELAY;
-	var progress = review.querySelector('[data-home-reviews-progress]');
-
-	// The bar's sweep length is the rotation delay — keep the two from drifting.
-	review.style.setProperty('--ar-reviews-delay', DELAY + 'ms');
-
-	// Replaying a CSS animation needs the rule dropped, a reflow, then restored.
-	function restartProgress() {
-		if (!progress) {
-			return;
-		}
-		progress.style.animation = 'none';
-		void progress.offsetWidth;
-		progress.style.animation = '';
-	}
+	var interval = null;
+	var DELAY = 6000;
 
 	function show(index) {
 		if (index < 0) index = slides.length - 1;
@@ -205,45 +188,18 @@ if (! defined('ABSPATH')) {
 			dot.classList.toggle('is-active', active);
 			dot.setAttribute('aria-selected', active ? 'true' : 'false');
 		});
-
-		restartProgress();
 	}
 
-	// A timeout rather than an interval, so a hover can bank the time already
-	// served and resume from there — matching the bar, which freezes in place.
 	function start() {
 		stop();
-		rotating = true;
-		remaining = DELAY;
-		startedAt = Date.now();
-		timer = window.setTimeout(tick, remaining);
-	}
-	function tick() {
-		timer = null;
-		show(current + 1);
-		start();
+		interval = window.setInterval(function () {
+			if (!paused) show(current + 1);
+		}, DELAY);
 	}
 	function stop() {
-		if (timer) {
-			window.clearTimeout(timer);
-			timer = null;
-		}
-	}
-
-	function setPaused(on) {
-		if (on === paused) {
-			return;
-		}
-		paused = on;
-		review.classList.toggle('is-paused', on);
-		if (on) {
-			remaining = Math.max(0, remaining - (Date.now() - startedAt));
-			stop();
-		} else if (rotating) {
-			// Only resume a rotation that was actually running — reduced motion
-			// never starts one, and hovering must not sneak it into life.
-			startedAt = Date.now();
-			timer = window.setTimeout(tick, remaining);
+		if (interval) {
+			window.clearInterval(interval);
+			interval = null;
 		}
 	}
 
@@ -257,10 +213,10 @@ if (! defined('ABSPATH')) {
 		});
 	});
 
-	review.addEventListener('mouseenter', function () { setPaused(true); });
-	review.addEventListener('mouseleave', function () { setPaused(false); });
-	review.addEventListener('focusin',   function () { setPaused(true); });
-	review.addEventListener('focusout',  function () { setPaused(false); });
+	review.addEventListener('mouseenter', function () { paused = true; });
+	review.addEventListener('mouseleave', function () { paused = false; });
+	review.addEventListener('focusin',   function () { paused = true; });
+	review.addEventListener('focusout',  function () { paused = false; });
 
 	var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

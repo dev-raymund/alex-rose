@@ -14,7 +14,7 @@ if (! defined('ABSPATH')) {
 		<div class="home-split__row">
 			<div class="home-split__media">
 				<div class="home-split__video-box">
-					<video src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/how-it-works.mp4')); ?>" autoplay loop muted controls playsinline preload="metadata" poster="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>"></video>
+					<video src="<?php echo esc_url(alex_rose_2026_uploads_url('2026/05/how-it-works.mp4')); ?>" controls playsinline preload="metadata" poster="<?php echo esc_url(alex_rose_2026_uploads_url('2026/07/lifestyle-4.webp')); ?>"></video>
 					<div class="home-split__corner home-split__corner--tl-h" aria-hidden="true"></div>
 					<div class="home-split__corner home-split__corner--tl-v" aria-hidden="true"></div>
 					<div class="home-split__corner home-split__corner--br-h" aria-hidden="true"></div>
@@ -42,7 +42,7 @@ if (! defined('ABSPATH')) {
 	<div class="home-personal__inner">
 		<div class="home-personal__head">
 			<div class="home-personal__head-copy">
-				<p class="home-personal__kicker"><?php esc_html_e('Made-to-Measure Personalisation', 'alex-rose-2026'); ?></p>
+				<p class="home-personal__kicker"><?php esc_html_e('Bespoke Personalisation', 'alex-rose-2026'); ?></p>
 				<h2 class="home-personal__title"><?php echo esc_html__('It’s the detail that makes', 'alex-rose-2026'); ?><br><?php echo esc_html__('your jacket uniquely yours.', 'alex-rose-2026'); ?></h2>
 			</div>
 			<p class="home-personal__lead"><?php esc_html_e('Every Alex Rose jacket can carry something of you inside it. Just tell us what you have in mind, and we’ll embroider it on the inside of your jacket.', 'alex-rose-2026'); ?></p>
@@ -124,7 +124,7 @@ if (! defined('ABSPATH')) {
 					<p class="home-how__step">02</p>
 					<div class="home-how__rule" aria-hidden="true"></div>
 					<h3 class="home-how__h3"><?php esc_html_e('Get Measured', 'alex-rose-2026'); ?></h3>
-					<p class="home-how__desc"><?php esc_html_e('Measure yourself at home with our easy-to-follow guide, or book a call on Teams or Google Meet and we will talk you through it. You can also post us a jacket you already own, or come and see us in Leeds if you would rather be measured in person.', 'alex-rose-2026'); ?></p>
+					<p class="home-how__desc"><?php esc_html_e('Measure yourself at home with our easy-to-follow guide, or book a call on Teams or Google Meet and we will talk you through it. You can also post your own jacket so we can measure it for you.', 'alex-rose-2026'); ?></p>
 				</div>
 			</div>
 			<div class="home-how__cell">
@@ -146,7 +146,9 @@ if (! defined('ABSPATH')) {
 					<p class="home-how__step">04</p>
 					<div class="home-how__rule" aria-hidden="true"></div>
 					<h3 class="home-how__h3"><?php esc_html_e('Your Jacket Arrives', 'alex-rose-2026'); ?></h3>
-					<p class="home-how__desc"><?php esc_html_e('Your jacket is delivered to your door. If it does not fit you perfectly, reach out to us. We prioritise your perfect fit and comfort above all else.', 'alex-rose-2026'); ?></p>
+					<p class="home-how__desc"><?php esc_html_e('Your jacket is delivered to your door. If it does not fit you perfectly, reach out to us. We prioritise your perfect fit and comfort above all else.
+
+', 'alex-rose-2026'); ?></p>
 				</div>
 			</div>
 		</div>

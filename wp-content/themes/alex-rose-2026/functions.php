@@ -1020,6 +1020,24 @@ add_filter(
 	}
 );
 
+/**
+ * Names, words and phrases blocked from every front-end form. Matched as a
+ * case-insensitive substring of the whole submission, ignoring spacing and
+ * punctuation — keep entries long and distinctive so they cannot collide
+ * with wording a real enquiry might use.
+ */
+add_filter(
+	'alex_rose_2026_blocked_terms',
+	static function (array $terms): array {
+		return array_merge(
+			$terms,
+			array(
+				'WilliamCoils',
+			)
+		);
+	}
+);
+
 if (function_exists('acf_get_setting')) {
 	add_filter(
 		'acf/settings/save_json',

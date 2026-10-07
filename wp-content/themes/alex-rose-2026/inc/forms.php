@@ -86,6 +86,11 @@ function alex_rose_2026_form_honeypot_field(): void {
 function alex_rose_2026_blocked_emails(): array {
 	$list = array(
 		'melissasaldanamrkt@gmail.com',
+		'handya71@gmx.de',
+		'mp.di.rk.s.en@gmail.com',
+		'jafarrauto@aol.com',
+		'kentpsych@hotmail.com',
+		'thomas.kettner-energy@web.de'
 		// 'mailinator.com',
 	);
 
@@ -97,6 +102,89 @@ function alex_rose_2026_blocked_emails(): array {
 		},
 		$list
 	)));
+}
+
+/**
+ * Words, names or phrases blocked from every public form.
+ *
+ * Matched as a case-insensitive substring of the whole submission, so this
+ * catches the throwaway display names spam bots reuse ('WilliamCoils') as
+ * well as recurring link text or phrases. Punctuation and spacing are
+ * ignored too, so 'williamcoils' also matches 'William Coils'.
+ *
+ * Keep entries long and distinctive: a short term will collide with ordinary
+ * words inside a message body. To add one without editing the theme:
+ *
+ *   add_filter('alex_rose_2026_blocked_terms', function ($list) {
+ *       $list[] = 'WilliamCoils';
+ *       return $list;
+ *   });
+ *
+ * @return string[]
+ */
+function alex_rose_2026_blocked_terms(): array {
+	// Site terms are added from functions.php via the filter below.
+	$list = array();
+
+	$list = (array) apply_filters('alex_rose_2026_blocked_terms', $list);
+
+	return array_values(array_filter(array_map(
+		static function ($entry) {
+			return is_string($entry) ? strtolower(trim($entry)) : '';
+		},
+		$list
+	)));
+}
+
+/**
+ * Every string posted with the request, lowercased and joined.
+ *
+ * Scans the whole payload rather than named fields: each form prefixes its
+ * inputs differently (ct_email, rcs_email, sac_email...), and spam routinely
+ * repeats the same address or name across several of them.
+ */
+function alex_rose_2026_form_post_text(): string {
+	$parts = array();
+	// Nonce is verified by the caller before this runs.
+	array_walk_recursive($_POST, static function ($value) use (&$parts) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if (is_string($value)) {
+			$parts[] = strtolower(wp_unslash($value));
+		}
+	});
+
+	return implode(' ', $parts);
+}
+
+/**
+ * True when the submission contains a blocked word, name or phrase.
+ */
+function alex_rose_2026_form_has_blocked_term(): bool {
+	$blocked = alex_rose_2026_blocked_terms();
+	if ($blocked === array()) {
+		return false;
+	}
+
+	$haystack = alex_rose_2026_form_post_text();
+	if ($haystack === '') {
+		return false;
+	}
+
+	// Second pass with every non-alphanumeric stripped, so a run-together rule
+	// still matches a spaced or punctuated spelling of the same name.
+	$collapsed = (string) preg_replace('/[^a-z0-9]+/', '', $haystack);
+
+	foreach ($blocked as $rule) {
+		if (strpos($haystack, $rule) !== false) {
+			return true;
+		}
+
+		$rule_collapsed = (string) preg_replace('/[^a-z0-9]+/', '', $rule);
+		if ($rule_collapsed !== '' && strpos($collapsed, $rule_collapsed) !== false) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -112,19 +200,12 @@ function alex_rose_2026_form_has_blocked_email(): bool {
 		return false;
 	}
 
-	$haystack = array();
-	// Nonce is verified by the caller before this runs.
-	array_walk_recursive($_POST, static function ($value) use (&$haystack) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
-		if (is_string($value)) {
-			$haystack[] = strtolower(wp_unslash($value));
-		}
-	});
-
-	if ($haystack === array()) {
+	$haystack = alex_rose_2026_form_post_text();
+	if ($haystack === '') {
 		return false;
 	}
 
-	if (! preg_match_all('/[\w.+-]+@[\w-]+\.[\w.-]+/', implode(' ', $haystack), $matches)) {
+	if (! preg_match_all('/[\w.+-]+@[\w-]+\.[\w.-]+/', $haystack, $matches)) {
 		return false;
 	}
 
@@ -285,7 +366,7 @@ function alex_rose_2026_form_guard(string $action, string $nonce_action, string 
 
 	// Blocked sender. Reports success like the honeypot does: telling someone
 	// they are filtered just prompts them to switch address.
-	if (alex_rose_2026_form_has_blocked_email()) {
+	if (alex_rose_2026_form_has_blocked_email() || alex_rose_2026_form_has_blocked_term()) {
 		alex_rose_2026_form_respond(true, $action, __('Thank you.', 'alex-rose-2026'));
 	}
 }
